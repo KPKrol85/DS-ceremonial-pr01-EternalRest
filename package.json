@@ -1,0 +1,36 @@
+{
+  "name": "eternal-rest-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "clean": "rimraf dist",
+    "build:css": "postcss css/main.css -o dist/css/main.css",
+    "build:js": "terser js/main.js -o dist/js/main.js --compress --mangle",
+    "build:html": "cpx \"*.html\" dist",
+    "build:assets": "cpx -r assets dist/assets",
+    "build": "npm-run-all -s clean build:css build:js build:html build:assets",
+    "preview": "sirv dist --dev",
+    "format": "prettier --write .",
+    "lint": "eslint \"js/**/*.js\"",
+    "images:convert": "node scripts/convert-images.js"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.18",
+    "cpx": "^1.5.0",
+    "cssnano": "^6.0.1",
+    "eslint": "^8.57.0",
+    "fast-glob": "^3.3.2",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^8.4.35",
+    "postcss-cli": "^11.0.0",
+    "postcss-import": "^16.1.0",
+    "prettier": "^3.2.5",
+    "rimraf": "^5.0.5",
+    "sharp": "^0.33.2",
+    "sirv-cli": "^2.0.2",
+    "terser": "^5.30.0",
+    "vite": "^5.2.0"
+  }
+}
