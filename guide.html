@@ -3,11 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Eternal Rest | Usługi</title>
+    <title>Eternal Rest | Poradnik i FAQ</title>
     <meta
       name="description"
-      content="Poznaj pełną ofertę usług Eternal Rest — ceremonie tradycyjne, świeckie, transport, oprawa i wsparcie formalne."
-    />
+      content="Poradnik Eternal Rest — odpowiedzi na najczęstsze pytania rodzin dotyczące organizacji ceremonii, formalności i wsparcia." />
     <link rel="stylesheet" href="css/main.css" />
     <script type="module" src="js/main.js"></script>
   </head>
@@ -33,11 +32,11 @@
           <nav aria-label="Główna">
             <ul class="site-header__nav-list">
               <li><a class="site-header__nav-link" href="index.html">Strona główna</a></li>
-              <li><a class="site-header__nav-link" href="uslugi.html">Usługi</a></li>
-              <li><a class="site-header__nav-link" href="cennik.html">Cennik</a></li>
-              <li><a class="site-header__nav-link" href="o-nas.html">O nas</a></li>
-              <li><a class="site-header__nav-link" href="poradnik.html">Poradnik</a></li>
-              <li><a class="site-header__nav-link" href="formularz.html">Kontakt / Formularz</a></li>
+              <li><a class="site-header__nav-link" href="services.html">Usługi</a></li>
+              <li><a class="site-header__nav-link" href="pricing.html">Cennik</a></li>
+              <li><a class="site-header__nav-link" href="about.html">O nas</a></li>
+              <li><a class="site-header__nav-link" href="guide.html">Poradnik</a></li>
+              <li><a class="site-header__nav-link" href="contact.html">Kontakt / Formularz</a></li>
             </ul>
           </nav>
           <div class="site-header__actions">
@@ -68,77 +67,99 @@
       <section class="section">
         <div class="container">
           <div class="section__header">
-            <p class="section__eyebrow">Usługi</p>
-            <h1 class="section__title">Kompleksowa obsługa ceremonii</h1>
+            <p class="section__eyebrow">Poradnik</p>
+            <h1 class="section__title">Najczęstsze pytania rodzin</h1>
             <p class="section__lead">
-              Zapewniamy pełne wsparcie — od pierwszego kontaktu po opiekę po ceremonii.
-              Każdą usługę dopasowujemy do oczekiwań rodziny.
+              Przygotowaliśmy odpowiedzi na pytania, które pojawiają się najczęściej w pierwszych
+              godzinach po stracie. Jeżeli potrzebujesz wsparcia, skontaktuj się z nami 24/7.
             </p>
           </div>
-          <div class="services-list">
-            <article class="services-list__item" data-reveal>
-              <h2 class="services-list__title">Ceremonie tradycyjne</h2>
-              <p class="text-muted">
-                Oprawa liturgiczna, współpraca z duchownymi, dobór muzyki i logistyka dnia ceremonii.
-              </p>
-              <div class="services-list__meta">
-                <span class="badge">Koordynacja harmonogramu</span>
-                <span class="badge">Oprawa muzyczna</span>
+          <div class="accordion" data-accordion>
+            <div class="accordion__item">
+              <button
+                class="accordion__button"
+                type="button"
+                data-accordion-trigger
+                aria-expanded="false"
+                aria-controls="faq-1"
+              >
+                Jakie dokumenty są potrzebne do rozpoczęcia formalności?
+              </button>
+              <div class="accordion__panel" id="faq-1" hidden>
+                Najczęściej potrzebujemy aktu zgonu oraz dowodu osobistego osoby zmarłej. Pomagamy
+                zebrać brakujące dokumenty i kontaktujemy się z urzędami.
               </div>
+            </div>
+            <div class="accordion__item">
+              <button
+                class="accordion__button"
+                type="button"
+                data-accordion-trigger
+                aria-expanded="false"
+                aria-controls="faq-2"
+              >
+                Czy mogę zorganizować ceremonię świecką?
+              </button>
+              <div class="accordion__panel" id="faq-2" hidden>
+                Tak. Mamy doświadczonych mistrzów ceremonii, którzy przygotują indywidualny scenariusz
+                oraz oprawę słowną i muzyczną.
+              </div>
+            </div>
+            <div class="accordion__item">
+              <button
+                class="accordion__button"
+                type="button"
+                data-accordion-trigger
+                aria-expanded="false"
+                aria-controls="faq-3"
+              >
+                Jak długo trwa przygotowanie ceremonii?
+              </button>
+              <div class="accordion__panel" id="faq-3" hidden>
+                Standardowo 24–72 godziny. Termin zależy od dostępności miejsca i życzeń rodziny.
+              </div>
+            </div>
+            <div class="accordion__item">
+              <button
+                class="accordion__button"
+                type="button"
+                data-accordion-trigger
+                aria-expanded="false"
+                aria-controls="faq-4"
+              >
+                Czy zapewniacie wsparcie po ceremonii?
+              </button>
+              <div class="accordion__panel" id="faq-4" hidden>
+                Tak. Zapewniamy kontakt po ceremonii, konsultacje i możliwość spotkań z psychologiem.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--alt">
+        <div class="container">
+          <div class="section__header">
+            <p class="section__eyebrow">Wskazówki</p>
+            <h2 class="section__title">Pierwsze kroki po stracie</h2>
+            <p class="section__lead">Krótkie podpowiedzi, które pomagają uporządkować najważniejsze sprawy.</p>
+          </div>
+          <div class="grid grid--three">
+            <article class="card" data-reveal>
+              <h3 class="card__title">Skontaktuj się z nami</h3>
+              <p class="card__text">Wystarczy telefon, aby rozpocząć niezbędne formalności.</p>
             </article>
-            <article class="services-list__item" data-reveal>
-              <h2 class="services-list__title">Pożegnania świeckie</h2>
-              <p class="text-muted">
-                Indywidualny scenariusz, prowadzenie mistrza ceremonii, możliwość osobistych wystąpień.
-              </p>
-              <div class="services-list__meta">
-                <span class="badge">Mistrz ceremonii</span>
-                <span class="badge">Personalizowana mowa</span>
-              </div>
+            <article class="card" data-reveal>
+              <h3 class="card__title">Zbierz dokumenty</h3>
+              <p class="card__text">Akt zgonu, dowód osobisty i dokumenty ubezpieczeniowe.</p>
             </article>
-            <article class="services-list__item" data-reveal>
-              <h2 class="services-list__title">Transport i logistyka</h2>
-              <p class="text-muted">
-                Specjalistyczne pojazdy, odbiór i przewóz, eskorty oraz koordynacja miejsc pożegnania.
-              </p>
-              <div class="services-list__meta">
-                <span class="badge">Nowoczesna flota</span>
-                <span class="badge">Dostępność 24/7</span>
-              </div>
-            </article>
-            <article class="services-list__item" data-reveal>
-              <h2 class="services-list__title">Oprawa florystyczna</h2>
-              <p class="text-muted">
-                Kompozycje kwiatowe, wieńce, dekoracje sali pożegnań i indywidualne akcenty pamięci.
-              </p>
-              <div class="services-list__meta">
-                <span class="badge">Kwiaty sezonowe</span>
-                <span class="badge">Subtelne dekoracje</span>
-              </div>
-            </article>
-            <article class="services-list__item" data-reveal>
-              <h2 class="services-list__title">Wsparcie formalne</h2>
-              <p class="text-muted">
-                Kompleksowa pomoc w dokumentach, świadczeniach i kontaktach z urzędami.
-              </p>
-              <div class="services-list__meta">
-                <span class="badge">Wnioski i zgłoszenia</span>
-                <span class="badge">Doradztwo na miejscu</span>
-              </div>
-            </article>
-            <article class="services-list__item" data-reveal>
-              <h2 class="services-list__title">Opieka po ceremonii</h2>
-              <p class="text-muted">
-                Kontakt po uroczystości, wsparcie psychologiczne, doradztwo w zakresie pamięci.
-              </p>
-              <div class="services-list__meta">
-                <span class="badge">Wsparcie rodzinne</span>
-                <span class="badge">Konsultacje</span>
-              </div>
+            <article class="card" data-reveal>
+              <h3 class="card__title">Ustal charakter ceremonii</h3>
+              <p class="card__text">Wspólnie wybierzemy rytuał i oprawę zgodną z wartościami rodziny.</p>
             </article>
           </div>
           <div class="mt-xl">
-            <a class="site-header__cta" href="formularz.html">Umów konsultację usług</a>
+            <a class="site-header__cta" href="contact.html">Porozmawiaj z doradcą</a>
           </div>
         </div>
       </section>
@@ -175,20 +196,20 @@
             <h3 class="card__title">Skróty</h3>
             <ul class="footer__links">
               <li><a href="index.html">Strona główna</a></li>
-              <li><a href="o-nas.html">O nas</a></li>
-              <li><a href="uslugi.html">Usługi</a></li>
-              <li><a href="cennik.html">Cennik</a></li>
-              <li><a href="poradnik.html">Poradnik</a></li>
-              <li><a href="formularz.html">Kontakt</a></li>
+              <li><a href="about.html">O nas</a></li>
+              <li><a href="services.html">Usługi</a></li>
+              <li><a href="pricing.html">Cennik</a></li>
+              <li><a href="guide.html">Poradnik</a></li>
+              <li><a href="contact.html">Kontakt</a></li>
             </ul>
           </div>
           <div>
             <h3 class="card__title">Usługi</h3>
             <ul class="footer__links">
-              <li><a href="uslugi.html">Ceremonie tradycyjne</a></li>
-              <li><a href="uslugi.html">Pożegnania świeckie</a></li>
-              <li><a href="uslugi.html">Transport i logistyka</a></li>
-              <li><a href="uslugi.html">Oprawa florystyczna</a></li>
+              <li><a href="services.html">Ceremonie tradycyjne</a></li>
+              <li><a href="services.html">Pożegnania świeckie</a></li>
+              <li><a href="services.html">Transport i logistyka</a></li>
+              <li><a href="services.html">Oprawa florystyczna</a></li>
             </ul>
           </div>
           <div>

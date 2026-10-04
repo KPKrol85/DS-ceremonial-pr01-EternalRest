@@ -32,7 +32,7 @@ Formularz kontaktowy jest demonstracją interfejsu: skrypt sprawdza wypełnienie
 
 ### Architektura
 
-Źródłem treści są pliki HTML w katalogu głównym. Nawigacja korzysta ze zwykłych odnośników między stronami; nagłówek i stopka są zapisane osobno w każdej stronie. Nie ma generatora wspólnych fragmentów ani routera po stronie klienta.
+Źródłem treści są pliki HTML w katalogu głównym. Kanoniczne nazwy plików i trasy używają języka angielskiego, a treść interfejsu pozostaje polska. Nawigacja korzysta ze zwykłych odnośników między stronami; nagłówek i stopka są zapisane osobno w każdej stronie. Nie ma generatora wspólnych fragmentów ani routera po stronie klienta.
 
 `css/main.css` importuje kolejno tokeny, style bazowe, układ, komponenty, klasy pomocnicze i style stron. `css/pages/legal.css` jest wspólnym arkuszem rodziny stron prawnych, używanym przez `terms.html`. `js/main.js` zawiera wspólne zachowania i podłącza interakcje do elementów oznaczonych atrybutami `data-*`. Wszystkie siedem wejść produkcyjnych określa `vite.config.js`.
 
@@ -41,11 +41,11 @@ Formularz kontaktowy jest demonstracją interfejsu: skrypt sprawdza wypełnienie
 ```text
 .
 ├── index.html                 # Strona główna
-├── o-nas.html                 # Informacje o firmie
-├── uslugi.html                # Usługi
-├── cennik.html                # Pakiety i filtr
-├── formularz.html             # Kontakt i formularz demonstracyjny
-├── poradnik.html              # Poradnik i FAQ
+├── about.html                 # Informacje o firmie
+├── services.html              # Usługi
+├── pricing.html               # Pakiety i filtr
+├── contact.html               # Kontakt i formularz demonstracyjny
+├── guide.html                 # Poradnik i FAQ
 ├── terms.html                 # Regulamin projektu demonstracyjnego
 ├── assets/
 │   ├── icons/
@@ -162,7 +162,7 @@ The contact form is an interface demonstration: its script checks for non-empty 
 
 ### Architecture
 
-Root HTML files own the content. Navigation uses ordinary links between pages; each page contains its own header and footer markup. There is no shared-fragment generator or client-side router.
+Root HTML files own the content. Canonical filenames and routes use English technical names, while interface content remains Polish. Navigation uses ordinary links between pages; each page contains its own header and footer markup. There is no shared-fragment generator or client-side router.
 
 `css/main.css` imports tokens, base styles, layout, components, utilities and page styles in that order. `css/pages/legal.css` is the shared stylesheet for legal pages, used by `terms.html`. `js/main.js` contains shared behavior and attaches interactions to elements marked with `data-*` attributes. `vite.config.js` defines all seven production entry points.
 
@@ -171,11 +171,11 @@ Root HTML files own the content. Navigation uses ordinary links between pages; e
 ```text
 .
 ├── index.html                 # Home page
-├── o-nas.html                 # Company information
-├── uslugi.html                # Services
-├── cennik.html                # Packages and filter
-├── formularz.html             # Contact and demonstration form
-├── poradnik.html              # Guide and FAQ
+├── about.html                 # Company information
+├── services.html              # Services
+├── pricing.html               # Packages and filter
+├── contact.html               # Contact and demonstration form
+├── guide.html                 # Guide and FAQ
 ├── terms.html                 # Demonstration project Terms
 ├── assets/
 │   ├── icons/

@@ -6,7 +6,7 @@
 
 ## Project identity
 
-Eternal Rest is a KP_Code Digital Studio frontend presenting funeral-home services, pricing packages, company information, family guidance and a demonstration contact form. The seven pages are `index.html`, `uslugi.html`, `cennik.html`, `o-nas.html`, `poradnik.html`, `formularz.html` and `terms.html`.
+Eternal Rest is a KP_Code Digital Studio frontend presenting funeral-home services, pricing packages, company information, family guidance and a demonstration contact form. The seven pages are `index.html`, `services.html`, `pricing.html`, `about.html`, `guide.html`, `contact.html` and `terms.html`.
 
 ## Project intent
 
@@ -22,7 +22,7 @@ The repository supports local portfolio and technical review under the proprieta
 
 ## Architecture
 
-`vite.config.js` sets `appType: "mpa"` and explicitly lists all seven HTML entry points. Navigation uses relative `.html` links and normal document loads. Each page maintains its own header, navigation and footer; there is no shared-template generator or client-side router.
+`vite.config.js` sets `appType: "mpa"` and explicitly lists all seven HTML entry points. Canonical HTML filenames and routes use English technical names; public-facing content remains Polish. Navigation uses relative `.html` links and normal document loads. Each page maintains its own header, navigation and footer; there is no shared-template generator or client-side router.
 
 All pages load `css/main.css` and `js/main.js`. The script runs a single immediately invoked function, selects elements through `data-*` hooks and conditionally attaches page-specific interactions. It owns theme controls, navigation, scroll effects, accordions, pricing filters/details and the form demonstration. There is no application server, database or remote API integration.
 
@@ -39,7 +39,7 @@ All pages load `css/main.css` and `js/main.js`. The script runs a single immedia
 ## Project structure
 
 ```text
-index.html, uslugi.html, cennik.html, o-nas.html, poradnik.html, formularz.html, terms.html
+index.html, services.html, pricing.html, about.html, guide.html, contact.html, terms.html
 css/
   main.css, tokens.css, base.css, layout.css, components.css, utilities.css
   pages/home.css, pages/services.css, pages/legal.css

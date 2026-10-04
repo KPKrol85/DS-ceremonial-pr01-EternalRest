@@ -19,6 +19,7 @@ This is the canonical record of significant completed changes. Evaluate each imp
 
 ### Build and Tooling
 
+- Standardized public HTML routes to English technical filenames while preserving Polish interface content and updating internal navigation, Vite entries and current-state documentation.
 - Added `terms.html` as the seventh explicit Vite MPA entry and `css/pages/legal.css` to the canonical stylesheet import chain.
 - Added `package-lock.json` to pin the npm dependency tree for installation with `npm ci`.
 - **Breaking:** Replaced the separate `clean` and `build:*` commands with `npm run build` using Vite, and switched preview to Vite. The pipeline defines six HTML entry points, processes canonical CSS and ES-module JavaScript, and uses relative asset paths in generated `dist/`; obsolete build tools were removed.

@@ -11,11 +11,11 @@ export default defineConfig({
     rollupOptions: {
       input: {
         index: path.resolve(__dirname, "index.html"),
-        uslugi: path.resolve(__dirname, "uslugi.html"),
-        cennik: path.resolve(__dirname, "cennik.html"),
-        "o-nas": path.resolve(__dirname, "o-nas.html"),
-        poradnik: path.resolve(__dirname, "poradnik.html"),
-        formularz: path.resolve(__dirname, "formularz.html"),
+        services: path.resolve(__dirname, "services.html"),
+        pricing: path.resolve(__dirname, "pricing.html"),
+        about: path.resolve(__dirname, "about.html"),
+        guide: path.resolve(__dirname, "guide.html"),
+        contact: path.resolve(__dirname, "contact.html"),
         terms: path.resolve(__dirname, "terms.html"),
       },
     },
