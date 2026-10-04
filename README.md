@@ -4,9 +4,9 @@
 
 ### Przegląd projektu
 
-Eternal Rest to polskojęzyczny, statyczny projekt demonstracyjny witryny wielostronicowej prezentującej koncepcję usług domu pogrzebowego, pakiety cenowe, informacje o firmie i poradnik dla rodzin. Projekt KP_Code Digital Studio składa się z ośmiu stron HTML ze wspólnymi stylami i interakcjami w JavaScript.
+Eternal Rest to polskojęzyczny, statyczny projekt demonstracyjny witryny wielostronicowej prezentującej koncepcję usług domu pogrzebowego, pakiety cenowe, informacje o firmie i poradnik dla rodzin. Projekt KP_Code Digital Studio składa się z dziewięciu stron HTML ze wspólnymi stylami i interakcjami w JavaScript.
 
-Formularz kontaktowy jest demonstracją interfejsu: skrypt sprawdza wypełnienie pól, wyświetla komunikat i resetuje formularz. Przy działającym JavaScripcie nie wysyła zgłoszenia ani nie zapisuje danych na serwerze. Bez skryptu formularz może wykonać domyślne żądanie GET z polami w adresie; nie należy używać go bez JavaScriptu ani wpisywać rzeczywistych danych. Mapa dojazdu jest ilustracją SVG; stopka prowadzi do regulaminu i polityki prywatności, natomiast odnośniki społecznościowe i cookies pozostają placeholderami.
+Formularz kontaktowy jest demonstracją interfejsu: skrypt sprawdza wypełnienie pól, wyświetla komunikat i resetuje formularz. Przy działającym JavaScripcie nie wysyła zgłoszenia ani nie zapisuje danych na serwerze. Bez skryptu formularz może wykonać domyślne żądanie GET z polami w adresie; nie należy używać go bez JavaScriptu ani wpisywać rzeczywistych danych. Mapa dojazdu jest ilustracją SVG; stopka prowadzi do regulaminu, polityki prywatności i polityki cookies, natomiast odnośniki społecznościowe pozostają placeholderami.
 
 ### Wersja online
 
@@ -19,7 +19,7 @@ Formularz kontaktowy jest demonstracją interfejsu: skrypt sprawdza wypełnienie
 - Filtrowanie pakietów według rodzaju ceremonii i rozwijanie ich szczegółów.
 - Akordeony FAQ na stronie głównej i w poradniku.
 - Wybór preferowanej formy kontaktu i lokalna walidacja niepustych pól formularza.
-- Regulamin (17 sekcji) i polityka prywatności (14 sekcji) z natywnymi spisami treści i odnośnikami powrotu do spisu, działającymi bez JavaScriptu. Polityka prywatności opisuje rzeczywiste działanie korespondencji e-mail, zapisu motywu i formularza demonstracyjnego.
+- Regulamin (17 sekcji), polityka prywatności (14 sekcji) i polityka cookies (9 sekcji) z natywnymi spisami treści i odnośnikami powrotu do spisu, działającymi bez JavaScriptu. Polityka prywatności opisuje rzeczywiste działanie korespondencji e-mail, zapisu motywu i formularza demonstracyjnego, a polityka cookies – zapis motywu w `localStorage` jako jedyną technologię przechowywania danych, bez plików cookies ustawianych przez aplikację.
 
 ### Stack technologiczny
 
@@ -34,7 +34,7 @@ Formularz kontaktowy jest demonstracją interfejsu: skrypt sprawdza wypełnienie
 
 Źródłem treści są pliki HTML w katalogu głównym. Kanoniczne nazwy plików i trasy używają języka angielskiego, a treść interfejsu pozostaje polska. Nawigacja korzysta ze zwykłych odnośników między stronami; nagłówek i stopka są zapisane osobno w każdej stronie. Nie ma generatora wspólnych fragmentów ani routera po stronie klienta.
 
-`css/main.css` importuje kolejno tokeny, style bazowe, układ, komponenty, klasy pomocnicze i style stron. `css/pages/legal.css` jest wspólnym arkuszem rodziny stron prawnych, używanym przez `terms.html` i `privacy.html`. `js/main.js` zawiera wspólne zachowania i podłącza interakcje do elementów oznaczonych atrybutami `data-*`. Wszystkie osiem wejść produkcyjnych określa `vite.config.js`.
+`css/main.css` importuje kolejno tokeny, style bazowe, układ, komponenty, klasy pomocnicze i style stron. `css/pages/legal.css` jest wspólnym arkuszem rodziny stron prawnych, używanym przez `terms.html`, `privacy.html` i `cookies.html`. `js/main.js` zawiera wspólne zachowania i podłącza interakcje do elementów oznaczonych atrybutami `data-*`. Wszystkie dziewięć wejść produkcyjnych określa `vite.config.js`.
 
 ### Struktura projektu
 
@@ -48,6 +48,7 @@ Formularz kontaktowy jest demonstracją interfejsu: skrypt sprawdza wypełnienie
 ├── guide.html                 # Poradnik i FAQ
 ├── terms.html                 # Regulamin projektu demonstracyjnego
 ├── privacy.html               # Polityka prywatności projektu demonstracyjnego
+├── cookies.html               # Polityka cookies projektu demonstracyjnego
 ├── assets/
 │   ├── icons/
 │   ├── illustrations/
@@ -89,7 +90,7 @@ Polecenia są zdefiniowane w [package.json](package.json).
 | Polecenie | Działanie |
 | --- | --- |
 | `npm run dev` | Uruchamia Vite z `--host`, udostępniając serwer także w sieci lokalnej. |
-| `npm run build` | Buduje osiem stron przez `vite build`. |
+| `npm run build` | Buduje dziewięć stron przez `vite build`. |
 | `npm run preview` | Uruchamia `vite preview`; wymaga wcześniejszego buildu. |
 | `npm run lint` | Uruchamia ESLint wyłącznie dla `js/**/*.js`. |
 | `npm run format` | Uruchamia `prettier --write .` i zapisuje zmiany w plikach. |
@@ -99,7 +100,7 @@ Strony otwieraj przez serwer Vite, korzystając z adresu podanego w terminalu. B
 
 ### Build produkcyjny
 
-Vite generuje `dist/` z ośmioma stronami HTML oraz przetworzonymi zasobami. Importy CSS są scalane, Autoprefixer dodaje prefiksy, a wynikowe CSS i JavaScript podlegają minifikacji. Emitowane zasoby otrzymują nazwy z hashem. Ustawienie `base: "./"` zapewnia względne ścieżki zasobów w wyniku.
+Vite generuje `dist/` z dziewięcioma stronami HTML oraz przetworzonymi zasobami. Importy CSS są scalane, Autoprefixer dodaje prefiksy, a wynikowe CSS i JavaScript podlegają minifikacji. Emitowane zasoby otrzymują nazwy z hashem. Ustawienie `base: "./"` zapewnia względne ścieżki zasobów w wyniku.
 
 `dist/` jest wykluczony z Git i nie należy edytować go ręcznie. Podgląd produkcyjny serwuje ten katalog. Repozytorium nie zawiera konfiguracji hostingu ani automatycznego wdrażania.
 
@@ -125,7 +126,7 @@ Każda strona zawiera polski atrybut języka dokumentu, własny tytuł i opis me
 
 ### Dane i trwałość stanu
 
-Treści i ceny są zapisane w HTML. Preferencja motywu trafia do `localStorage` pod kluczem `eternalRestTheme` jako obiekt z wersją `1` i trybem `auto`, `light` lub `dark`. Filtr cen, rozwinięte panele i formularz nie mają trwałego zapisu; implementacja nie korzysta z backendu ani bazy danych.
+Treści i ceny są zapisane w HTML. Preferencja motywu trafia do `localStorage` pod kluczem `eternalRestTheme` jako obiekt z wersją `1` i trybem `auto`, `light` lub `dark`. Zapis powstaje dopiero po użyciu przełącznika motywu lub przycisku „Tryb systemowy” i nie ma terminu wygaśnięcia. Filtr cen, rozwinięte panele i formularz nie mają trwałego zapisu; implementacja nie korzysta z backendu ani bazy danych. Aplikacja nie ustawia plików cookies i nie korzysta z `sessionStorage`, IndexedDB, Cache Storage, Service Workera ani narzędzi analitycznych lub marketingowych, dlatego nie zawiera banera cookies ani mechanizmu zarządzania zgodą.
 
 ### Licencja
 
@@ -135,9 +136,9 @@ Projekt podlega [Własnościowej Licencji Projektu KP_CODE](LICENSE.md), wersja 
 
 ### Project Overview
 
-Eternal Rest is a Polish-language static multi-page demonstration project presenting a funeral-home service concept, pricing packages, company information and guidance for families. This KP_Code Digital Studio project consists of eight HTML pages with shared styles and JavaScript interactions.
+Eternal Rest is a Polish-language static multi-page demonstration project presenting a funeral-home service concept, pricing packages, company information and guidance for families. This KP_Code Digital Studio project consists of nine HTML pages with shared styles and JavaScript interactions.
 
-The contact form is an interface demonstration: its script checks for non-empty fields, displays a message and resets the form. With JavaScript working, it does not send an enquiry or store data on a server. Without the script, the form can perform a default GET request with fields in the URL; do not use it without JavaScript or enter real data. The location map is an SVG illustration; the footer links to the Terms and Privacy Policy pages, while social and cookie links remain placeholders.
+The contact form is an interface demonstration: its script checks for non-empty fields, displays a message and resets the form. With JavaScript working, it does not send an enquiry or store data on a server. Without the script, the form can perform a default GET request with fields in the URL; do not use it without JavaScript or enter real data. The location map is an SVG illustration; the footer links to the Terms, Privacy Policy and Cookies Policy pages, while social links remain placeholders.
 
 ### Live Version
 
@@ -150,7 +151,7 @@ The contact form is an interface demonstration: its script checks for non-empty 
 - Package filtering by ceremony type and expandable package details.
 - FAQ accordions on the home and guide pages.
 - Preferred contact method selection and local validation for non-empty form fields.
-- Terms (17 sections) and Privacy Policy (14 sections) with native section indexes and return links that work without JavaScript. The Privacy Policy describes the actual behavior of e-mail correspondence, theme storage and the demonstration form.
+- Terms (17 sections), Privacy Policy (14 sections) and Cookies Policy (9 sections) with native section indexes and return links that work without JavaScript. The Privacy Policy describes the actual behavior of e-mail correspondence, theme storage and the demonstration form, while the Cookies Policy documents theme storage in `localStorage` as the only storage technology, with no application-set cookies.
 
 ### Tech Stack
 
@@ -165,7 +166,7 @@ The contact form is an interface demonstration: its script checks for non-empty 
 
 Root HTML files own the content. Canonical filenames and routes use English technical names, while interface content remains Polish. Navigation uses ordinary links between pages; each page contains its own header and footer markup. There is no shared-fragment generator or client-side router.
 
-`css/main.css` imports tokens, base styles, layout, components, utilities and page styles in that order. `css/pages/legal.css` is the shared stylesheet for legal pages, used by `terms.html` and `privacy.html`. `js/main.js` contains shared behavior and attaches interactions to elements marked with `data-*` attributes. `vite.config.js` defines all eight production entry points.
+`css/main.css` imports tokens, base styles, layout, components, utilities and page styles in that order. `css/pages/legal.css` is the shared stylesheet for legal pages, used by `terms.html`, `privacy.html` and `cookies.html`. `js/main.js` contains shared behavior and attaches interactions to elements marked with `data-*` attributes. `vite.config.js` defines all nine production entry points.
 
 ### Project Structure
 
@@ -179,6 +180,7 @@ Root HTML files own the content. Canonical filenames and routes use English tech
 ├── guide.html                 # Guide and FAQ
 ├── terms.html                 # Demonstration project Terms
 ├── privacy.html               # Demonstration project Privacy Policy
+├── cookies.html               # Demonstration project Cookies Policy
 ├── assets/
 │   ├── icons/
 │   ├── illustrations/
@@ -220,7 +222,7 @@ Commands are defined in [package.json](package.json).
 | Command | Behavior |
 | --- | --- |
 | `npm run dev` | Starts Vite with `--host`, also exposing the server to the local network. |
-| `npm run build` | Builds all eight pages through `vite build`. |
+| `npm run build` | Builds all nine pages through `vite build`. |
 | `npm run preview` | Starts `vite preview`; requires a prior build. |
 | `npm run lint` | Runs ESLint only on `js/**/*.js`. |
 | `npm run format` | Runs `prettier --write .` and writes changes to files. |
@@ -230,7 +232,7 @@ Open pages through the Vite server using the address printed in the terminal. Op
 
 ### Production Build
 
-Vite generates `dist/` containing eight HTML pages and processed assets. CSS imports are combined, Autoprefixer adds prefixes, and the resulting CSS and JavaScript are minified. Emitted assets receive hashed filenames. The `base: "./"` setting produces relative asset paths in the output.
+Vite generates `dist/` containing nine HTML pages and processed assets. CSS imports are combined, Autoprefixer adds prefixes, and the resulting CSS and JavaScript are minified. Emitted assets receive hashed filenames. The `base: "./"` setting produces relative asset paths in the output.
 
 `dist/` is excluded from Git and should not be edited manually. Production preview serves this directory. The repository contains no hosting or automated deployment configuration.
 
@@ -256,7 +258,7 @@ Each page declares Polish as its document language and has its own title and met
 
 ### Data and State Persistence
 
-Content and prices are stored in HTML. The theme preference is saved in `localStorage` under `eternalRestTheme` as an object with version `1` and mode `auto`, `light` or `dark`. The pricing filter, expanded panels and form have no persistent storage; the implementation uses no backend or database.
+Content and prices are stored in HTML. The theme preference is saved in `localStorage` under `eternalRestTheme` as an object with version `1` and mode `auto`, `light` or `dark`. The entry is created only when the theme toggle or the system-mode button is used and has no expiry. The pricing filter, expanded panels and form have no persistent storage; the implementation uses no backend or database. The application sets no cookies and uses no `sessionStorage`, IndexedDB, Cache Storage, Service Worker, analytics or marketing tools, so it includes no cookie banner or consent manager.
 
 ### License
 
