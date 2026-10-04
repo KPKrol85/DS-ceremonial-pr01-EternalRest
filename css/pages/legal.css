@@ -39,7 +39,8 @@
 
 .legal-hero__title,
 .legal-nav__title,
-.legal-section__heading {
+.legal-section__heading,
+.legal-section__subheading {
   font-family: var(--font-serif);
   text-wrap: balance;
 }
@@ -63,7 +64,8 @@
 
 .legal-hero__intro p,
 .legal-section__body p,
-.legal-section__body li {
+.legal-section__body li,
+.legal-facts__value {
   text-wrap: pretty;
 }
 
@@ -146,6 +148,20 @@
   overflow-wrap: anywhere;
 }
 
+.legal-section__subheading {
+  font-size: var(--font-size-lg);
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.legal-section__body > * + .legal-section__subheading {
+  margin-top: var(--space-xl);
+}
+
+.legal-section__body > .legal-section__subheading + * {
+  margin-top: var(--space-sm);
+}
+
 .legal-section__body ul,
 .legal-section__body ol {
   padding-left: var(--space-lg);
@@ -165,6 +181,27 @@
 
 .legal-section__body li::marker {
   color: var(--color-text-muted);
+}
+
+/* Label/value records, e.g. one processing purpose or one storage entry. */
+.legal-facts {
+  border-block: 1px solid var(--color-border);
+}
+
+.legal-facts__item {
+  display: grid;
+  gap: var(--space-2xs);
+  padding-block: var(--space-sm);
+}
+
+.legal-facts__item + .legal-facts__item {
+  border-top: 1px solid var(--color-border);
+}
+
+.legal-facts__label {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  line-height: 1.6;
 }
 
 .legal-meta a,
@@ -287,5 +324,11 @@
 
   .legal-section__heading {
     font-size: var(--font-size-2xl);
+  }
+
+  .legal-facts__item {
+    grid-template-columns: 10rem minmax(0, 1fr);
+    align-items: baseline;
+    gap: var(--space-lg);
   }
 }

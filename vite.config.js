@@ -17,6 +17,7 @@ export default defineConfig({
         guide: path.resolve(__dirname, "guide.html"),
         contact: path.resolve(__dirname, "contact.html"),
         terms: path.resolve(__dirname, "terms.html"),
+        privacy: path.resolve(__dirname, "privacy.html"),
       },
     },
   },
