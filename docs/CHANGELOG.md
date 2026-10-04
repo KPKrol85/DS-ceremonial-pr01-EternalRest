@@ -8,6 +8,7 @@ This is the canonical record of significant completed changes. Evaluate each imp
 
 ### Added
 
+- Added `terms.html`, adapting the supplied 17-section Terms template to the demonstration project, with shared legal-page styling, native section navigation and accessible return links. All page footers now link to the Terms.
 - Added six Polish-language pages covering the home page, services, pricing, company information, family guidance and contact, with shared CSS tokens and JavaScript interactions.
 - Added light, dark and system theme modes with versioned preferences stored in `localStorage`.
 - Added mobile navigation with synchronized ARIA state, focus transfer and restoration, Tab containment, Escape dismissal and scroll locking, alongside skip links and visible keyboard focus styles.
@@ -18,6 +19,7 @@ This is the canonical record of significant completed changes. Evaluate each imp
 
 ### Build and Tooling
 
+- Added `terms.html` as the seventh explicit Vite MPA entry and `css/pages/legal.css` to the canonical stylesheet import chain.
 - Added `package-lock.json` to pin the npm dependency tree for installation with `npm ci`.
 - **Breaking:** Replaced the separate `clean` and `build:*` commands with `npm run build` using Vite, and switched preview to Vite. The pipeline defines six HTML entry points, processes canonical CSS and ES-module JavaScript, and uses relative asset paths in generated `dist/`; obsolete build tools were removed.
 - Added a separate Sharp-based image conversion command for PNG/JPEG sources, producing WebP and AVIF files outside the build step.

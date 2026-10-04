@@ -16,6 +16,7 @@ export default defineConfig({
         "o-nas": path.resolve(__dirname, "o-nas.html"),
         poradnik: path.resolve(__dirname, "poradnik.html"),
         formularz: path.resolve(__dirname, "formularz.html"),
+        terms: path.resolve(__dirname, "terms.html"),
       },
     },
   },
