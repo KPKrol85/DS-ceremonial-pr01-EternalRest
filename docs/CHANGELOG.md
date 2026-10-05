@@ -18,6 +18,7 @@ This is the canonical record of significant completed changes. Evaluate each imp
 - Added FAQ accordions on the home and guide pages with synchronized panel visibility and `aria-expanded` state.
 - Added a demonstration contact form with contact-method selection, non-empty-field validation, associated error messages and a focused completion message; submission resets the form locally without sending or storing an enquiry on a server.
 - Added scroll-triggered reveals and a back-to-top control, with reduced-motion handling for reveals, CSS transitions and scrolling.
+- Added shared primary and secondary button variants for page-level actions, separating interactive controls from the header-specific CTA and static badge labels while preserving existing interaction and ARIA contracts.
 
 ### Build and Tooling
 
