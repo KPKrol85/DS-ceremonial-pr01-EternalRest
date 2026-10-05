@@ -29,6 +29,7 @@ The six marketing pages have not caught up with that layer. Action styles are bo
 
 ### IMP-UI-02 — Add a responsive comparison layout to the pricing packages
 
+- **Status:** Completed — added a mobile-first pricing grid that places the three packages side by side from the existing 760 px breakpoint, keeps a filtered single package at column width, limits details expansion to the expanded card, sizes detail toggles to their labels and constrains the filter from 760 px, while preserving filtering, disclosure, ARIA and copy. `npm run lint`, `npm run build` and a focused 375 px and 1280 px browser check passed; the remaining 375 px page overflow comes from the known shared-header defect.
 - **Affected area:** `pricing.html` package list and filter.
 - **Evidence:** `css/components.css:287-314` (`.pricing`, `.pricing__card`, `.pricing__details`), `pricing.html:78-151`, `js/main.js:216-240`, `css/layout.css:47-49` and `css/layout.css:61-68` (existing `grid--three` breakpoint pattern). Runtime at a 1280 px viewport: `.pricing` computes to a single `1120px` track, each card measures 1120 × 237 px, the details toggle stretches to 1070 px and the filter select to 1120 px.
 - **Current state:** `.pricing` defines a gap but no columns at any breakpoint, so the three packages stack vertically at every width. Because `.pricing__card` is a grid, the badge-styled details toggle stretches to the full card width. The filter field also spans the whole container.

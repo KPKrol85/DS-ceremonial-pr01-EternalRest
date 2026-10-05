@@ -38,6 +38,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 - Added a demonstration contact form with contact-method selection, non-empty-field validation, associated error messages and a focused completion message; submission resets the form locally without sending or storing an enquiry on a server.
 - Added scroll-triggered reveals and a back-to-top control, with reduced-motion handling for reveals, CSS transitions and scrolling.
 - Added shared primary and secondary button variants for page-level actions, separating interactive controls from the header-specific CTA and static badge labels while preserving existing interaction and ARIA contracts.
+- Added a responsive comparison layout to the pricing page: the three packages stack on small screens and sit side by side from 760 px, a filtered package keeps its column width, expanding one package's details no longer resizes the others, detail toggles size to their labels and the ceremony filter uses a constrained width on larger screens. Filtering, disclosure and ARIA behavior are unchanged.
 
 ### Build and Tooling
 

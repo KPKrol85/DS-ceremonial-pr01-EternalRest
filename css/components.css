@@ -287,6 +287,7 @@
 .pricing {
   display: grid;
   gap: var(--space-lg);
+  align-items: start;
 }
 
 .pricing__card {
@@ -297,6 +298,10 @@
   box-shadow: var(--shadow-sm);
   display: grid;
   gap: var(--space-md);
+}
+
+.pricing__card > .button {
+  justify-self: start;
 }
 
 .pricing__price {
@@ -498,6 +503,14 @@
 
   .steps {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  .pricing {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .pricing-filter {
+    max-width: 20rem;
   }
 
   .footer__grid {
