@@ -6,6 +6,25 @@ This is the canonical record of significant completed changes. Evaluate each imp
 
 ## [Unreleased]
 
+## Entry policy
+
+A change is significant when a future maintainer or the project owner would reasonably need to know that one of the following changed:
+
+- user-visible behavior, including meaningful UI, UX, or public content changes;
+- accessibility behavior or accessibility contracts;
+- build behavior, build guards, or npm scripts;
+- test infrastructure or verification tooling;
+- the dependency set;
+- deployment or hosting workflow;
+- PWA, service-worker, cache, or offline behavior;
+- architecture, sources of truth, or important project maintenance contracts.
+
+Judge by impact, not by file count: a visually small change is recorded when it changes user-visible or accessibility behavior, and editing a file is not by itself a reason for an entry.
+
+Not recorded: improvement-report status updates and archiving, commit-only or tracking-document bookkeeping, temporary verification probes, minor wording corrections in internal documentation, and isolated cosmetic or implementation details, such as a single spacing or border correction, that do not change behavior, accessibility, or a shared component contract.
+
+When an implementation task is defined, apply this policy and state `Changelog: yes` or `Changelog: no`. Add an entry only within an approved task marked `Changelog: yes`; this policy does not authorize changelog edits outside that scope.
+
 ### Added
 
 - Added `cookies.html`, adapting the supplied nine-section Cookies Policy template to the project's actual browser-storage behavior: no application-set cookies, the `eternalRestTheme` theme preference in `localStorage` as the only storage entry, and no analytics, marketing, third-party storage or consent manager. The page reuses the shared legal-page styles, native section navigation and accessible return links. All page footers now link to the Cookies Policy, completing the Terms, Privacy and Cookies footer navigation, and the Terms and Privacy Policy now cross-reference it.
