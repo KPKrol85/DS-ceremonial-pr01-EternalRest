@@ -42,13 +42,14 @@
 .legal-section__heading,
 .legal-section__subheading {
   font-family: var(--font-serif);
+  line-height: var(--line-height-heading);
   text-wrap: balance;
 }
 
 .legal-hero__title {
   margin-bottom: var(--space-lg);
   font-size: var(--font-size-3xl);
-  line-height: 1.2;
+  line-height: var(--line-height-display);
 }
 
 .legal-hero__intro,
@@ -144,13 +145,11 @@
 .legal-section__heading {
   margin-bottom: var(--space-lg);
   font-size: var(--font-size-xl);
-  line-height: 1.4;
   overflow-wrap: anywhere;
 }
 
 .legal-section__subheading {
   font-size: var(--font-size-lg);
-  line-height: 1.4;
   overflow-wrap: anywhere;
 }
 

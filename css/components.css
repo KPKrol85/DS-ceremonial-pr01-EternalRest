@@ -30,6 +30,7 @@
 .site-header__brand-title {
   font-family: var(--font-serif);
   font-size: var(--font-size-xl);
+  line-height: var(--line-height-heading);
 }
 
 .site-header__brand-subtitle {
@@ -174,7 +175,9 @@
 
 .hero__title {
   font-family: var(--font-serif);
-  font-size: var(--font-size-4xl);
+  font-size: var(--font-size-3xl);
+  line-height: var(--line-height-display);
+  text-wrap: balance;
   margin-bottom: var(--space-md);
 }
 
@@ -211,6 +214,7 @@
 .card__title {
   font-size: var(--font-size-xl);
   font-family: var(--font-serif);
+  line-height: var(--line-height-heading);
 }
 
 .card__text {
@@ -374,6 +378,7 @@
 .footer__title {
   font-family: var(--font-serif);
   font-size: var(--font-size-xl);
+  line-height: var(--line-height-heading);
 }
 
 .footer__links {
@@ -501,6 +506,10 @@
     align-items: center;
   }
 
+  .hero__title {
+    font-size: var(--font-size-4xl);
+  }
+
   .steps {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -526,6 +535,6 @@
 
 @media (min-width: 1024px) {
   .hero__title {
-    font-size: 3.4rem;
+    font-size: var(--font-size-5xl);
   }
 }

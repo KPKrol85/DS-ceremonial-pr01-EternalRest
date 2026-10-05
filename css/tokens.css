@@ -24,6 +24,10 @@
   --font-size-2xl: 1.75rem;
   --font-size-3xl: 2.25rem;
   --font-size-4xl: 2.85rem;
+  --font-size-5xl: 3.4rem;
+
+  --line-height-display: 1.2;
+  --line-height-heading: 1.4;
 
   --space-2xs: 0.25rem;
   --space-xs: 0.5rem;
