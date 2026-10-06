@@ -17,7 +17,7 @@ Read only the context relevant to the task:
 - `README.md` — project overview, current architecture, functionality, development and build workflows, accessibility behavior, browser-local state, and known implementation limitations.
 - `docs/CONTEXT-PROJECT.md` — stable project context, architectural boundaries, development conventions, source ownership, and maintenance contracts.
 - `docs/CHANGELOG.md` — significant completed changes and the changelog entry policy.
-- `IMPROVEMENTS-UI.md` and other current improvement or review files — approved or proposed project-specific improvement work when relevant to the task.
+- Current improvement or review files, when present — approved or proposed project-specific improvement work when relevant to the task; completed improvement reviews are archived in `docs/archive/improvements/`.
 - `package.json`, `vite.config.js`, and relevant configuration or scripts — current build, validation, asset, and runtime behavior when relevant.
 
 The repository itself is the technical source of truth. Follow its current canonical sources and actual build rules; at present, maintained source files are separate from generated `dist/` output. Root HTML files are canonical page sources, shared styling is owned by the canonical CSS source files, and shared browser behavior is owned by the maintained JavaScript source. Consult the current repository rather than assuming paths, conventions, page count, or mechanisms can never change.
