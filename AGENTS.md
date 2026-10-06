@@ -17,7 +17,7 @@ Read only the context relevant to the task:
 - `README.md` — project overview, current architecture, functionality, development and build workflows, accessibility behavior, browser-local state, and known implementation limitations.
 - `docs/CONTEXT-PROJECT.md` — stable project context, architectural boundaries, development conventions, source ownership, and maintenance contracts.
 - `docs/CHANGELOG.md` — significant completed changes and the changelog entry policy.
-- Current improvement or review files, when present — approved or proposed project-specific improvement work when relevant to the task; completed improvement reviews are archived in `docs/archive/improvements/`.
+- Active plans, audits, and improvement reports, when present — approved or proposed project-specific work when relevant to the task. Their location, completion status, and archiving follow the working-document lifecycle below.
 - `package.json`, `vite.config.js`, and relevant configuration or scripts — current build, validation, asset, and runtime behavior when relevant.
 
 The repository itself is the technical source of truth. Follow its current canonical sources and actual build rules; at present, maintained source files are separate from generated `dist/` output. Root HTML files are canonical page sources, shared styling is owned by the canonical CSS source files, and shared browser behavior is owned by the maintained JavaScript source. Consult the current repository rather than assuming paths, conventions, page count, or mechanisms can never change.
@@ -97,9 +97,18 @@ At the end of implementation, report concisely:
 
 For reviews and audits, report findings first, prioritizing concrete findings supported by file references, and do not implement corrections unless implementation is part of the approved task.
 
-When an improvement item is completed, update its status only when the task explicitly includes the relevant improvement file. Use the project's established concise completion format and do not turn status text into a long implementation history.
-
 Never claim that a test, build, browser scenario, deployment, accessibility state, or live service was checked without evidence.
+
+### Working-document lifecycle
+
+Plans, audits, and improvement reports are working documents. They exist only while needed: do not create placeholder documents or empty archive directories.
+
+- **Active:** an active working document stays at the repository root, for example `PLAN.md`, a current audit file, or an improvement report named `IMPROVEMENTS-<AREA>.md`.
+- **Item status:** in an active improvement report, record each completed item with exactly one status line: `**Status:** Completed — <delivered outcome>. <verification actually performed>.` State the verified outcome concisely rather than the implementation history, name only checks that were actually run, and do not add a second status such as `Implemented`. A commit reference may be added when it is already known and useful, but it is not required to record completion.
+- **Archiving:** archive a document only when its work cycle is deliberately closed, not when a single item is completed, and never present unresolved work as completed. Archived documents go to the matching category — `docs/archive/plans/`, `docs/archive/audits/`, or `docs/archive/improvements/` — and a completed improvement report is named `IMPROVEMENTS-<AREA>-YYYY-MM-DD.md` with its archive date. Archived records are historical context, not current instructions.
+- **Archived record:** keep enough context for a future maintainer to understand the cycle, such as, where relevant, the analysis and archive dates, final status, original state or evidence, planned improvement, implemented result, verification actually performed, known limitations or excluded issues, and commit references available from repository history. `docs/archive/improvements/IMPROVEMENTS-UI-2026-10-06.md` is a reference example, not a mandatory template; omit sections that do not apply.
+
+This lifecycle defines document state only; it does not prescribe how work is executed, committed, or delivered.
 
 ## Project evolution and instruction scope
 

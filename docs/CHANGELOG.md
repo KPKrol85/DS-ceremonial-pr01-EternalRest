@@ -58,3 +58,4 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 - Replaced the initial README with Polish and English documentation of source ownership, setup, build and preview workflows, browser-local state and implementation limitations, including the demonstration-only form and unverified hosted preview.
 - Added the bilingual KP_Code proprietary project license in `LICENSE.md` and aligned package author and license metadata with it.
+- Defined a working-document lifecycle in `AGENTS.md`: active plans, audits and improvement reports remain at the repository root, completed records move to category-specific archives, and improvement items use one concise verified completion status. The lifecycle governs document state without prescribing Git or agent execution workflows.
