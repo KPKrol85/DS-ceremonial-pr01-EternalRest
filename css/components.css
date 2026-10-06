@@ -258,6 +258,13 @@
   box-shadow: var(--shadow-sm);
 }
 
+.section--alt .card,
+.section--alt .steps__item,
+.section--alt .testimonial {
+  background: var(--color-bg);
+  box-shadow: var(--shadow-sm);
+}
+
 .accordion {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
