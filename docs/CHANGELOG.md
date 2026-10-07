@@ -4,8 +4,6 @@ All significant changes to Eternal Rest are documented in this file.
 
 This is the canonical record of significant completed changes. Evaluate each implementation task for a changelog update and record verified changes when its scope permits. If the task excludes this file, report any required update without editing it. Omit routine cleanup, pending work and unsupported claims.
 
-## [Unreleased]
-
 ## Entry policy
 
 A change is significant when a future maintainer or the project owner would reasonably need to know that one of the following changed:
@@ -24,6 +22,8 @@ Judge by impact, not by file count: a visually small change is recorded when it 
 Not recorded: improvement-report status updates and archiving, commit-only or tracking-document bookkeeping, temporary verification probes, minor wording corrections in internal documentation, and isolated cosmetic or implementation details, such as a single spacing or border correction, that do not change behavior, accessibility, or a shared component contract.
 
 When an implementation task is defined, apply this policy and state `Changelog: yes` or `Changelog: no`. Add an entry only within an approved task marked `Changelog: yes`; this policy does not authorize changelog edits outside that scope.
+
+## [Unreleased]
 
 ### Added
 
@@ -59,3 +59,4 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 - Replaced the initial README with Polish and English documentation of source ownership, setup, build and preview workflows, browser-local state and implementation limitations, including the demonstration-only form and unverified hosted preview.
 - Added the bilingual KP_Code proprietary project license in `LICENSE.md` and aligned package author and license metadata with it.
 - Defined a working-document lifecycle in `AGENTS.md`: active plans, audits and improvement reports remain at the repository root, completed records move to category-specific archives, and improvement items use one concise verified completion status. The lifecycle governs document state without prescribing Git or agent execution workflows.
+- Simplified project documentation: removed the redundant project context document, reduced agent instructions to stable guardrails, and made README.md the primary human-facing project reference with the public demo link.

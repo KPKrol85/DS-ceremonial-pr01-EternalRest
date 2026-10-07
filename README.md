@@ -10,7 +10,7 @@ Formularz kontaktowy jest demonstracją interfejsu: skrypt sprawdza wypełnienie
 
 ### Wersja online
 
-[Podany adres podglądu Eternal Rest](https://ds-ceremonial-pr01-eternalrest.netlify.app/) — jego dostępność i zgodność z bieżącą wersją repozytorium nie zostały potwierdzone.
+Publiczna wersja demonstracyjna projektu: [ds-ceremonial-pr01-eternalrest.netlify.app](https://ds-ceremonial-pr01-eternalrest.netlify.app/)
 
 ### Kluczowe funkcje
 
@@ -142,7 +142,7 @@ The contact form is an interface demonstration: its script checks for non-empty 
 
 ### Live Version
 
-[Provided Eternal Rest preview URL](https://ds-ceremonial-pr01-eternalrest.netlify.app/) — its availability and correspondence with the current repository revision have not been confirmed.
+Public project demo: [ds-ceremonial-pr01-eternalrest.netlify.app](https://ds-ceremonial-pr01-eternalrest.netlify.app/)
 
 ### Key Features
 
