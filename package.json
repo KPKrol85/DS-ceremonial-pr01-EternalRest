@@ -5,6 +5,10 @@
   "license": "SEE LICENSE IN LICENSE.md",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=22.20.0 <23",
+    "npm": ">=10"
+  },
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",

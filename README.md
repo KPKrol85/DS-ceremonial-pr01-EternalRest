@@ -77,7 +77,7 @@ Publiczna wersja demonstracyjna projektu: [ds-ceremonial-pr01-eternalrest.netlif
 
 ### Instalacja
 
-Wymagane są Node.js i npm. W katalogu głównym repozytorium zainstaluj zależności zgodnie z plikiem blokady:
+Wymagane są Node.js 22.20+ z linii 22.x oraz npm 10 lub nowszy. W katalogu głównym repozytorium zainstaluj zależności zgodnie z plikiem blokady:
 
 ```bash
 npm ci
@@ -209,7 +209,7 @@ Root HTML files own the content. Canonical filenames and routes use English tech
 
 ### Installation
 
-Node.js and npm are required. Install dependencies from the lockfile in the repository root:
+Node.js 22.20+ within the 22.x line and npm 10 or newer are required. Install dependencies from the lockfile in the repository root:
 
 ```bash
 npm ci

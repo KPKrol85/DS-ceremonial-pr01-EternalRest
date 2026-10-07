@@ -45,6 +45,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Build and Tooling
 
+- Declared the supported Node.js and npm runtime range for reproducible project setup.
 - Added `cookies.html` as the ninth explicit Vite MPA entry.
 - Added `privacy.html` as the eighth explicit Vite MPA entry.
 - Standardized public HTML routes to English technical filenames while preserving Polish interface content and updating internal navigation, Vite entries and current-state documentation.
