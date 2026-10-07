@@ -45,6 +45,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Build and Tooling
 
+- Derived Vite MPA entry points automatically from root-level HTML files.
 - Declared the supported Node.js and npm runtime range for reproducible project setup.
 - Added `cookies.html` as the ninth explicit Vite MPA entry.
 - Added `privacy.html` as the eighth explicit Vite MPA entry.

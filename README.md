@@ -4,7 +4,7 @@
 
 ### Przegląd projektu
 
-Eternal Rest to polskojęzyczny, statyczny projekt demonstracyjny witryny wielostronicowej prezentującej koncepcję usług domu pogrzebowego, pakiety cenowe, informacje o firmie i poradnik dla rodzin. Projekt KP_Code Digital Studio składa się z dziewięciu stron HTML ze wspólnymi stylami i interakcjami w JavaScript.
+Eternal Rest to polskojęzyczny, statyczny projekt demonstracyjny witryny wielostronicowej prezentującej koncepcję usług domu pogrzebowego, pakiety cenowe, informacje o firmie i poradnik dla rodzin. Projekt KP_Code Digital Studio składa się ze stron HTML ze wspólnymi stylami i interakcjami w JavaScript.
 
 Formularz kontaktowy jest demonstracją interfejsu: skrypt sprawdza wypełnienie pól, wyświetla komunikat i resetuje formularz. Przy działającym JavaScripcie nie wysyła zgłoszenia ani nie zapisuje danych na serwerze. Bez skryptu formularz może wykonać domyślne żądanie GET z polami w adresie; nie należy używać go bez JavaScriptu ani wpisywać rzeczywistych danych. Mapa dojazdu jest ilustracją SVG; stopka prowadzi do regulaminu, polityki prywatności i polityki cookies, natomiast odnośniki społecznościowe pozostają placeholderami.
 
@@ -34,7 +34,7 @@ Publiczna wersja demonstracyjna projektu: [ds-ceremonial-pr01-eternalrest.netlif
 
 Źródłem treści są pliki HTML w katalogu głównym. Kanoniczne nazwy plików i trasy używają języka angielskiego, a treść interfejsu pozostaje polska. Nawigacja korzysta ze zwykłych odnośników między stronami; nagłówek i stopka są zapisane osobno w każdej stronie. Nie ma generatora wspólnych fragmentów ani routera po stronie klienta.
 
-`css/main.css` importuje kolejno tokeny, style bazowe, układ, komponenty, klasy pomocnicze i style stron. `css/pages/legal.css` jest wspólnym arkuszem rodziny stron prawnych, używanym przez `terms.html`, `privacy.html` i `cookies.html`. `js/main.js` zawiera wspólne zachowania i podłącza interakcje do elementów oznaczonych atrybutami `data-*`. Wszystkie dziewięć wejść produkcyjnych określa `vite.config.js`.
+`css/main.css` importuje kolejno tokeny, style bazowe, układ, komponenty, klasy pomocnicze i style stron. `css/pages/legal.css` jest wspólnym arkuszem rodziny stron prawnych, używanym przez `terms.html`, `privacy.html` i `cookies.html`. `js/main.js` zawiera wspólne zachowania i podłącza interakcje do elementów oznaczonych atrybutami `data-*`. Pliki HTML w katalogu głównym są źródłem stron produkcyjnych: `vite.config.js` automatycznie wyznacza wejścia Vite MPA ze wszystkich plików `*.html` w katalogu głównym, bez przeszukiwania podkatalogów. Dodanie lub zmiana nazwy strony nie wymaga edycji `vite.config.js`.
 
 ### Struktura projektu
 
@@ -90,7 +90,7 @@ Polecenia są zdefiniowane w [package.json](package.json).
 | Polecenie | Działanie |
 | --- | --- |
 | `npm run dev` | Uruchamia Vite z `--host`, udostępniając serwer także w sieci lokalnej. |
-| `npm run build` | Buduje dziewięć stron przez `vite build`. |
+| `npm run build` | Buduje wszystkie strony HTML z katalogu głównego przez `vite build`. |
 | `npm run preview` | Uruchamia `vite preview`; wymaga wcześniejszego buildu. |
 | `npm run lint` | Uruchamia ESLint wyłącznie dla `js/**/*.js`. |
 | `npm run format` | Uruchamia `prettier --write .` i zapisuje zmiany w plikach. |
@@ -100,7 +100,7 @@ Strony otwieraj przez serwer Vite, korzystając z adresu podanego w terminalu. B
 
 ### Build produkcyjny
 
-Vite generuje `dist/` z dziewięcioma stronami HTML oraz przetworzonymi zasobami. Importy CSS są scalane, Autoprefixer dodaje prefiksy, a wynikowe CSS i JavaScript podlegają minifikacji. Emitowane zasoby otrzymują nazwy z hashem. Ustawienie `base: "./"` zapewnia względne ścieżki zasobów w wyniku.
+Vite generuje `dist/` ze wszystkimi stronami HTML z katalogu głównego oraz przetworzonymi zasobami. Importy CSS są scalane, Autoprefixer dodaje prefiksy, a wynikowe CSS i JavaScript podlegają minifikacji. Emitowane zasoby otrzymują nazwy z hashem. Ustawienie `base: "./"` zapewnia względne ścieżki zasobów w wyniku.
 
 `dist/` jest wykluczony z Git i nie należy edytować go ręcznie. Podgląd produkcyjny serwuje ten katalog. Repozytorium nie zawiera konfiguracji hostingu ani automatycznego wdrażania.
 
@@ -136,7 +136,7 @@ Projekt podlega [Własnościowej Licencji Projektu KP_CODE](LICENSE.md), wersja 
 
 ### Project Overview
 
-Eternal Rest is a Polish-language static multi-page demonstration project presenting a funeral-home service concept, pricing packages, company information and guidance for families. This KP_Code Digital Studio project consists of nine HTML pages with shared styles and JavaScript interactions.
+Eternal Rest is a Polish-language static multi-page demonstration project presenting a funeral-home service concept, pricing packages, company information and guidance for families. This KP_Code Digital Studio project consists of HTML pages with shared styles and JavaScript interactions.
 
 The contact form is an interface demonstration: its script checks for non-empty fields, displays a message and resets the form. With JavaScript working, it does not send an enquiry or store data on a server. Without the script, the form can perform a default GET request with fields in the URL; do not use it without JavaScript or enter real data. The location map is an SVG illustration; the footer links to the Terms, Privacy Policy and Cookies Policy pages, while social links remain placeholders.
 
@@ -166,7 +166,7 @@ Public project demo: [ds-ceremonial-pr01-eternalrest.netlify.app](https://ds-cer
 
 Root HTML files own the content. Canonical filenames and routes use English technical names, while interface content remains Polish. Navigation uses ordinary links between pages; each page contains its own header and footer markup. There is no shared-fragment generator or client-side router.
 
-`css/main.css` imports tokens, base styles, layout, components, utilities and page styles in that order. `css/pages/legal.css` is the shared stylesheet for legal pages, used by `terms.html`, `privacy.html` and `cookies.html`. `js/main.js` contains shared behavior and attaches interactions to elements marked with `data-*` attributes. `vite.config.js` defines all nine production entry points.
+`css/main.css` imports tokens, base styles, layout, components, utilities and page styles in that order. `css/pages/legal.css` is the shared stylesheet for legal pages, used by `terms.html`, `privacy.html` and `cookies.html`. `js/main.js` contains shared behavior and attaches interactions to elements marked with `data-*` attributes. Root-level HTML files are the source of the production pages: `vite.config.js` derives the Vite MPA entry points automatically from all root-level `*.html` files, without scanning subdirectories. Adding or renaming a page does not require editing `vite.config.js`.
 
 ### Project Structure
 
@@ -222,7 +222,7 @@ Commands are defined in [package.json](package.json).
 | Command | Behavior |
 | --- | --- |
 | `npm run dev` | Starts Vite with `--host`, also exposing the server to the local network. |
-| `npm run build` | Builds all nine pages through `vite build`. |
+| `npm run build` | Builds all root-level HTML pages through `vite build`. |
 | `npm run preview` | Starts `vite preview`; requires a prior build. |
 | `npm run lint` | Runs ESLint only on `js/**/*.js`. |
 | `npm run format` | Runs `prettier --write .` and writes changes to files. |
@@ -232,7 +232,7 @@ Open pages through the Vite server using the address printed in the terminal. Op
 
 ### Production Build
 
-Vite generates `dist/` containing nine HTML pages and processed assets. CSS imports are combined, Autoprefixer adds prefixes, and the resulting CSS and JavaScript are minified. Emitted assets receive hashed filenames. The `base: "./"` setting produces relative asset paths in the output.
+Vite generates `dist/` containing all root-level HTML pages and processed assets. CSS imports are combined, Autoprefixer adds prefixes, and the resulting CSS and JavaScript are minified. Emitted assets receive hashed filenames. The `base: "./"` setting produces relative asset paths in the output.
 
 `dist/` is excluded from Git and should not be edited manually. Production preview serves this directory. The repository contains no hosting or automated deployment configuration.
 

@@ -1,25 +1,28 @@
+import { readdirSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { defineConfig } from "vite";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// Every regular *.html file in the project root is a production page (non-recursive).
+const pageInputs = Object.fromEntries(
+  readdirSync(__dirname, { withFileTypes: true })
+    .filter((entry) => entry.isFile() && entry.name.endsWith(".html"))
+    .map((entry) => entry.name)
+    .sort()
+    .map((fileName) => [
+      path.basename(fileName, ".html"),
+      path.resolve(__dirname, fileName),
+    ]),
+);
+
 export default defineConfig({
   appType: "mpa",
   base: "./",
   build: {
     rollupOptions: {
-      input: {
-        index: path.resolve(__dirname, "index.html"),
-        services: path.resolve(__dirname, "services.html"),
-        pricing: path.resolve(__dirname, "pricing.html"),
-        about: path.resolve(__dirname, "about.html"),
-        guide: path.resolve(__dirname, "guide.html"),
-        contact: path.resolve(__dirname, "contact.html"),
-        terms: path.resolve(__dirname, "terms.html"),
-        privacy: path.resolve(__dirname, "privacy.html"),
-        cookies: path.resolve(__dirname, "cookies.html"),
-      },
+      input: pageInputs,
     },
   },
 });
