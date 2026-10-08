@@ -1,0 +1,9 @@
+# Text files: LF in the repository and in the working tree on every platform.
+* text=auto eol=lf
+
+# Image formats used by `npm run images:convert`: never converted or diffed as text.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.avif binary

@@ -45,6 +45,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Build and Tooling
 
+- Added a root `.gitattributes` that keeps text files LF in the repository and in working trees on every platform, overriding `core.autocrlf` in line with Prettier's default, and marks the PNG, JPEG, WebP and AVIF formats used by image conversion as binary. Files already checked out keep their line endings until Git rewrites them.
 - Added a read-only `npm run format:check` command and a `.prettierignore` that keeps generated output, dependencies and the lockfile, the license, legal pages and archived records outside the Prettier formatting scope.
 - Derived Vite MPA entry points automatically from root-level HTML files.
 - Declared the supported Node.js and npm runtime range for reproducible project setup.
