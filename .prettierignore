@@ -1,0 +1,15 @@
+# Prettier also reads .gitignore; the entries below keep the scope explicit.
+
+# Generated output and dependencies
+/dist/
+node_modules/
+package-lock.json
+
+# Legal content: project license and legal pages
+/LICENSE.md
+/terms.html
+/privacy.html
+/cookies.html
+
+# Archived records
+/docs/archive/

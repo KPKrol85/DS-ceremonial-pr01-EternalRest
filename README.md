@@ -93,7 +93,8 @@ Polecenia są zdefiniowane w [package.json](package.json).
 | `npm run build` | Buduje wszystkie strony HTML z katalogu głównego przez `vite build`. |
 | `npm run preview` | Uruchamia `vite preview`; wymaga wcześniejszego buildu. |
 | `npm run lint` | Uruchamia ESLint wyłącznie dla `js/**/*.js`. |
-| `npm run format` | Uruchamia `prettier --write .` i zapisuje zmiany w plikach. |
+| `npm run format` | Uruchamia `prettier --write .` i nadpisuje niesformatowane pliki w zakresie formatowania. |
+| `npm run format:check` | Uruchamia `prettier --check .`; zgłasza różnice w formatowaniu bez zmieniania plików. |
 | `npm run images:convert` | Konwertuje PNG/JPG/JPEG z `assets/src-images/` do WebP i AVIF w generowanym `assets/images/`. |
 
 Strony otwieraj przez serwer Vite, korzystając z adresu podanego w terminalu. Bezpośrednie otwieranie plików z dysku nie zapewnia obsługi skryptu modułowego.
@@ -109,6 +110,10 @@ Konwersja obrazów jest osobnym etapem i nie jest wywoływana przez build. Obecn
 ### Testy i walidacja
 
 Konfiguracja ESLint korzysta z `eslint:recommended`, środowiska przeglądarkowego i ostrzeżeń dla nieużywanych zmiennych. Zakres lintowania nie obejmuje HTML, CSS ani skryptu konwersji obrazów. Repozytorium nie zawiera automatycznych testów jednostkowych ani przeglądarkowych; sama konfiguracja narzędzi nie potwierdza poprawności interfejsu.
+
+`npm run format:check` porównuje pliki z wynikiem Prettiera 3 w ustawieniach domyślnych (repozytorium nie zawiera konfiguracji Prettiera) i niczego nie zapisuje; kończy się błędem, gdy którykolwiek plik w zakresie wymaga formatowania. Jego zapisującym odpowiednikiem jest `npm run format`. Sprawdzenie dotyczy wyłącznie zapisu kodu i nie zastępuje lintowania ESLint ani testów działania strony w przeglądarce. Repozytorium nie przeszło formatowania bazowego, dlatego sprawdzenie zgłasza obecnie istniejące rozbieżności. Prettier domyślnie oczekuje końców linii LF, więc w kopii roboczej z końcami CRLF (np. w Windows z `core.autocrlf=true`) zgłasza każdy plik w zakresie.
+
+Oba polecenia pomijają pliki wskazane w `.gitignore` i `.prettierignore`. `.prettierignore` wyłącza generowany `dist/`, `node_modules/`, `package-lock.json`, `LICENSE.md`, strony prawne `terms.html`, `privacy.html` i `cookies.html` oraz archiwum raportów `docs/archive/`, aby formatowanie nie zmieniało tych plików. Wykluczone pliki nie są też sprawdzane, w tym powtórzone w stronach prawnych nagłówek i stopka. `.prettierignore` działa wyłącznie dla Prettiera i nie chroni plików przed innymi narzędziami ani ręczną edycją.
 
 ### Dostępność
 
@@ -225,7 +230,8 @@ Commands are defined in [package.json](package.json).
 | `npm run build` | Builds all root-level HTML pages through `vite build`. |
 | `npm run preview` | Starts `vite preview`; requires a prior build. |
 | `npm run lint` | Runs ESLint only on `js/**/*.js`. |
-| `npm run format` | Runs `prettier --write .` and writes changes to files. |
+| `npm run format` | Runs `prettier --write .` and overwrites unformatted files within the formatting scope. |
+| `npm run format:check` | Runs `prettier --check .`; reports formatting differences without changing files. |
 | `npm run images:convert` | Converts PNG/JPG/JPEG from `assets/src-images/` into WebP and AVIF in the generated `assets/images/` directory. |
 
 Open pages through the Vite server using the address printed in the terminal. Opening files directly from disk does not provide the required module-script support.
@@ -241,6 +247,10 @@ Image conversion is a separate step and is not invoked by the build. Current gra
 ### Testing and Validation
 
 ESLint is configured with `eslint:recommended`, a browser environment and warnings for unused variables. Linting does not cover HTML, CSS or the image conversion script. The repository contains no automated unit or browser tests; tool configuration alone does not establish interface correctness.
+
+`npm run format:check` compares files with Prettier 3 output using default options (the repository contains no Prettier configuration) and writes nothing; it fails when any in-scope file needs formatting. `npm run format` is its writing counterpart. The check covers code layout only and does not replace ESLint linting or runtime testing of the site in a browser. The repository has not received a baseline format, so the check currently reports existing differences. Prettier expects LF line endings by default, so in a working copy with CRLF endings (for example on Windows with `core.autocrlf=true`) it reports every in-scope file.
+
+Both commands skip files matched by `.gitignore` and `.prettierignore`. `.prettierignore` excludes the generated `dist/`, `node_modules/`, `package-lock.json`, `LICENSE.md`, the legal pages `terms.html`, `privacy.html` and `cookies.html`, and the report archive in `docs/archive/`, so formatting does not change these files. Excluded files are not checked either, including the header and footer markup repeated in the legal pages. `.prettierignore` applies only to Prettier and does not protect files from other tools or manual edits.
 
 ### Accessibility
 
