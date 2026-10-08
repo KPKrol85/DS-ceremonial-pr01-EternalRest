@@ -121,4 +121,4 @@ These limitations apply to the original 2026-10-05 analysis. The checks made whe
 - Rendering was checked by serving the source tree from a temporary local static server and inspecting it in a Chromium-based browser at 375 × 812 and 1280 × 900, in emulated light and dark schemes. This was not the Vite dev server or production build (no Autoprefixer), and other browsers and intermediate widths were not inspected.
 - Manrope and Playfair Display were named in the font stacks but not loaded, so the wrapping and heading measurements reflect the fallback fonts in the inspection environment.
 - The contrast ratios were calculated from the declared token values, not measured on rendered pixels.
-- No `PLAN.md`, audit or review file existed at the time. Overlap with planned or completed work was checked only against `docs/CONTEXT-PROJECT.md`, `docs/CHANGELOG.md` and `README.md`.
+- No `PLAN.md`, audit or review file existed at the time. Overlap with planned or completed work was checked only against the former project context document, `docs/CHANGELOG.md` and `README.md`.
