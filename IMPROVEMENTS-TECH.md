@@ -21,59 +21,15 @@ The five proposals below address these areas without new dependencies, framework
 
 ## Proposed improvements
 
-### IMP-TECH-01 — Generate the shared page chrome from build-time partials
+### IMP-TECH-01 — Generate shared page chrome from build-time partials
 
-- **Status:** Completed — the skip link and header, both footer variants and the back-to-top control are generated from four partials in `partials/` by a local Vite `transformIndexHtml` plugin, together with an owner-approved visual refinement of that chrome. `npm run build`, `npm run lint`, a scripted comparison with the pre-change build, a development reload check and focused browser checks at 320–1280 px in light, dark and system dark themes passed.
-- **Affected area:** Skip link, site header, footer and back-to-top markup in the nine root pages; HTML processing in `vite.config.js`.
-- **Evidence:**
-  - Header: `index.html:16-65`, identical in `about.html`, `contact.html`, `pricing.html` and `services.html` (16-65) and in `guide.html:15-64`. The legal copies at `privacy.html:16-89`, `cookies.html:16-89` and `terms.html:16-91` have the same elements, attributes and text and differ only in line wrapping.
-  - Footer: `index.html:267-331`, identical in the other five marketing pages, versus `privacy.html:1152-1200`, `cookies.html:828-876` and `terms.html:1203-1251`.
-  - Edit history: commits `0676891`, `5f3a40f` and `bcd21e0` each edited the footer of every existing page to add one legal link, and `9dd074c` updated the navigation links in every page when routes were renamed.
-  - Documentation: `README.md:35` and `README.md:172` (each page carries its own header and footer, and there is no shared-fragment generator). `docs/archive/improvements/IMPROVEMENTS-WORKFLOW-2026-10-08.md:89` and `:118` record the repeated markup as unresolved and defer it to a technical review.
-  - Build: `vite.config.js:8-18` turns only root-level `*.html` files into entries.
-- **Current implementation:** Each page carries its own skip link, a 50–76-line header, a 49–65-line footer and a back-to-top button: about 1,060 lines of header and footer copies in total. The legal pages are excluded from Prettier, so their copies of the chrome are not format-checked. The header is semantically identical on all nine pages. The footer exists in two variants that have drifted apart:
-  - The six marketing pages use `h3` headings, social placeholders, a street address and "© 2024 Eternal Rest".
-  - The three legal pages use `h2` headings, demonstration wording, no address and "© 2026 Kamil Król — KP_Code", plus `aria-current="page"` on the active legal link.
-- **Proposed improvement:** Move the shared chrome into HTML partials stored outside the project root, so they never become page entries. Inject the partials with a small local plugin in `vite.config.js` that uses Vite's `transformIndexHtml` hook and runs before Vite's own HTML processing. `npm run dev`, `npm run build` and `npm run preview` then all serve complete pages. Each root page keeps its `<head>`, its `<main>` content and one marker per partial.
-- **Expected engineering value:**
-  - A navigation, footer or control change is made once instead of in nine files.
-  - A new page no longer copies the chrome.
-  - Pages that share a variant cannot drift apart, and the remaining differences between the footer variants become explicit.
-  - The chrome is format-checked once, including the part used by the legal pages.
-- **Implementation scope:**
-  - Partials: one for the header, one for each current footer variant and one for the back-to-top control. The skip link may join the header partial.
-  - Footer content: keep both variants unless the owner first decides to unify them. That is a separate content decision.
-  - Per-page state: reproduce the existing state exactly (currently only `aria-current="page"` on the active link in the legal footers) and add none.
-  - Unchanged: page filenames, `appType`, `base`, the `dist/` paths and the dependency set. The marker is the only template syntax added.
-  - Documentation: update the README architecture paragraphs (PL and EN) and the README note on chrome repeated in the legal pages.
-  - Out of scope: CSS and `js/main.js`.
-- **Acceptance criteria:**
-  - No root page contains header, footer or back-to-top markup, only partial markers.
-  - `npm run build` emits the same nine HTML files at the same `dist/` paths, and no partial appears as a separate page.
-  - Each built page matches the pre-change build after whitespace normalization, including IDs, `data-*` hooks, ARIA attributes and the legal-footer `aria-current`.
-  - Under `npm run dev`, the mobile menu, both theme controls and the back-to-top button work on one marketing page and one legal page, and an edited partial is served after a page reload.
-  - `package.json` and `package-lock.json` are unchanged.
+- **Status:** Completed — shared page chrome consolidation and owner-approved visual refinement.
+- **Original issue:** The header, footer and back-to-top markup was duplicated across nine HTML pages, with two distinct footer variants and inconsistent responsive styling.
+- **Implemented result:** Created four reusable HTML partials in `partials/`, integrated through a local Vite `transformIndexHtml` plugin. Preserved both footer variants and improved header navigation, responsive layouts, theme controls, footer presentation, keyboard focus and back-to-top styling.
+- **Verification:** Nine-page production build, ESLint, HTML structure comparison, partial reload and focused browser tests passed. Existing Prettier formatting differences remain unchanged.
+- **Known limitations:** The existing dark-theme accent contrast issue remains unresolved. Other browser engines, touch devices and screen readers were not tested.
 - **Impact:** High
 - **Effort:** Medium
-- **Implemented result:**
-  - Partials: `partials/site-header.html` (skip link and header), `partials/footer-marketing.html`, `partials/footer-legal.html` and `partials/back-to-top.html`. The nine root pages keep their `<head>` and `<main>` and contain `<!-- partial:name -->` markers in place of the chrome.
-  - Build: a local plugin in `vite.config.js` (`transformIndexHtml`, `order: "pre"`) replaces each marker with the partial, indented to the marker. A missing partial, an invalid or nested marker, or `data-partial-current` outside an `<a href>` stops processing with an error naming the page or partial. `handleHotUpdate` reloads open pages when a partial changes. `appType`, `base`, root-page discovery, the `dist/` paths, `package.json`, `package-lock.json` and `js/main.js` are unchanged.
-  - Per-page state: a link marked `data-partial-current` receives `aria-current="page"` on the page it points to, and the attribute is not emitted. This reproduces the legal-footer state and, as part of the refinement below, marks the current page in the main navigation of the six marketing pages.
-- **Visual refinement (scope extension approved by the owner):**
-  - Header: one set of rules in `css/components.css` now serves all nine pages and replaces the `.legal-page` header overrides in `css/pages/legal.css` and the header no-JS rules in `css/base.css`. The brand links to `index.html` and carries a decorative "ER" monogram. From 760 px the toggle is hidden and the navigation sits on one right-aligned row above the call button, phone number and theme controls. Below 760 px the menu is a full-height panel with serif links, a full-width call button and a close state on the toggle; while closed it is hidden from the focus order. The current page has an accent underline. Both theme buttons sit in a labelled segmented group with `currentColor` icons, and the phone number no longer borrows `.badge` or carries a redundant `aria-live`. Without JavaScript the header is static on every page.
-  - Footers: both variants share one column system (brand row and two link columns on small screens, three columns from 760 px, four from 1024 px), uppercase `footer__heading` headings (`h2` in both variants instead of the borrowed `card__title`), outlined social links and a labelled `nav` list for the legal links with a visible current-link style. Text, link order and copyright lines of both variants are unchanged.
-  - Back-to-top: arrow icon with a visible label from 760 px and icon-only below; hidden from the focus order while invisible. Extra footer bottom padding keeps it clear of the footer links at the end of the page.
-  - Unchanged on purpose: accent fills with white text on the call button, back-to-top control and skip link, and the `data-*`, ID and ARIA contracts used by `js/main.js`.
-- **Verification:**
-  - `npm run build` emits the same nine HTML files, no partial output and a byte-identical JavaScript bundle. A script comparing the new and pre-change builds confirmed for every page: identical `<head>` apart from asset hashes, byte-identical `<main>`, no remaining markers or `data-partial-current`, no duplicate IDs, valid `aria-controls`, `for` and fragment targets, exactly one of each chrome hook, unchanged footer text and link order, unchanged header text and links apart from the added brand link, and `aria-current="page"` only on the expected links.
-  - Direct calls of the plugin reported a missing partial and two invalid markers with the expected errors. Under the Vite dev server, editing a partial reloaded an open page with the new content.
-  - `npm run lint` passed. `npm run format:check` reports the same twelve files as before the change; the partials, `vite.config.js`, `css/base.css` and `css/pages/legal.css` pass.
-  - Browser checks in the Chromium-based app browser on the dev server and on `vite preview`: no horizontal overflow at 320, 375, 768, 1024 and 1280 px; mobile menu opening, Tab looping, Escape and outside-click closing, focus return and no focus on the closed menu; theme toggle, system mode and the stored preference; back-to-top visibility and scroll call; visible focus rings; explicit light and dark and emulated system dark themes; the no-JavaScript layout simulated with the `no-js` class.
-- **Known limitations:**
-  - The acceptance criterion of whitespace-equivalent built pages was superseded by the approved refinement; equivalence was checked for content, links, IDs and ARIA state instead.
-  - White text on the dark-theme accent, an excluded defect, still applies to the call button, back-to-top control and skip link.
-  - Reduced motion was checked in the source only (every new transition uses the motion tokens that drop to 0 ms), not by emulation. Other browser engines, touch devices and screen readers were not tested. The browser pane was hidden, which throttled transitions and scroll events, so final states were inspected with transitions disabled and with dispatched scroll events.
-  - File and line references in IMP-TECH-02 to IMP-TECH-05 refer to the pre-change revision. The footer part of IMP-TECH-03 no longer applies, because the footer headings use `footer__heading`.
 
 ### IMP-TECH-02 — Declare each theme color and shadow token once with `light-dark()`
 
