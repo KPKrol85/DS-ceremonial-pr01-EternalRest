@@ -53,26 +53,11 @@ The five proposals below address these areas without new dependencies, framework
 
 ### IMP-TECH-04 — Implement the disclosure contract once in `js/main.js`
 
-- **Affected area:** FAQ accordions and pricing detail toggles in `js/main.js`.
-- **Evidence:**
-  - Handlers: `js/main.js:202-214` (accordions) and `js/main.js:228-240` (pricing details).
-  - Documented contract: `README.md:122` and `README.md:259` state that accordions and package details keep `aria-expanded` in sync with panel visibility.
-  - `css/components.css:296-311` draws both indicators from `aria-expanded`.
-  - Markup: `index.html:230-259`, `guide.html:77-136` and `pricing.html:92-107`.
-- **Current implementation:** Two handlers implement the same contract (find the panel from `aria-controls`, invert `aria-expanded`, set `panel.hidden`) with different structure and edge-case behavior:
-  - Accordions use one delegated listener per container and invert `aria-expanded` even when the panel is missing.
-  - Pricing toggles use one listener per button, return early when the panel is missing, and then replace the button text with hard-coded labels.
-- **Proposed improvement:** Add one module-level disclosure function that applies the shared state change and returns the new state. Both handlers use it, and the pricing handler keeps only its label update.
-- **Expected engineering value:** The accessibility contract documented in README has one implementation. A future change to it, such as an added ARIA attribute or a transition, is made once, and both components handle a missing panel the same way.
-- **Implementation scope:**
-  - Change `js/main.js` only.
-  - Unchanged: the `data-accordion`, `data-accordion-trigger` and `data-details-toggle` hooks, the use of `aria-controls` and `hidden`, the delegated accordion listener, independent opening of panels, and the labels "Pokaż szczegóły" and "Ukryj szczegóły".
-  - Out of scope: the pricing filter, the menu and the other features.
-- **Acceptance criteria:**
-  - One function contains the `aria-controls` lookup, the `aria-expanded` inversion and the `hidden` update, and neither handler repeats them.
-  - When a panel is missing, both components leave `aria-expanded` unchanged, as the pricing handler does today. No current markup lacks a panel, so visible behavior does not change.
-  - In a browser, the home and guide FAQ items and the three pricing toggles open and close independently, `aria-expanded` and `hidden` stay in sync, and the pricing labels switch as before.
-  - `npm run lint` succeeds.
+- **Status:** Completed — one disclosure function with consistent missing-panel handling.
+- **Original issue:** The FAQ accordion and pricing details handlers each implemented the `aria-controls` lookup, `aria-expanded` inversion and `hidden` update, and the accordion inverted `aria-expanded` even when its panel was missing.
+- **Implemented result:** The module-level `toggleDisclosure` function resolves the panel from `aria-controls`, inverts `aria-expanded`, sets `hidden` and returns the new expanded state, or returns `null` without changes when the panel cannot be resolved. The delegated accordion listener and the per-button pricing listeners call it, and the pricing handler keeps only its label update. Markup, `data-*` hooks, labels and independent opening of panels are unchanged.
+- **Verification:** ESLint and the nine-page production build passed, and the new code adds no Prettier differences. In Chromium, the two home and four guide FAQ items and the three pricing toggles opened and closed independently, with `aria-expanded`, `hidden` and the pricing labels in sync, in development and production builds. Keyboard activation worked with Enter on all three pages and with Space on the home and pricing pages. With an unresolved or removed `aria-controls` reference or a removed panel, simulated in the live DOM only, neither component changed `aria-expanded` or the pricing label.
+- **Known limitations:** Other browser engines and screen readers were not tested.
 - **Impact:** Low
 - **Effort:** Small
 

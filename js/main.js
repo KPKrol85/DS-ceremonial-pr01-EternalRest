@@ -199,17 +199,21 @@
     }
   }
 
+  const toggleDisclosure = (trigger) => {
+    const panelId = trigger.getAttribute("aria-controls");
+    const panel = panelId ? document.getElementById(panelId) : null;
+    if (!panel) return null;
+    const isExpanded = trigger.getAttribute("aria-expanded") === "true";
+    trigger.setAttribute("aria-expanded", String(!isExpanded));
+    panel.hidden = isExpanded;
+    return !isExpanded;
+  };
+
   document.querySelectorAll("[data-accordion]").forEach((accordion) => {
     accordion.addEventListener("click", (event) => {
       const trigger = event.target.closest("[data-accordion-trigger]");
       if (!trigger) return;
-      const panelId = trigger.getAttribute("aria-controls");
-      const panel = document.getElementById(panelId);
-      const isExpanded = trigger.getAttribute("aria-expanded") === "true";
-      trigger.setAttribute("aria-expanded", String(!isExpanded));
-      if (panel) {
-        panel.hidden = isExpanded;
-      }
+      toggleDisclosure(trigger);
     });
   });
 
@@ -227,15 +231,9 @@
 
   document.querySelectorAll("[data-details-toggle]").forEach((button) => {
     button.addEventListener("click", () => {
-      const panelId = button.getAttribute("aria-controls");
-      const panel = document.getElementById(panelId);
-      if (!panel) return;
-      const isExpanded = button.getAttribute("aria-expanded") === "true";
-      button.setAttribute("aria-expanded", String(!isExpanded));
-      panel.hidden = isExpanded;
-      button.textContent = isExpanded
-        ? "Pokaż szczegóły"
-        : "Ukryj szczegóły";
+      const isExpanded = toggleDisclosure(button);
+      if (isExpanded === null) return;
+      button.textContent = isExpanded ? "Ukryj szczegóły" : "Pokaż szczegóły";
     });
   });
 
