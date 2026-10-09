@@ -33,25 +33,11 @@ The five proposals below address these areas without new dependencies, framework
 
 ### IMP-TECH-02 — Declare each theme color and shadow token once with `light-dark()`
 
-- **Affected area:** Theme token layer in `css/tokens.css`.
-- **Evidence:**
-  - `css/tokens.css:57-73` and `css/tokens.css:79-97`: the dark declarations at lines 58-72 and 81-95 are identical (`color-scheme`, ten colors and three shadows). The light values are in `css/tokens.css:1-55`.
-  - Commit `a00f9d6` added the same three dark shadow overrides to both blocks.
-  - `js/main.js:33-47`: explicit modes set `data-theme`, and auto mode removes it.
-  - `css/components.css:5`, `:293`, `:394-395` and `:510` already use `color-mix()` without a fallback.
-- **Current implementation:** Light values live on `:root`. The dark palette is written twice: once for `html[data-theme="dark"]` and once for `html:not([data-theme])` inside `@media (prefers-color-scheme: dark)`, because a media condition cannot share a rule with an attribute selector. Every dark-palette change must be made identically in both blocks.
-- **Proposed improvement:** Declare each theme-dependent token once on `:root` as a `light-dark()` pair, and set `color-scheme: light dark` on the root for auto mode. Keep `color-scheme: light` and `color-scheme: dark` for the explicit `data-theme` values, and remove the palette media block.
-- **Expected engineering value:** Each color and shadow has a single declaration that shows both theme values side by side. The two dark blocks can no longer diverge, and a palette change is made in one place.
-- **Implementation scope:**
-  - Change `css/tokens.css` only.
-  - Unchanged: theme-independent tokens, the reduced-motion block, the `data-theme` contract, `js/main.js`, the `eternalRestTheme` storage format and the no-JavaScript fallback to the system scheme.
-  - Precondition: `light-dark()` is a newer CSS feature (Baseline 2024) than `color-mix()` (Baseline 2023). In a browser without it, every theme token fails, not just individual effects. The owner must therefore confirm the supported browser baseline before implementation. If that baseline is not accepted, the proposal is withdrawn rather than replaced with a workaround.
-- **Acceptance criteria:**
-  - `css/tokens.css` declares every color and shadow token exactly once and has no palette `@media (prefers-color-scheme: dark)` block.
-  - In a browser, the computed `color`, `background-color`, `border-color` and `box-shadow` of representative elements match the pre-change values in four states: explicit light, explicit dark, and auto mode with a light and a dark system scheme. The representative elements are the body, header, a card, primary and secondary buttons, the footer and the form success message.
-  - Rendering without JavaScript follows the system scheme.
-  - The theme toggle, the system-mode button and the stored preference behave as before.
-  - `js/main.js` is unchanged.
+- **Status:** Completed — single-declaration theme tokens on the owner-approved `light-dark()` browser baseline.
+- **Original issue:** The dark values of the ten theme colors and three shadows were declared twice in `css/tokens.css`, for explicit and for system dark mode, so every dark-palette change had to be repeated in both blocks.
+- **Implemented result:** Each theme color and shadow token is declared once on `:root` as a `light-dark()` pair; shadows switch only their color. `color-scheme: light dark` selects the system theme, the `data-theme` rules force `light` or `dark`, and the dark-palette media block is removed. Token values, `js/main.js`, the `data-theme` contract and the stored preference are unchanged.
+- **Verification:** Production build and the Prettier check of `css/tokens.css` passed. In Chromium, the computed color, background, border and shadow values of all elements on the nine pages matched the pre-change values in explicit light and dark mode, system light and dark mode, and without JavaScript, in development and production builds. The theme toggle, system mode and stored preference worked as expected.
+- **Known limitations:** Browsers without `light-dark()` support (Baseline 2024) lose the theme colors and shadows, as accepted in the approved baseline. Other browser engines were not tested.
 - **Impact:** Medium
 - **Effort:** Small
 
