@@ -23,6 +23,7 @@ The five proposals below address these areas without new dependencies, framework
 
 ### IMP-TECH-01 — Generate the shared page chrome from build-time partials
 
+- **Status:** Completed — the skip link and header, both footer variants and the back-to-top control are generated from four partials in `partials/` by a local Vite `transformIndexHtml` plugin, together with an owner-approved visual refinement of that chrome. `npm run build`, `npm run lint`, a scripted comparison with the pre-change build, a development reload check and focused browser checks at 320–1280 px in light, dark and system dark themes passed.
 - **Affected area:** Skip link, site header, footer and back-to-top markup in the nine root pages; HTML processing in `vite.config.js`.
 - **Evidence:**
   - Header: `index.html:16-65`, identical in `about.html`, `contact.html`, `pricing.html` and `services.html` (16-65) and in `guide.html:15-64`. The legal copies at `privacy.html:16-89`, `cookies.html:16-89` and `terms.html:16-91` have the same elements, attributes and text and differ only in line wrapping.
@@ -54,6 +55,25 @@ The five proposals below address these areas without new dependencies, framework
   - `package.json` and `package-lock.json` are unchanged.
 - **Impact:** High
 - **Effort:** Medium
+- **Implemented result:**
+  - Partials: `partials/site-header.html` (skip link and header), `partials/footer-marketing.html`, `partials/footer-legal.html` and `partials/back-to-top.html`. The nine root pages keep their `<head>` and `<main>` and contain `<!-- partial:name -->` markers in place of the chrome.
+  - Build: a local plugin in `vite.config.js` (`transformIndexHtml`, `order: "pre"`) replaces each marker with the partial, indented to the marker. A missing partial, an invalid or nested marker, or `data-partial-current` outside an `<a href>` stops processing with an error naming the page or partial. `handleHotUpdate` reloads open pages when a partial changes. `appType`, `base`, root-page discovery, the `dist/` paths, `package.json`, `package-lock.json` and `js/main.js` are unchanged.
+  - Per-page state: a link marked `data-partial-current` receives `aria-current="page"` on the page it points to, and the attribute is not emitted. This reproduces the legal-footer state and, as part of the refinement below, marks the current page in the main navigation of the six marketing pages.
+- **Visual refinement (scope extension approved by the owner):**
+  - Header: one set of rules in `css/components.css` now serves all nine pages and replaces the `.legal-page` header overrides in `css/pages/legal.css` and the header no-JS rules in `css/base.css`. The brand links to `index.html` and carries a decorative "ER" monogram. From 760 px the toggle is hidden and the navigation sits on one right-aligned row above the call button, phone number and theme controls. Below 760 px the menu is a full-height panel with serif links, a full-width call button and a close state on the toggle; while closed it is hidden from the focus order. The current page has an accent underline. Both theme buttons sit in a labelled segmented group with `currentColor` icons, and the phone number no longer borrows `.badge` or carries a redundant `aria-live`. Without JavaScript the header is static on every page.
+  - Footers: both variants share one column system (brand row and two link columns on small screens, three columns from 760 px, four from 1024 px), uppercase `footer__heading` headings (`h2` in both variants instead of the borrowed `card__title`), outlined social links and a labelled `nav` list for the legal links with a visible current-link style. Text, link order and copyright lines of both variants are unchanged.
+  - Back-to-top: arrow icon with a visible label from 760 px and icon-only below; hidden from the focus order while invisible. Extra footer bottom padding keeps it clear of the footer links at the end of the page.
+  - Unchanged on purpose: accent fills with white text on the call button, back-to-top control and skip link, and the `data-*`, ID and ARIA contracts used by `js/main.js`.
+- **Verification:**
+  - `npm run build` emits the same nine HTML files, no partial output and a byte-identical JavaScript bundle. A script comparing the new and pre-change builds confirmed for every page: identical `<head>` apart from asset hashes, byte-identical `<main>`, no remaining markers or `data-partial-current`, no duplicate IDs, valid `aria-controls`, `for` and fragment targets, exactly one of each chrome hook, unchanged footer text and link order, unchanged header text and links apart from the added brand link, and `aria-current="page"` only on the expected links.
+  - Direct calls of the plugin reported a missing partial and two invalid markers with the expected errors. Under the Vite dev server, editing a partial reloaded an open page with the new content.
+  - `npm run lint` passed. `npm run format:check` reports the same twelve files as before the change; the partials, `vite.config.js`, `css/base.css` and `css/pages/legal.css` pass.
+  - Browser checks in the Chromium-based app browser on the dev server and on `vite preview`: no horizontal overflow at 320, 375, 768, 1024 and 1280 px; mobile menu opening, Tab looping, Escape and outside-click closing, focus return and no focus on the closed menu; theme toggle, system mode and the stored preference; back-to-top visibility and scroll call; visible focus rings; explicit light and dark and emulated system dark themes; the no-JavaScript layout simulated with the `no-js` class.
+- **Known limitations:**
+  - The acceptance criterion of whitespace-equivalent built pages was superseded by the approved refinement; equivalence was checked for content, links, IDs and ARIA state instead.
+  - White text on the dark-theme accent, an excluded defect, still applies to the call button, back-to-top control and skip link.
+  - Reduced motion was checked in the source only (every new transition uses the motion tokens that drop to 0 ms), not by emulation. Other browser engines, touch devices and screen readers were not tested. The browser pane was hidden, which throttled transitions and scroll events, so final states were inspected with transitions disabled and with dispatched scroll events.
+  - File and line references in IMP-TECH-02 to IMP-TECH-05 refer to the pre-change revision. The footer part of IMP-TECH-03 no longer applies, because the footer headings use `footer__heading`.
 
 ### IMP-TECH-02 — Declare each theme color and shadow token once with `light-dark()`
 
@@ -168,7 +188,7 @@ The five proposals below address these areas without new dependencies, framework
 
 **Considered but not selected:**
 
-- Moving the legal-page header rules (`css/pages/legal.css:6-20`, `:244-259`, `:272-302`) into the shared header component. This would change header behavior on the six marketing pages and is the fix for the open header defect below, so it belongs in a defect task.
+- Moving the legal-page header rules (`css/pages/legal.css:6-20`, `:244-259`, `:272-302`) into the shared header component. This would change header behavior on the six marketing pages and is the fix for the open header defect below, so it belongs in a defect task. Later done within the approved visual refinement of IMP-TECH-01.
 - Making `.site-header__cta` (`css/components.css:78-96`) reuse `.button--primary`. IMP-UI-01 deliberately kept the header CTA's own rules.
 - Merging the two scroll listeners (`js/main.js:76-93`, `:288-292`) and routing both theme controls through one setter (`js/main.js:52-68`). This duplication is real but minor, with lower value than the selected items.
 - Sharing the 760 px breakpoint between `js/main.js:98` and `css/components.css:513`. CSS media queries cannot read custom properties, so a single source would need an indirect mechanism out of proportion to the risk.
@@ -178,7 +198,7 @@ The five proposals below address these areas without new dependencies, framework
 **Defects observed and excluded:** These belong in an audit rather than among optional improvements.
 
 - `storeTheme` (`js/main.js:26-31`) calls `localStorage.setItem` without the error handling that `getStoredTheme` has (`js/main.js:12-24`). Both theme click handlers call it before `applyTheme` (`js/main.js:57-58`, `:65-66`), so wherever storage writes fail, the theme controls stop working.
-- The header defect on the six marketing pages recorded in `docs/archive/improvements/IMPROVEMENTS-UI-2026-10-06.md:111` is still present by static inspection. The marketing pages get none of the header rules that `css/pages/legal.css` scopes to `.legal-page`, and `css/components.css` does not hide `.site-header__toggle` from 760 px.
+- The header defect on the six marketing pages recorded in `docs/archive/improvements/IMPROVEMENTS-UI-2026-10-06.md:111` is still present by static inspection. The marketing pages get none of the header rules that `css/pages/legal.css` scopes to `.legal-page`, and `css/components.css` does not hide `.site-header__toggle` from 760 px. Resolved by the shared header styles of IMP-TECH-01.
 - The "Preferowany kontakt" label (`contact.html:117`) is not associated with a control, so the contact-method button group has no accessible group name. The missing visual `aria-pressed` state recorded in the archived UI report (line 112) also remains.
 
 ## Analysis limitations

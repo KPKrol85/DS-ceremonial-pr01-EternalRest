@@ -3,22 +3,6 @@
   --legal-measure: 70ch;
 }
 
-.legal-page .site-header__toggle {
-  position: relative;
-  z-index: 1;
-}
-
-.js .legal-page .site-header__panel {
-  height: 100dvh;
-  overflow-y: auto;
-  visibility: hidden;
-  transform: none;
-}
-
-.js .legal-page .site-header__panel.is-open {
-  visibility: visible;
-}
-
 .legal-page__main {
   padding-block: var(--space-3xl);
 }
@@ -240,22 +224,9 @@
   text-underline-offset: 0.2em;
 }
 
-/* Keep the fully expanded fallback header out of the way of native anchors. */
+/* Without JavaScript the shared header is not sticky, so anchors need no header offset. */
 .no-js .legal-page {
   --legal-anchor-offset: var(--space-lg);
-}
-
-.no-js .legal-page .site-header {
-  position: static;
-}
-
-.no-js .legal-page .site-header__inner {
-  flex-wrap: wrap;
-}
-
-.no-js .legal-page .site-header__panel {
-  width: 100%;
-  padding: var(--space-md) 0 0;
 }
 
 @media (min-width: 480px) {
@@ -267,38 +238,6 @@
 @media (min-width: 760px) {
   .legal-page {
     --legal-anchor-offset: 8rem;
-  }
-
-  .legal-page .site-header__toggle {
-    display: none;
-  }
-
-  .legal-page .site-header__brand {
-    flex-shrink: 0;
-  }
-
-  .legal-page .site-header__panel {
-    display: grid;
-    flex: 1;
-    justify-items: end;
-    gap: var(--space-sm);
-    min-width: 0;
-  }
-
-  .js .legal-page .site-header__panel {
-    height: auto;
-    overflow: visible;
-    visibility: visible;
-  }
-
-  .legal-page .site-header__nav-list,
-  .legal-page .site-header__actions {
-    flex-wrap: wrap;
-    justify-content: flex-end;
-  }
-
-  .legal-page .site-header__nav-list {
-    gap: var(--space-xs) var(--space-md);
   }
 
   .legal-page__main {

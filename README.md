@@ -32,7 +32,9 @@ Publiczna wersja demonstracyjna projektu: [ds-ceremonial-pr01-eternalrest.netlif
 
 ### Architektura
 
-Źródłem treści są pliki HTML w katalogu głównym. Kanoniczne nazwy plików i trasy używają języka angielskiego, a treść interfejsu pozostaje polska. Nawigacja korzysta ze zwykłych odnośników między stronami; nagłówek i stopka są zapisane osobno w każdej stronie. Nie ma generatora wspólnych fragmentów ani routera po stronie klienta.
+Źródłem treści są pliki HTML w katalogu głównym. Kanoniczne nazwy plików i trasy używają języka angielskiego, a treść interfejsu pozostaje polska. Nawigacja korzysta ze zwykłych odnośników między stronami, bez routera po stronie klienta.
+
+Wspólne elementy stron mają jedno źródło w katalogu `partials/`: `site-header.html` (odnośnik pomijający i nagłówek), `footer-marketing.html` (stopka sześciu stron usługowych), `footer-legal.html` (stopka `terms.html`, `privacy.html` i `cookies.html`) oraz `back-to-top.html`. Strona wskazuje fragment znacznikiem `<!-- partial:nazwa -->` w miejscu, w którym ma się on pojawić. Lokalna wtyczka w `vite.config.js` (hook `transformIndexHtml`, wykonywany przed własnym przetwarzaniem HTML przez Vite) wstawia fragmenty podczas `npm run dev` i `npm run build`, dlatego `dist/` i `npm run preview` zawierają kompletne strony. Odnośnik oznaczony we fragmencie atrybutem `data-partial-current` otrzymuje `aria-current="page"` na stronie, do której prowadzi; sam atrybut nie trafia do wyniku. Brakujący plik fragmentu lub niepoprawny znacznik kończy przetwarzanie strony błędem, a zmiana fragmentu w trybie deweloperskim przeładowuje otwarte strony. Fragmenty nie są stronami produkcyjnymi, ponieważ wejścia Vite powstają wyłącznie z plików w katalogu głównym.
 
 `css/main.css` importuje kolejno tokeny, style bazowe, układ, komponenty, klasy pomocnicze i style stron. `css/pages/legal.css` jest wspólnym arkuszem rodziny stron prawnych, używanym przez `terms.html`, `privacy.html` i `cookies.html`. `js/main.js` zawiera wspólne zachowania i podłącza interakcje do elementów oznaczonych atrybutami `data-*`. Pliki HTML w katalogu głównym są źródłem stron produkcyjnych: `vite.config.js` automatycznie wyznacza wejścia Vite MPA ze wszystkich plików `*.html` w katalogu głównym, bez przeszukiwania podkatalogów. Dodanie lub zmiana nazwy strony nie wymaga edycji `vite.config.js`.
 
@@ -49,6 +51,11 @@ Publiczna wersja demonstracyjna projektu: [ds-ceremonial-pr01-eternalrest.netlif
 ├── terms.html                 # Regulamin projektu demonstracyjnego
 ├── privacy.html               # Polityka prywatności projektu demonstracyjnego
 ├── cookies.html               # Polityka cookies projektu demonstracyjnego
+├── partials/                  # Wspólny nagłówek, dwie stopki i przycisk powrotu
+│   ├── site-header.html
+│   ├── footer-marketing.html
+│   ├── footer-legal.html
+│   └── back-to-top.html
 ├── assets/
 │   ├── icons/
 │   ├── illustrations/
@@ -113,12 +120,13 @@ Konfiguracja ESLint korzysta z `eslint:recommended`, środowiska przeglądarkowe
 
 `npm run format:check` porównuje pliki z wynikiem Prettiera 3 w ustawieniach domyślnych (repozytorium nie zawiera konfiguracji Prettiera) i niczego nie zapisuje; kończy się błędem, gdy którykolwiek plik w zakresie wymaga formatowania. Jego zapisującym odpowiednikiem jest `npm run format`. Sprawdzenie dotyczy wyłącznie zapisu kodu i nie zastępuje lintowania ESLint ani testów działania strony w przeglądarce. Repozytorium nie przeszło formatowania bazowego, dlatego sprawdzenie zgłasza obecnie istniejące rozbieżności. Prettier domyślnie oczekuje końców linii LF, więc w kopii roboczej z końcami CRLF (np. w Windows z `core.autocrlf=true`) zgłasza każdy plik w zakresie.
 
-Oba polecenia pomijają pliki wskazane w `.gitignore` i `.prettierignore`. `.prettierignore` wyłącza generowany `dist/`, `node_modules/`, `package-lock.json`, `LICENSE.md`, strony prawne `terms.html`, `privacy.html` i `cookies.html` oraz archiwum raportów `docs/archive/`, aby formatowanie nie zmieniało tych plików. Wykluczone pliki nie są też sprawdzane, w tym powtórzone w stronach prawnych nagłówek i stopka. `.prettierignore` działa wyłącznie dla Prettiera i nie chroni plików przed innymi narzędziami ani ręczną edycją.
+Oba polecenia pomijają pliki wskazane w `.gitignore` i `.prettierignore`. `.prettierignore` wyłącza generowany `dist/`, `node_modules/`, `package-lock.json`, `LICENSE.md`, strony prawne `terms.html`, `privacy.html` i `cookies.html` oraz archiwum raportów `docs/archive/`, aby formatowanie nie zmieniało tych plików. Wykluczone pliki nie są też sprawdzane; wspólny nagłówek i stopki, także te używane przez strony prawne, znajdują się jednak w `partials/` i podlegają sprawdzeniu. `.prettierignore` działa wyłącznie dla Prettiera i nie chroni plików przed innymi narzędziami ani ręczną edycją.
 
 ### Dostępność
 
 - Semantyczne obszary `header`, `nav`, `main`, `footer`, odnośnik pomijający nawigację i style `:focus-visible`.
-- Menu mobilne z aktualizacją `aria-expanded` i `aria-hidden`, przenoszeniem i przywracaniem fokusu, pętlą klawisza Tab, zamykaniem przez Escape oraz blokadą przewijania.
+- Menu mobilne z aktualizacją `aria-expanded` i `aria-hidden`, przenoszeniem i przywracaniem fokusu, pętlą klawisza Tab, zamykaniem przez Escape oraz blokadą przewijania. Zamknięte menu i niewidoczny przycisk powrotu na górę nie przyjmują fokusu.
+- Bieżąca strona oznaczona `aria-current="page"` w nawigacji głównej, a na stronach prawnych także w odnośnikach do dokumentów prawnych w stopce.
 - Akordeony i szczegóły pakietów synchronizujące `aria-expanded` z widocznością paneli.
 - Pola formularza z etykietami i powiązanymi komunikatami przez `aria-describedby`; błędy oznaczane przez `aria-invalid`, lokalny komunikat zakończenia z `role="status"` i przeniesieniem fokusu.
 - Obsługa `prefers-reduced-motion` wyłączająca czasy przejść CSS i płynne przewijanie.
@@ -169,7 +177,9 @@ Public project demo: [ds-ceremonial-pr01-eternalrest.netlify.app](https://ds-cer
 
 ### Architecture
 
-Root HTML files own the content. Canonical filenames and routes use English technical names, while interface content remains Polish. Navigation uses ordinary links between pages; each page contains its own header and footer markup. There is no shared-fragment generator or client-side router.
+Root HTML files own the content. Canonical filenames and routes use English technical names, while interface content remains Polish. Navigation uses ordinary links between pages, without a client-side router.
+
+Shared page chrome has a single source in `partials/`: `site-header.html` (skip link and header), `footer-marketing.html` (footer of the six service pages), `footer-legal.html` (footer of `terms.html`, `privacy.html` and `cookies.html`) and `back-to-top.html`. A page places a partial with a `<!-- partial:name -->` marker where it should appear. A local plugin in `vite.config.js` (a `transformIndexHtml` hook that runs before Vite's own HTML processing) inserts the partials during `npm run dev` and `npm run build`, so `dist/` and `npm run preview` contain complete pages. A link marked with `data-partial-current` in a partial receives `aria-current="page"` on the page it points to; the attribute itself is not emitted. A missing partial file or an invalid marker stops processing of the page with an error, and editing a partial in development reloads open pages. Partials are not production pages, because Vite entries are derived only from root-level files.
 
 `css/main.css` imports tokens, base styles, layout, components, utilities and page styles in that order. `css/pages/legal.css` is the shared stylesheet for legal pages, used by `terms.html`, `privacy.html` and `cookies.html`. `js/main.js` contains shared behavior and attaches interactions to elements marked with `data-*` attributes. Root-level HTML files are the source of the production pages: `vite.config.js` derives the Vite MPA entry points automatically from all root-level `*.html` files, without scanning subdirectories. Adding or renaming a page does not require editing `vite.config.js`.
 
@@ -186,6 +196,11 @@ Root HTML files own the content. Canonical filenames and routes use English tech
 ├── terms.html                 # Demonstration project Terms
 ├── privacy.html               # Demonstration project Privacy Policy
 ├── cookies.html               # Demonstration project Cookies Policy
+├── partials/                  # Shared header, two footers and back-to-top control
+│   ├── site-header.html
+│   ├── footer-marketing.html
+│   ├── footer-legal.html
+│   └── back-to-top.html
 ├── assets/
 │   ├── icons/
 │   ├── illustrations/
@@ -250,12 +265,13 @@ ESLint is configured with `eslint:recommended`, a browser environment and warnin
 
 `npm run format:check` compares files with Prettier 3 output using default options (the repository contains no Prettier configuration) and writes nothing; it fails when any in-scope file needs formatting. `npm run format` is its writing counterpart. The check covers code layout only and does not replace ESLint linting or runtime testing of the site in a browser. The repository has not received a baseline format, so the check currently reports existing differences. Prettier expects LF line endings by default, so in a working copy with CRLF endings (for example on Windows with `core.autocrlf=true`) it reports every in-scope file.
 
-Both commands skip files matched by `.gitignore` and `.prettierignore`. `.prettierignore` excludes the generated `dist/`, `node_modules/`, `package-lock.json`, `LICENSE.md`, the legal pages `terms.html`, `privacy.html` and `cookies.html`, and the report archive in `docs/archive/`, so formatting does not change these files. Excluded files are not checked either, including the header and footer markup repeated in the legal pages. `.prettierignore` applies only to Prettier and does not protect files from other tools or manual edits.
+Both commands skip files matched by `.gitignore` and `.prettierignore`. `.prettierignore` excludes the generated `dist/`, `node_modules/`, `package-lock.json`, `LICENSE.md`, the legal pages `terms.html`, `privacy.html` and `cookies.html`, and the report archive in `docs/archive/`, so formatting does not change these files. Excluded files are not checked either; the shared header and footers, including those used by the legal pages, live in `partials/` and are checked. `.prettierignore` applies only to Prettier and does not protect files from other tools or manual edits.
 
 ### Accessibility
 
 - Semantic `header`, `nav`, `main` and `footer` regions, a skip link and `:focus-visible` styles.
-- Mobile navigation with synchronized `aria-expanded` and `aria-hidden`, focus transfer and restoration, Tab looping, Escape dismissal and scroll locking.
+- Mobile navigation with synchronized `aria-expanded` and `aria-hidden`, focus transfer and restoration, Tab looping, Escape dismissal and scroll locking. The closed menu and the hidden back-to-top control cannot receive focus.
+- The current page is marked with `aria-current="page"` in the main navigation and, on the legal pages, also in the footer links to the legal documents.
 - Accordions and package details synchronizing `aria-expanded` with panel visibility.
 - Form fields with labels and messages connected through `aria-describedby`; errors marked with `aria-invalid`, plus a local completion message using `role="status"` and focus transfer.
 - `prefers-reduced-motion` handling that disables CSS transition durations and smooth scrolling.
