@@ -332,7 +332,8 @@
   color: var(--color-text-muted);
 }
 
-.hero__actions {
+.hero__actions,
+.form__choices {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-sm);
@@ -357,13 +358,16 @@
   gap: var(--space-sm);
 }
 
-.card__title {
+.card__title,
+.steps__title,
+.pricing__title {
   font-size: var(--font-size-xl);
   font-family: var(--font-serif);
   line-height: var(--line-height-heading);
 }
 
-.card__text {
+.card__text,
+.steps__text {
   color: var(--color-text-muted);
 }
 
@@ -598,7 +602,9 @@
   text-transform: uppercase;
 }
 
-.footer__links {
+.footer__links,
+.card__list,
+.pricing__features {
   display: grid;
   gap: var(--space-xs);
 }

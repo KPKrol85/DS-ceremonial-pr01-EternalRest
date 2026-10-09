@@ -43,29 +43,11 @@ The five proposals below address these areas without new dependencies, framework
 
 ### IMP-TECH-03 — Give borrowed BEM elements block-owned classes
 
-- **Affected area:** Component class ownership in `css/components.css`, and class attributes in the footer, steps, pricing, about and contact markup.
-- **Evidence:**
-  - Rules: `css/components.css:214-222` (`.card__title`, `.card__text`), `css/components.css:421-424` (`.footer__links`) and `css/components.css:189-194` (`.hero__actions`).
-  - `card__title` is used:
-    - in the footer headings of all nine pages, for example `index.html:295`, `:306`, `:315` and `cookies.html:839`, `:850`, `:859`;
-    - in the steps items with `card__text` (`index.html:174-185`, `about.html:137-148`);
-    - on the pricing titles (`pricing.html:89`, `:110`, `:131`).
-  - `footer__links` is used on the pricing feature lists (`pricing.html:102`, `:123`, `:144`) and on a list in an about-page card (`about.html:89`).
-  - `hero__actions` wraps the contact-method buttons (`contact.html:118`).
-  - Precedent: `css/pages/legal.css:40-47` already groups block-owned heading selectors.
-- **Current implementation:** `card__title` appears 51 times, but only 15 of those uses are inside a `.card`. Footer headings, process steps and pricing cards borrow it, and the steps also borrow `card__text`. The footer's link-list element styles two lists outside the footer, and the hero's action row lays out a form control group. Each of these rules has consumers that its block name does not reveal.
-- **Proposed improvement:** Give each borrowing block its own element class for the role it borrows: for example, footer, steps and pricing headings, steps text, a pricing feature list and a form choice group. Keep shared declarations written once by grouping the new selectors with the original ones, following `css/pages/legal.css:40-47`.
-- **Expected engineering value:** Each rule's consumers become visible in its selector list. A block can diverge, for example with a footer heading change, without affecting cards, pricing or the contact form.
-- **Implementation scope:**
-  - Change `css/components.css` and class attributes only, with identical rendering.
-  - Unchanged: `data-*` hooks, IDs, ARIA attributes, heading levels and `js/main.js`.
-  - Layout reuse that matches its block's meaning stays: the `section__*` classes in the home hero card and `form__field` around the pricing filter.
-  - After IMP-TECH-01, the footer change is made in the partials. If this proposal goes first, it spans all nine pages.
-- **Acceptance criteria:**
-  - No `card__title` or `card__text` remains outside a `.card`, no `footer__links` outside `.footer`, and no `hero__actions` outside `.hero`.
-  - No declaration block is duplicated for the new classes.
-  - The computed styles of the affected elements are unchanged in light and dark themes at 375 px and 1280 px widths.
-  - `npm run lint` and `npm run build` succeed.
+- **Status:** Completed — block-owned element classes with unchanged rendering.
+- **Original issue:** Process steps, pricing cards, an about-page card and the contact form borrowed `card__title`, `card__text`, `footer__links` and `hero__actions`, so these rules had consumers that their block names did not reveal.
+- **Implemented result:** Process steps use `steps__title` and `steps__text`, pricing cards `pricing__title` and `pricing__features`, the about-page values list `card__list`, and the contact-method buttons `form__choices`. In `css/components.css`, each new selector is grouped with the rule it previously borrowed, so no declarations are duplicated. IDs, ARIA attributes, `data-*` hooks, heading levels, the shared partials and `js/main.js` are unchanged.
+- **Verification:** ESLint and the nine-page production build passed. In Chromium, all computed styles and layout boxes of 1,410 affected and related elements on the home, about, pricing and contact pages matched the pre-change values at 375 px and 1280 px in explicit light, explicit dark and system dark mode. No borrowed class remains outside its block on the nine pages, and the pricing details, pricing filter and contact-method buttons work as before. Existing Prettier formatting differences remain unchanged.
+- **Known limitations:** Other browser engines were not tested.
 - **Impact:** Medium
 - **Effort:** Small
 
