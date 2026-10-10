@@ -6,7 +6,7 @@
 
 Eternal Rest to polskojęzyczny, statyczny projekt demonstracyjny witryny wielostronicowej prezentującej koncepcję usług domu pogrzebowego, pakiety cenowe, informacje o firmie i poradnik dla rodzin. Projekt KP_Code Digital Studio składa się ze stron HTML ze wspólnymi stylami i interakcjami w JavaScript.
 
-Formularz kontaktowy jest demonstracją interfejsu: skrypt sprawdza wypełnienie pól, wyświetla komunikat i resetuje formularz. Przy działającym JavaScripcie nie wysyła zgłoszenia ani nie zapisuje danych na serwerze. Bez skryptu formularz może wykonać domyślne żądanie GET z polami w adresie; nie należy używać go bez JavaScriptu ani wpisywać rzeczywistych danych. Mapa dojazdu jest ilustracją SVG; stopka prowadzi do regulaminu, polityki prywatności i polityki cookies, natomiast odnośniki społecznościowe pozostają placeholderami.
+Formularz kontaktowy jest demonstracją interfejsu: skrypt sprawdza wypełnienie pól i poprawność formatu adresu e-mail, wyświetla komunikat i resetuje formularz. Przy działającym JavaScripcie nie wysyła zgłoszenia ani nie zapisuje danych na serwerze. Bez skryptu formularz może wykonać domyślne żądanie GET z polami w adresie; nie należy używać go bez JavaScriptu ani wpisywać rzeczywistych danych. Mapa dojazdu jest ilustracją SVG; stopka prowadzi do regulaminu, polityki prywatności i polityki cookies, natomiast odnośniki społecznościowe pozostają placeholderami.
 
 ### Wersja online
 
@@ -18,7 +18,7 @@ Publiczna wersja demonstracyjna projektu: [ds-ceremonial-pr01-eternalrest.netlif
 - Rozwijane menu mobilne oraz przycisk powrotu na górę strony.
 - Filtrowanie pakietów według rodzaju ceremonii i rozwijanie ich szczegółów.
 - Akordeony FAQ na stronie głównej i w poradniku.
-- Wybór preferowanej formy kontaktu i lokalna walidacja niepustych pól formularza.
+- Wybór preferowanej formy kontaktu i lokalna walidacja niepustych pól formularza oraz formatu adresu e-mail.
 - Regulamin (17 sekcji), polityka prywatności (14 sekcji) i polityka cookies (9 sekcji) z natywnymi spisami treści i odnośnikami powrotu do spisu, działającymi bez JavaScriptu. Polityka prywatności opisuje rzeczywiste działanie korespondencji e-mail, zapisu motywu i formularza demonstracyjnego, a polityka cookies – zapis motywu w `localStorage` jako jedyną technologię przechowywania danych, bez plików cookies ustawianych przez aplikację.
 
 ### Stack technologiczny
@@ -157,7 +157,7 @@ Projekt podlega [Własnościowej Licencji Projektu KP_CODE](LICENSE.md), wersja 
 
 Eternal Rest is a Polish-language static multi-page demonstration project presenting a funeral-home service concept, pricing packages, company information and guidance for families. This KP_Code Digital Studio project consists of HTML pages with shared styles and JavaScript interactions.
 
-The contact form is an interface demonstration: its script checks for non-empty fields, displays a message and resets the form. With JavaScript working, it does not send an enquiry or store data on a server. Without the script, the form can perform a default GET request with fields in the URL; do not use it without JavaScript or enter real data. The location map is an SVG illustration; the footer links to the Terms, Privacy Policy and Cookies Policy pages, while social links remain placeholders.
+The contact form is an interface demonstration: its script checks for non-empty fields and a valid e-mail address format, displays a message and resets the form. With JavaScript working, it does not send an enquiry or store data on a server. Without the script, the form can perform a default GET request with fields in the URL; do not use it without JavaScript or enter real data. The location map is an SVG illustration; the footer links to the Terms, Privacy Policy and Cookies Policy pages, while social links remain placeholders.
 
 ### Live Version
 
@@ -169,7 +169,7 @@ Public project demo: [ds-ceremonial-pr01-eternalrest.netlify.app](https://ds-cer
 - Expandable mobile navigation and a back-to-top button.
 - Package filtering by ceremony type and expandable package details.
 - FAQ accordions on the home and guide pages.
-- Preferred contact method selection and local validation for non-empty form fields.
+- Preferred contact method selection and local validation for non-empty form fields and the e-mail address format.
 - Terms (17 sections), Privacy Policy (14 sections) and Cookies Policy (9 sections) with native section indexes and return links that work without JavaScript. The Privacy Policy describes the actual behavior of e-mail correspondence, theme storage and the demonstration form, while the Cookies Policy documents theme storage in `localStorage` as the only storage technology, with no application-set cookies.
 
 ### Tech Stack

@@ -267,26 +267,34 @@
   const form = document.querySelector("[data-validate-form]");
   if (form) {
     const success = form.querySelector("[data-form-success]");
-    const setFieldError = (field, isInvalid) => {
+    const getFieldError = (field) => {
+      if (!field.value.trim()) {
+        return "To pole jest wymagane.";
+      }
+      if (field.type === "email" && field.validity.typeMismatch) {
+        return "Podaj poprawny adres e-mail.";
+      }
+      return "";
+    };
+    const setFieldError = (field, message) => {
       const errorId = field.getAttribute("aria-describedby");
       const errorEl = errorId ? document.getElementById(errorId) : null;
-      if (isInvalid) {
+      if (message) {
         field.setAttribute("aria-invalid", "true");
       } else {
         field.removeAttribute("aria-invalid");
       }
       if (errorEl) {
-        errorEl.textContent = isInvalid ? "To pole jest wymagane." : "";
+        errorEl.textContent = message;
       }
     };
     form.addEventListener("input", (event) => {
       const field = event.target;
       if (
         field.matches("[data-required]") &&
-        field.getAttribute("aria-invalid") === "true" &&
-        field.value.trim()
+        field.getAttribute("aria-invalid") === "true"
       ) {
-        setFieldError(field, false);
+        setFieldError(field, getFieldError(field));
       }
     });
     form.addEventListener("submit", (event) => {
@@ -297,9 +305,9 @@
       let firstInvalid = null;
       const fields = form.querySelectorAll("[data-required]");
       fields.forEach((field) => {
-        const isInvalid = !field.value.trim();
-        setFieldError(field, isInvalid);
-        if (isInvalid && !firstInvalid) {
+        const message = getFieldError(field);
+        setFieldError(field, message);
+        if (message && !firstInvalid) {
           firstInvalid = field;
         }
       });

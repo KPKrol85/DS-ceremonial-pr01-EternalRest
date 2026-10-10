@@ -39,6 +39,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 - Added FAQ accordions on the home and guide pages.
 - Added a demonstration contact form with contact preferences, validation and local success feedback; no server submission or enquiry storage.
 - Added contact-form error recovery: a failed submission focuses the first empty required field below the sticky header, and each field's error clears as soon as it holds a value.
+- Added contact-form e-mail format validation using the browser's native `validity.typeMismatch`: a non-empty malformed address blocks the success state with "Podaj poprawny adres e-mail.", and its error updates while typing and clears only once the address is valid.
 - Added visible and programmatic required-field indicators to the contact form, with a leading instruction and the message field relabelled "Treść wiadomości".
 - Made the e-mail address and phone number in both footer variants and the contact-page "Nasze biuro" card actionable `mailto:` and `tel:` links with visible hover and focus states.
 - Linked the four named services in both footer variants and two home-page service cards to their matching entries on the services page, with anchor offsets that keep each heading clear of the sticky header with and without JavaScript.

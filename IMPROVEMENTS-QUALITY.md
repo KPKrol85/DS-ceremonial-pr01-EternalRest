@@ -40,19 +40,9 @@ The main weakness is verification. The repository has no automated tests (README
 
 ### IMP-QUALITY-02 — Validate the contact form's e-mail format with the existing constraint validation
 
-- **Affected area:** Contact form validation.
-- **Evidence:** `contact.html:29`, `contact.html:44-56`; `js/main.js:270-281`, `js/main.js:282-291`, `js/main.js:292-313`; README lines 21 and 167; `terms.html:446-448`, `privacy.html:599-603`.
-- **Current implementation:** The form uses `novalidate` and checks every `[data-required]` field with `!field.value.trim()`. The e-mail field is `type="email"` and `required`, but any non-empty value such as `jan` passes; the success message then appears and the form resets. The browser computes `validity.typeMismatch` for this field even under `novalidate`, but the script never reads it. Every error reads "To pole jest wymagane.", and the input listener clears an error as soon as the field holds any non-whitespace value. This matches the documented scope (README: "non-empty form fields"), so it is a validation boundary to strengthen, not a defect.
-- **Proposed improvement:** When the e-mail field is non-empty but the browser reports a type mismatch, mark it invalid with its own Polish message, for example "Podaj poprawny adres e-mail.". During input, clear the error only once the value is both non-empty and valid.
-- **Expected quality value:** The form catches the most common entry mistake in its only format-bearing field before the demo completes. It uses the browser's own e-mail rules, without a library or custom regex, and keeps the existing focus-first-invalid recovery.
-- **Implementation scope:** The validation helpers in `js/main.js`, plus the README form description and feature bullet in both languages and a CHANGELOG entry. The legal pages describe validation generically and need no change. Preserve `novalidate`, the `[data-required]` hooks, `aria-invalid` and `aria-describedby` relationships, focus on the first invalid field, success-message focus and reset, and the "To pole jest wymagane." message for empty fields. Phone-number format and the other fields are out of scope.
-- **Acceptance criteria:**
-  - Submitting with `jan` as the e-mail and all other fields valid does the following: shows the format message under the e-mail field, sets `aria-invalid="true"`, focuses the field and keeps the success message hidden.
-  - An empty e-mail still shows "To pole jest wymagane.".
-  - While typing, `jan@` keeps the error and `jan@example.pl` clears it.
-  - A fully valid submission still shows and focuses the success message and resets the form.
-  - `npm run lint` passes.
-  - Behavior is checked in a browser at 375 px and 1280 px.
+- **Status:** COMPLETED — implemented and verified.
+- **Result:** `js/main.js` now derives each required field's message from one shared check: an empty value shows "To pole jest wymagane.", and a non-empty `type="email"` value with `validity.typeMismatch` shows "Podaj poprawny adres e-mail.". The input handler re-evaluates only fields already marked invalid, so the e-mail error updates while typing and clears only for a valid address. `novalidate`, `[data-required]`, the `aria-invalid` and `aria-describedby` relationships, first-invalid-field focus, success-message focus and reset are unchanged.
+- **Verification:** `npm run lint` and `npm run build` passed. In the built preview at 375 px and 1280 px, submitting `jan` showed the format error with `aria-invalid="true"`, focused the e-mail field and kept the success message hidden; `jan@` kept the error, `jan@example.pl` cleared it, a cleared invalid e-mail and an empty e-mail showed the required message, the other fields kept their focus and immediate clearing, and a valid submission focused the success message and reset the form. Limitation: Chromium only; screen readers and other engines were not tested.
 - **Impact:** Medium
 - **Effort:** Small
 
