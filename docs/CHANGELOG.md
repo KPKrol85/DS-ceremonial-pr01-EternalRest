@@ -42,6 +42,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 - Added visible and programmatic required-field indicators to the contact form, with a leading instruction and the message field relabelled "Treść wiadomości".
 - Made the e-mail address and phone number in both footer variants and the contact-page "Nasze biuro" card actionable `mailto:` and `tel:` links with visible hover and focus states.
 - Linked the four named services in both footer variants and two home-page service cards to their matching entries on the services page, with anchor offsets that keep each heading clear of the sticky header with and without JavaScript.
+- Kept the FAQ answers on the home and guide pages and the package details on the pricing page readable when JavaScript is disabled or `main.js` fails to load, with the questions shown as plain text and the disclosure buttons and pricing filter removed in that state; with JavaScript the disclosures still start collapsed without an open-then-closed flash. A shared inline `<head>` initializer (`partials/disclosure-init.html`) on these three pages detects the failed module load, and a future Content Security Policy must allow it by hash.
 - Added scroll-triggered reveals and a back-to-top control with reduced-motion support.
 - Added reusable primary and secondary button variants, separating interactive actions from static badges and the header CTA.
 - Added a responsive three-column pricing comparison layout from 760 px, with independently expanding cards and a constrained filter.

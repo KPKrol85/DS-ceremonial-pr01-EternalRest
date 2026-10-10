@@ -799,6 +799,29 @@
   background: color-mix(in srgb, var(--color-accent-soft) 35%, var(--color-surface-alt));
 }
 
+/* Disclosure panels are open in the markup and collapsed by main.js. On pages that
+   include partials/disclosure-init.html, .js-pending marks a pending or running main.js;
+   without it (scripting disabled, scripts blocked or main.js failed) the fallback applies. */
+.no-js.js-pending .accordion__panel,
+.no-js.js-pending .pricing__details {
+  display: none;
+}
+
+.no-js:not(.js-pending) .pricing-filter,
+.no-js:not(.js-pending) [data-details-toggle] {
+  display: none;
+}
+
+/* The hidden trigger is unfocusable and not exposed; its label keeps the question visible. */
+.no-js:not(.js-pending) .accordion__button {
+  visibility: hidden;
+  cursor: auto;
+}
+
+.no-js:not(.js-pending) .accordion__label {
+  visibility: visible;
+}
+
 @media (min-width: 760px) {
   /* Two right-aligned rows: navigation above the call and theme actions. */
   .site-header__inner {

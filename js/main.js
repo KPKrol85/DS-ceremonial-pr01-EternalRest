@@ -1,6 +1,6 @@
 (() => {
   const root = document.documentElement;
-  root.classList.remove("no-js");
+  root.classList.remove("no-js", "js-pending");
   root.classList.add("js");
 
   const THEME_KEY = "eternalRestTheme";
@@ -199,15 +199,30 @@
     }
   }
 
-  const toggleDisclosure = (trigger) => {
+  const getDisclosurePanel = (trigger) => {
     const panelId = trigger.getAttribute("aria-controls");
-    const panel = panelId ? document.getElementById(panelId) : null;
+    return panelId ? document.getElementById(panelId) : null;
+  };
+
+  const toggleDisclosure = (trigger) => {
+    const panel = getDisclosurePanel(trigger);
     if (!panel) return null;
     const isExpanded = trigger.getAttribute("aria-expanded") === "true";
     trigger.setAttribute("aria-expanded", String(!isExpanded));
     panel.hidden = isExpanded;
     return !isExpanded;
   };
+
+  // Panels are open in the markup so they stay readable without JavaScript;
+  // each one now takes the state declared by its trigger's aria-expanded.
+  document
+    .querySelectorAll("[data-accordion-trigger], [data-details-toggle]")
+    .forEach((trigger) => {
+      const panel = getDisclosurePanel(trigger);
+      if (panel) {
+        panel.hidden = trigger.getAttribute("aria-expanded") !== "true";
+      }
+    });
 
   document.querySelectorAll("[data-accordion]").forEach((accordion) => {
     accordion.addEventListener("click", (event) => {

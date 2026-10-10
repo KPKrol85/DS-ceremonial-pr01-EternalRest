@@ -34,7 +34,7 @@ Publiczna wersja demonstracyjna projektu: [ds-ceremonial-pr01-eternalrest.netlif
 
 Źródłem treści są pliki HTML w katalogu głównym. Kanoniczne nazwy plików i trasy używają języka angielskiego, a treść interfejsu pozostaje polska. Nawigacja korzysta ze zwykłych odnośników między stronami, bez routera po stronie klienta.
 
-Wspólne elementy stron mają jedno źródło w katalogu `partials/`: `site-header.html` (odnośnik pomijający i nagłówek), `footer-marketing.html` (stopka sześciu stron usługowych), `footer-legal.html` (stopka `terms.html`, `privacy.html` i `cookies.html`) oraz `back-to-top.html`. Strona wskazuje fragment znacznikiem `<!-- partial:nazwa -->` w miejscu, w którym ma się on pojawić. Lokalna wtyczka w `vite.config.js` (hook `transformIndexHtml`, wykonywany przed własnym przetwarzaniem HTML przez Vite) wstawia fragmenty podczas `npm run dev` i `npm run build`, dlatego `dist/` i `npm run preview` zawierają kompletne strony. Odnośnik oznaczony we fragmencie atrybutem `data-partial-current` otrzymuje `aria-current="page"` na stronie, do której prowadzi; sam atrybut nie trafia do wyniku. Brakujący plik fragmentu lub niepoprawny znacznik kończy przetwarzanie strony błędem, a zmiana fragmentu w trybie deweloperskim przeładowuje otwarte strony. Fragmenty nie są stronami produkcyjnymi, ponieważ wejścia Vite powstają wyłącznie z plików w katalogu głównym.
+Wspólne elementy stron mają jedno źródło w katalogu `partials/`: `site-header.html` (odnośnik pomijający i nagłówek), `footer-marketing.html` (stopka sześciu stron usługowych), `footer-legal.html` (stopka `terms.html`, `privacy.html` i `cookies.html`), `back-to-top.html` oraz `disclosure-init.html` — skrypt inline w `<head>` stron `index.html`, `guide.html` i `pricing.html`, który utrzymuje zwinięte FAQ i szczegóły pakietów do uruchomienia `main.js`, a gdy moduł się nie wczyta, przywraca ich wersję bez JavaScriptu; ewentualna polityka CSP musi dopuścić ten skrypt, np. przez hash. Strona wskazuje fragment znacznikiem `<!-- partial:nazwa -->` w miejscu, w którym ma się on pojawić. Lokalna wtyczka w `vite.config.js` (hook `transformIndexHtml`, wykonywany przed własnym przetwarzaniem HTML przez Vite) wstawia fragmenty podczas `npm run dev` i `npm run build`, dlatego `dist/` i `npm run preview` zawierają kompletne strony. Odnośnik oznaczony we fragmencie atrybutem `data-partial-current` otrzymuje `aria-current="page"` na stronie, do której prowadzi; sam atrybut nie trafia do wyniku. Brakujący plik fragmentu lub niepoprawny znacznik kończy przetwarzanie strony błędem, a zmiana fragmentu w trybie deweloperskim przeładowuje otwarte strony. Fragmenty nie są stronami produkcyjnymi, ponieważ wejścia Vite powstają wyłącznie z plików w katalogu głównym.
 
 `css/main.css` importuje kolejno tokeny, style bazowe, układ, komponenty, klasy pomocnicze i style stron. `css/pages/legal.css` jest wspólnym arkuszem rodziny stron prawnych, używanym przez `terms.html`, `privacy.html` i `cookies.html`. `js/main.js` zawiera wspólne zachowania i podłącza interakcje do elementów oznaczonych atrybutami `data-*`. Pliki HTML w katalogu głównym są źródłem stron produkcyjnych: `vite.config.js` automatycznie wyznacza wejścia Vite MPA ze wszystkich plików `*.html` w katalogu głównym, bez przeszukiwania podkatalogów. Dodanie lub zmiana nazwy strony nie wymaga edycji `vite.config.js`.
 
@@ -51,11 +51,12 @@ Wspólne elementy stron mają jedno źródło w katalogu `partials/`: `site-head
 ├── terms.html                 # Regulamin projektu demonstracyjnego
 ├── privacy.html               # Polityka prywatności projektu demonstracyjnego
 ├── cookies.html               # Polityka cookies projektu demonstracyjnego
-├── partials/                  # Wspólny nagłówek, dwie stopki i przycisk powrotu
+├── partials/                  # Wspólny nagłówek, dwie stopki, przycisk powrotu i inicjalizator ujawnień
 │   ├── site-header.html
 │   ├── footer-marketing.html
 │   ├── footer-legal.html
-│   └── back-to-top.html
+│   ├── back-to-top.html
+│   └── disclosure-init.html
 ├── assets/
 │   ├── icons/
 │   ├── illustrations/
@@ -179,7 +180,7 @@ Public project demo: [ds-ceremonial-pr01-eternalrest.netlify.app](https://ds-cer
 
 Root HTML files own the content. Canonical filenames and routes use English technical names, while interface content remains Polish. Navigation uses ordinary links between pages, without a client-side router.
 
-Shared page chrome has a single source in `partials/`: `site-header.html` (skip link and header), `footer-marketing.html` (footer of the six service pages), `footer-legal.html` (footer of `terms.html`, `privacy.html` and `cookies.html`) and `back-to-top.html`. A page places a partial with a `<!-- partial:name -->` marker where it should appear. A local plugin in `vite.config.js` (a `transformIndexHtml` hook that runs before Vite's own HTML processing) inserts the partials during `npm run dev` and `npm run build`, so `dist/` and `npm run preview` contain complete pages. A link marked with `data-partial-current` in a partial receives `aria-current="page"` on the page it points to; the attribute itself is not emitted. A missing partial file or an invalid marker stops processing of the page with an error, and editing a partial in development reloads open pages. Partials are not production pages, because Vite entries are derived only from root-level files.
+Shared page chrome has a single source in `partials/`: `site-header.html` (skip link and header), `footer-marketing.html` (footer of the six service pages), `footer-legal.html` (footer of `terms.html`, `privacy.html` and `cookies.html`), `back-to-top.html` and `disclosure-init.html`, an inline `<head>` script on `index.html`, `guide.html` and `pricing.html` that keeps the FAQ and package details collapsed until `main.js` runs and restores their no-JavaScript version if the module fails to load; a Content Security Policy must allow this script, for example by hash. A page places a partial with a `<!-- partial:name -->` marker where it should appear. A local plugin in `vite.config.js` (a `transformIndexHtml` hook that runs before Vite's own HTML processing) inserts the partials during `npm run dev` and `npm run build`, so `dist/` and `npm run preview` contain complete pages. A link marked with `data-partial-current` in a partial receives `aria-current="page"` on the page it points to; the attribute itself is not emitted. A missing partial file or an invalid marker stops processing of the page with an error, and editing a partial in development reloads open pages. Partials are not production pages, because Vite entries are derived only from root-level files.
 
 `css/main.css` imports tokens, base styles, layout, components, utilities and page styles in that order. `css/pages/legal.css` is the shared stylesheet for legal pages, used by `terms.html`, `privacy.html` and `cookies.html`. `js/main.js` contains shared behavior and attaches interactions to elements marked with `data-*` attributes. Root-level HTML files are the source of the production pages: `vite.config.js` derives the Vite MPA entry points automatically from all root-level `*.html` files, without scanning subdirectories. Adding or renaming a page does not require editing `vite.config.js`.
 
@@ -196,11 +197,12 @@ Shared page chrome has a single source in `partials/`: `site-header.html` (skip 
 ├── terms.html                 # Demonstration project Terms
 ├── privacy.html               # Demonstration project Privacy Policy
 ├── cookies.html               # Demonstration project Cookies Policy
-├── partials/                  # Shared header, two footers and back-to-top control
+├── partials/                  # Shared header, two footers, back-to-top control and disclosure initializer
 │   ├── site-header.html
 │   ├── footer-marketing.html
 │   ├── footer-legal.html
-│   └── back-to-top.html
+│   ├── back-to-top.html
+│   └── disclosure-init.html
 ├── assets/
 │   ├── icons/
 │   ├── illustrations/

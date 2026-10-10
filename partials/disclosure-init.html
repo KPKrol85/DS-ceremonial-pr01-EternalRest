@@ -1,0 +1,34 @@
+<script>
+  // Disclosure fallback (IMP-UX-05). Until main.js runs, .js-pending keeps the FAQ
+  // answers and package details collapsed, so a normal load shows no open state.
+  // If the main.js module fails to load or parse, .js-pending is removed and the
+  // no-JavaScript fallback is shown. A Content Security Policy must allow this
+  // inline script (for example by hash); otherwise the fallback shows until
+  // main.js runs.
+  (() => {
+    const root = document.documentElement;
+    // js/main.js in development and assets/main-[hash].js in the Vite build.
+    const appModule = /\/(?:js\/main|assets\/main-[\w-]+)\.js$/;
+    const isAppModule = (url) => {
+      if (!url) return false;
+      const { origin, pathname } = new URL(url);
+      return origin === location.origin && appModule.test(pathname);
+    };
+
+    root.classList.add("js-pending");
+    addEventListener(
+      "error",
+      (event) => {
+        if (!root.classList.contains("no-js")) return;
+        const { target } = event;
+        // Load failures fire on the <script> element, syntax errors on window.
+        const url =
+          target === window
+            ? event.filename
+            : target instanceof HTMLScriptElement && target.src;
+        if (isAppModule(url)) root.classList.remove("js-pending");
+      },
+      true,
+    );
+  })();
+</script>
