@@ -32,23 +32,9 @@ The main weakness is verification. The repository has no automated tests (README
 
 ### IMP-QUALITY-01 — Verify ID references and fragment links in the built pages with a dependency-free check
 
-- **Affected area:** ID-based contracts across the nine built pages: ARIA relationships, label associations, the skip link, legal-page section indexes and back links, and cross-page service anchors.
-- **Evidence:** `js/main.js:202-214`, `js/main.js:247-253`, `js/main.js:270-281`; `partials/site-header.html:1`, `partials/site-header.html:11-21`; `partials/footer-marketing.html:51-66`; `partials/footer-legal.html:28-43`; `index.html:99`, `index.html:104`; `services.html:29-79`; `terms.html:67-173`, `privacy.html:64-65`, `cookies.html:60-61` and the `legal-section__back` links (e.g. `terms.html:248`); `.prettierignore:8-12`; `vite.config.js:28-55`; `package.json:12-20`.
-- **Current implementation:** During this analysis, a temporary read-only script outside the repository found 204 ID references across the nine pages: 18 `aria-controls`, 5 `aria-describedby`, 43 `aria-labelledby`, 6 `label[for]`, 89 same-page fragment links and 43 cross-page fragment links. All of them currently resolve, and no page has a duplicate ID. Nothing in the repository checks these references:
-  - The partial plugin validates only partial files and markers.
-  - ESLint covers only JavaScript.
-  - There are no tests.
-
-  A broken reference fails silently. `getDisclosurePanel()` returns `null`, so the disclosure button does nothing. `setFieldError()` skips a missing message element, so a field gets `aria-invalid` with no text. A fragment link lands at the top of the target page. Of the 89 same-page links, 80 are in the three legal pages, which are maintained by hand and excluded from Prettier.
-- **Proposed improvement:** Add a read-only Node.js script, using built-in modules only, that reads the built pages in `dist/`. It exits non-zero and lists page, attribute and missing ID when any of the following does not resolve to an ID on its target page: `aria-controls`, `aria-describedby`, `aria-labelledby`, `label[for]` or a project-internal fragment `href`. It also fails when a page contains a duplicate ID. Expose the script as an npm command.
-- **Expected quality value:** The project's most widespread silent contract gets a repeatable check. It replaces part of the manual Chromium verification repeated in every completed improvement cycle. It also protects future edits to legal pages, partials and service anchors.
-- **Implementation scope:** One new script in `scripts/` and one `package.json` script entry. Update the README script table and "Testing and Validation" sections in both languages, and add a `docs/CHANGELOG.md` entry under "Build and Tooling" (verification tooling). Reading `dist/` reuses Vite's own partial expansion instead of duplicating it. Bare `href="#"` placeholders are not fragment references and are out of scope. No new dependency and no change to HTML, CSS, `js/main.js` or `vite.config.js`. The check is not chained into `npm run build` unless separately approved.
-- **Acceptance criteria:**
-  - After `npm run build`, the command exits 0 on the current pages and reports how many references it checked.
-  - Without `dist/`, it exits non-zero with a message to build first.
-  - Temporary probes each make it exit non-zero and name the page, attribute and ID: a broken `aria-controls` target, a broken `aria-describedby` target, an unknown `services.html#…` fragment and a duplicated ID. The probes are reverted afterwards.
-  - The script writes no files.
-  - `npm run lint` and `npm run build` still pass.
+- **Status:** COMPLETED — implemented and verified.
+- **Result:** Added `scripts/check-references.js`, a read-only checker using only built-in Node.js modules, exposed as `npm run check:references` and not chained into `npm run build`. It reads the root-level HTML pages in `dist/` and fails on duplicate IDs within a page and on unresolved `aria-controls`, `aria-describedby` and `aria-labelledby` IDs, `label[for]`, same-page `href="#id"` and cross-page internal fragment links such as `services.html#id`; external URLs, `mailto:`, `tel:` and bare `href="#"` are skipped. Each failure names the page, line, attribute and ID.
+- **Verification:** `npm run build`, `npm run check:references` (exit 0; 9 pages, 204 references), `node --check` and `npm run lint` passed. Probes on temporary copies of the built pages (a missing `aria-controls` target, a missing `aria-describedby` target, an unknown `services.html#…` fragment and a duplicated ID) each exited 1 and named the page, attribute and ID, and a missing `dist/` exited 1 with an instruction to build first. Limitation: attributes are read with a narrow pattern match suited to the generated markup rather than a general HTML parser, and the probes edited built output, not source files.
 - **Impact:** High
 - **Effort:** Small
 

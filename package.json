@@ -16,6 +16,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint \"js/**/*.js\"",
+    "check:references": "node scripts/check-references.js",
     "images:convert": "node scripts/convert-images.js"
   },
   "devDependencies": {

@@ -73,7 +73,9 @@ Wspólne elementy stron mają jedno źródło w katalogu `partials/`: `site-head
 │       ├── services.css
 │       └── legal.css
 ├── js/main.js
-├── scripts/convert-images.js
+├── scripts/
+│   ├── check-references.js
+│   └── convert-images.js
 ├── .eslintrc.cjs
 ├── package.json
 ├── package-lock.json
@@ -101,6 +103,7 @@ Polecenia są zdefiniowane w [package.json](package.json).
 | `npm run build` | Buduje wszystkie strony HTML z katalogu głównego przez `vite build`. |
 | `npm run preview` | Uruchamia `vite preview`; wymaga wcześniejszego buildu. |
 | `npm run lint` | Uruchamia ESLint wyłącznie dla `js/**/*.js`. |
+| `npm run check:references` | Sprawdza odwołania do identyfikatorów i duplikaty `id` w zbudowanych stronach `dist/`; wymaga wcześniejszego buildu i niczego nie zapisuje. |
 | `npm run format` | Uruchamia `prettier --write .` i nadpisuje niesformatowane pliki w zakresie formatowania. |
 | `npm run format:check` | Uruchamia `prettier --check .`; zgłasza różnice w formatowaniu bez zmieniania plików. |
 | `npm run images:convert` | Konwertuje PNG/JPG/JPEG z `assets/src-images/` do WebP i AVIF w generowanym `assets/images/`. |
@@ -117,7 +120,9 @@ Konwersja obrazów jest osobnym etapem i nie jest wywoływana przez build. Obecn
 
 ### Testy i walidacja
 
-Konfiguracja ESLint korzysta z `eslint:recommended`, środowiska przeglądarkowego i ostrzeżeń dla nieużywanych zmiennych. Zakres lintowania nie obejmuje HTML, CSS ani skryptu konwersji obrazów. Repozytorium nie zawiera automatycznych testów jednostkowych ani przeglądarkowych; sama konfiguracja narzędzi nie potwierdza poprawności interfejsu.
+Konfiguracja ESLint korzysta z `eslint:recommended`, środowiska przeglądarkowego i ostrzeżeń dla nieużywanych zmiennych. Zakres lintowania nie obejmuje HTML, CSS ani skryptów w `scripts/`. Repozytorium nie zawiera automatycznych testów jednostkowych ani przeglądarkowych; sama konfiguracja narzędzi nie potwierdza poprawności interfejsu.
+
+`npm run check:references` sprawdza odwołania do identyfikatorów w stronach HTML z katalogu głównego `dist/`, czyli już po wstawieniu fragmentów z `partials/` przez Vite. Dlatego wymaga wcześniejszego `npm run build` i sam go nie uruchamia. Na każdej stronie wykrywa zduplikowane `id` oraz odwołania bez celu w `aria-controls`, `aria-describedby` i `aria-labelledby` (każdy identyfikator z listy rozdzielonej spacjami osobno), w `label[for]`, w odnośnikach `href="#id"` na tej samej stronie i w odnośnikach do fragmentów innych stron projektu, np. `services.html#id`, sprawdzanych na stronie docelowej. Ten sam `id` na różnych stronach nie jest duplikatem. Pomijane są adresy zewnętrzne, `mailto:`, `tel:` i placeholdery `href="#"`. Każdy błąd podaje stronę, wiersz, atrybut oraz brakujący lub zduplikowany identyfikator, a polecenie kończy się wtedy kodem różnym od zera; przy powodzeniu podaje liczbę sprawdzonych stron i odwołań. Brak `dist/` również kończy się błędem z poleceniem wykonania buildu. Skrypt korzysta wyłącznie z wbudowanych modułów Node.js, niczego nie zapisuje i nie jest częścią `npm run build`. Sprawdza tylko istnienie celów odwołań, a nie semantykę ARIA ani działanie interakcji w przeglądarce.
 
 `npm run format:check` porównuje pliki z wynikiem Prettiera 3 w ustawieniach domyślnych (repozytorium nie zawiera konfiguracji Prettiera) i niczego nie zapisuje; kończy się błędem, gdy którykolwiek plik w zakresie wymaga formatowania. Jego zapisującym odpowiednikiem jest `npm run format`. Sprawdzenie dotyczy wyłącznie zapisu kodu i nie zastępuje lintowania ESLint ani testów działania strony w przeglądarce. Repozytorium nie przeszło formatowania bazowego, dlatego sprawdzenie zgłasza obecnie istniejące rozbieżności. Prettier domyślnie oczekuje końców linii LF, więc w kopii roboczej z końcami CRLF (np. w Windows z `core.autocrlf=true`) zgłasza każdy plik w zakresie.
 
@@ -219,7 +224,9 @@ Shared page chrome has a single source in `partials/`: `site-header.html` (skip 
 │       ├── services.css
 │       └── legal.css
 ├── js/main.js
-├── scripts/convert-images.js
+├── scripts/
+│   ├── check-references.js
+│   └── convert-images.js
 ├── .eslintrc.cjs
 ├── package.json
 ├── package-lock.json
@@ -247,6 +254,7 @@ Commands are defined in [package.json](package.json).
 | `npm run build` | Builds all root-level HTML pages through `vite build`. |
 | `npm run preview` | Starts `vite preview`; requires a prior build. |
 | `npm run lint` | Runs ESLint only on `js/**/*.js`. |
+| `npm run check:references` | Checks ID references and duplicate IDs in the built `dist/` pages; requires a prior build and writes nothing. |
 | `npm run format` | Runs `prettier --write .` and overwrites unformatted files within the formatting scope. |
 | `npm run format:check` | Runs `prettier --check .`; reports formatting differences without changing files. |
 | `npm run images:convert` | Converts PNG/JPG/JPEG from `assets/src-images/` into WebP and AVIF in the generated `assets/images/` directory. |
@@ -263,7 +271,9 @@ Image conversion is a separate step and is not invoked by the build. Current gra
 
 ### Testing and Validation
 
-ESLint is configured with `eslint:recommended`, a browser environment and warnings for unused variables. Linting does not cover HTML, CSS or the image conversion script. The repository contains no automated unit or browser tests; tool configuration alone does not establish interface correctness.
+ESLint is configured with `eslint:recommended`, a browser environment and warnings for unused variables. Linting does not cover HTML, CSS or the scripts in `scripts/`. The repository contains no automated unit or browser tests; tool configuration alone does not establish interface correctness.
+
+`npm run check:references` checks ID references in the root-level HTML pages of `dist/`, after Vite has inserted the `partials/` content. It therefore requires a prior `npm run build` and does not run one itself. On every page it reports duplicate `id` values and references without a target in `aria-controls`, `aria-describedby` and `aria-labelledby` (each ID of a whitespace-separated list separately), in `label[for]`, in same-page `href="#id"` links and in fragment links to other project pages, such as `services.html#id`, which are checked on the target page. The same `id` on different pages is not a duplicate. External URLs, `mailto:`, `tel:` and `href="#"` placeholders are skipped. Each error names the page, line, attribute and the missing or duplicated ID, and the command then exits with a non-zero code; on success it reports how many pages and references it checked. A missing `dist/` also fails, with an instruction to build first. The script uses only built-in Node.js modules, writes nothing and is not part of `npm run build`. It checks only that reference targets exist, not ARIA semantics or interactive behavior in a browser.
 
 `npm run format:check` compares files with Prettier 3 output using default options (the repository contains no Prettier configuration) and writes nothing; it fails when any in-scope file needs formatting. `npm run format` is its writing counterpart. The check covers code layout only and does not replace ESLint linting or runtime testing of the site in a browser. The repository has not received a baseline format, so the check currently reports existing differences. Prettier expects LF line endings by default, so in a working copy with CRLF endings (for example on Windows with `core.autocrlf=true`) it reports every in-scope file.
 
