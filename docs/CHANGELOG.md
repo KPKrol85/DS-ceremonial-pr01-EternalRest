@@ -38,6 +38,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 - Added ceremony-type filtering and expandable pricing details with synchronized ARIA states.
 - Added FAQ accordions on the home and guide pages.
 - Added a demonstration contact form with contact preferences, validation and local success feedback; no server submission or enquiry storage.
+- Added contact-form error recovery: a failed submission focuses the first empty required field below the sticky header, and each field's error clears as soon as it holds a value.
 - Added scroll-triggered reveals and a back-to-top control with reduced-motion support.
 - Added reusable primary and secondary button variants, separating interactive actions from static badges and the header CTA.
 - Added a responsive three-column pricing comparison layout from 760 px, with independently expanding cards and a constrained filter.

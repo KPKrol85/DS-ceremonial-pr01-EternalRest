@@ -252,30 +252,45 @@
   const form = document.querySelector("[data-validate-form]");
   if (form) {
     const success = form.querySelector("[data-form-success]");
+    const setFieldError = (field, isInvalid) => {
+      const errorId = field.getAttribute("aria-describedby");
+      const errorEl = errorId ? document.getElementById(errorId) : null;
+      if (isInvalid) {
+        field.setAttribute("aria-invalid", "true");
+      } else {
+        field.removeAttribute("aria-invalid");
+      }
+      if (errorEl) {
+        errorEl.textContent = isInvalid ? "To pole jest wymagane." : "";
+      }
+    };
+    form.addEventListener("input", (event) => {
+      const field = event.target;
+      if (
+        field.matches("[data-required]") &&
+        field.getAttribute("aria-invalid") === "true" &&
+        field.value.trim()
+      ) {
+        setFieldError(field, false);
+      }
+    });
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       if (success) {
         success.hidden = true;
       }
-      let hasError = false;
+      let firstInvalid = null;
       const fields = form.querySelectorAll("[data-required]");
       fields.forEach((field) => {
-        const errorId = field.getAttribute("aria-describedby");
-        const errorEl = errorId ? document.getElementById(errorId) : null;
-        if (!field.value.trim()) {
-          hasError = true;
-          field.setAttribute("aria-invalid", "true");
-          if (errorEl) {
-            errorEl.textContent = "To pole jest wymagane.";
-          }
-        } else {
-          field.removeAttribute("aria-invalid");
-          if (errorEl) {
-            errorEl.textContent = "";
-          }
+        const isInvalid = !field.value.trim();
+        setFieldError(field, isInvalid);
+        if (isInvalid && !firstInvalid) {
+          firstInvalid = field;
         }
       });
-      if (!hasError && success) {
+      if (firstInvalid) {
+        firstInvalid.focus();
+      } else if (success) {
         success.hidden = false;
         success.focus();
         form.reset();
