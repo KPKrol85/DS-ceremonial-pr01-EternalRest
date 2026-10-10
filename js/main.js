@@ -327,6 +327,13 @@
         form.reset();
       }
     });
+    // The form is inert in the markup so it cannot submit its fields in a GET query
+    // string without this handler; it is activated only once the handler is attached.
+    form.inert = false;
+    const fallback = document.querySelector("[data-form-fallback]");
+    if (fallback) {
+      fallback.hidden = true;
+    }
   }
 
   const backToTop = document.querySelector("[data-back-to-top]");

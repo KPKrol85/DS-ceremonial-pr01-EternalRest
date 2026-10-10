@@ -569,6 +569,26 @@
   color: var(--color-success);
 }
 
+.contact-form {
+  display: grid;
+  align-content: start;
+  gap: var(--space-md);
+}
+
+/* Shown while the inert form is unavailable; main.js hides it once the form is active. */
+.contact-form__notice {
+  padding: var(--space-md);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-alt);
+  font-size: var(--font-size-sm);
+}
+
+/* Hidden while main.js may still load; disclosure-init clears .js-pending if it fails. */
+.js-pending .contact-form__notice {
+  display: none;
+}
+
 /* The bottom padding keeps the last row clear of the back-to-top control. */
 .footer {
   padding: var(--space-3xl) 0 var(--space-4xl);

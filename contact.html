@@ -8,6 +8,7 @@
       name="description"
       content="Skontaktuj się z Eternal Rest w Tarnowie. Formularz zgłoszeniowy, szybkie wsparcie 24/7 oraz mapa dojazdu."
     />
+    <!-- partial:disclosure-init -->
     <link rel="stylesheet" href="css/main.css" />
     <script type="module" src="js/main.js"></script>
   </head>
@@ -26,108 +27,116 @@
             </p>
           </div>
           <div class="grid grid--two">
-            <form class="form" data-validate-form novalidate>
-              <p class="form__hint">Pola oznaczone gwiazdką (*) są wymagane.</p>
-              <div class="form__field">
-                <label for="name">Imię i nazwisko <span class="form__required" aria-hidden="true">*</span></label>
-                <input
-                  class="form__input"
-                  id="name"
-                  name="name"
-                  type="text"
-                  required
-                  data-required
-                  aria-describedby="error-name"
-                />
-                <span class="form__error" id="error-name"></span>
-              </div>
-              <div class="form__field">
-                <label for="email">Adres e-mail <span class="form__required" aria-hidden="true">*</span></label>
-                <input
-                  class="form__input"
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  data-required
-                  aria-describedby="error-email"
-                />
-                <span class="form__error" id="error-email"></span>
-              </div>
-              <div class="form__field">
-                <label for="phone">Telefon kontaktowy <span class="form__required" aria-hidden="true">*</span></label>
-                <input
-                  class="form__input"
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  required
-                  data-required
-                  aria-describedby="error-phone"
-                />
-                <span class="form__error" id="error-phone"></span>
-              </div>
-              <div class="form__field">
-                <label>Preferowany kontakt</label>
-                <div class="form__choices">
-                  <button
-                    class="button button--secondary"
-                    type="button"
-                    data-contact-method="Telefon"
-                    aria-pressed="true"
-                  >
-                    Telefon
-                  </button>
-                  <button
-                    class="button button--secondary"
-                    type="button"
-                    data-contact-method="E-mail"
-                    aria-pressed="false"
-                  >
-                    E-mail
-                  </button>
+            <div class="contact-form">
+              <p class="contact-form__notice" data-form-fallback>
+                Formularz demonstracyjny działa tylko przy włączonym JavaScripcie. Napisz do nas na
+                <a class="card__link" href="mailto:kontakt@kp-code.pl">kontakt@kp-code.pl</a> lub
+                zadzwoń pod numer
+                <a class="card__link" href="tel:+48533537091">+48 533 537 091</a>.
+              </p>
+              <form class="form" data-validate-form novalidate inert>
+                <p class="form__hint">Pola oznaczone gwiazdką (*) są wymagane.</p>
+                <div class="form__field">
+                  <label for="name">Imię i nazwisko <span class="form__required" aria-hidden="true">*</span></label>
+                  <input
+                    class="form__input"
+                    id="name"
+                    name="name"
+                    type="text"
+                    required
+                    data-required
+                    aria-describedby="error-name"
+                  />
+                  <span class="form__error" id="error-name"></span>
                 </div>
-                <input type="hidden" name="preferred" value="Telefon" data-contact-input />
-              </div>
-              <div class="form__field">
-                <label for="topic">Zakres pomocy <span class="form__required" aria-hidden="true">*</span></label>
-                <select class="form__select" id="topic" name="topic" required data-required aria-describedby="error-topic">
-                  <option value="">Wybierz temat</option>
-                  <option>Organizacja ceremonii</option>
-                  <option>Transport i logistyka</option>
-                  <option>Wsparcie formalne</option>
-                  <option>Inne zapytanie</option>
-                </select>
-                <span class="form__error" id="error-topic"></span>
-              </div>
-              <div class="form__field">
-                <label for="message">Treść wiadomości <span class="form__required" aria-hidden="true">*</span></label>
-                <textarea
-                  class="form__textarea"
-                  id="message"
-                  name="message"
-                  rows="4"
-                  required
-                  data-required
-                  aria-describedby="error-message"
-                ></textarea>
-                <span class="form__error" id="error-message"></span>
-              </div>
-              <div class="form__field">
-                <button class="button button--primary" type="submit">Wyślij zgłoszenie</button>
-                <p class="form__hint">Nie pobieramy żadnych danych wrażliwych.</p>
-              </div>
-              <div
-                class="form__success"
-                data-form-success
-                role="status"
-                aria-live="polite"
-                tabindex="-1"
-                hidden
-              >
-                Dziękujemy. Skontaktujemy się z Państwem możliwie szybko.
-              </div>
-            </form>
+                <div class="form__field">
+                  <label for="email">Adres e-mail <span class="form__required" aria-hidden="true">*</span></label>
+                  <input
+                    class="form__input"
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    data-required
+                    aria-describedby="error-email"
+                  />
+                  <span class="form__error" id="error-email"></span>
+                </div>
+                <div class="form__field">
+                  <label for="phone">Telefon kontaktowy <span class="form__required" aria-hidden="true">*</span></label>
+                  <input
+                    class="form__input"
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    required
+                    data-required
+                    aria-describedby="error-phone"
+                  />
+                  <span class="form__error" id="error-phone"></span>
+                </div>
+                <div class="form__field">
+                  <label>Preferowany kontakt</label>
+                  <div class="form__choices">
+                    <button
+                      class="button button--secondary"
+                      type="button"
+                      data-contact-method="Telefon"
+                      aria-pressed="true"
+                    >
+                      Telefon
+                    </button>
+                    <button
+                      class="button button--secondary"
+                      type="button"
+                      data-contact-method="E-mail"
+                      aria-pressed="false"
+                    >
+                      E-mail
+                    </button>
+                  </div>
+                  <input type="hidden" name="preferred" value="Telefon" data-contact-input />
+                </div>
+                <div class="form__field">
+                  <label for="topic">Zakres pomocy <span class="form__required" aria-hidden="true">*</span></label>
+                  <select class="form__select" id="topic" name="topic" required data-required aria-describedby="error-topic">
+                    <option value="">Wybierz temat</option>
+                    <option>Organizacja ceremonii</option>
+                    <option>Transport i logistyka</option>
+                    <option>Wsparcie formalne</option>
+                    <option>Inne zapytanie</option>
+                  </select>
+                  <span class="form__error" id="error-topic"></span>
+                </div>
+                <div class="form__field">
+                  <label for="message">Treść wiadomości <span class="form__required" aria-hidden="true">*</span></label>
+                  <textarea
+                    class="form__textarea"
+                    id="message"
+                    name="message"
+                    rows="4"
+                    required
+                    data-required
+                    aria-describedby="error-message"
+                  ></textarea>
+                  <span class="form__error" id="error-message"></span>
+                </div>
+                <div class="form__field">
+                  <button class="button button--primary" type="submit">Wyślij zgłoszenie</button>
+                  <p class="form__hint">Nie pobieramy żadnych danych wrażliwych.</p>
+                </div>
+                <div
+                  class="form__success"
+                  data-form-success
+                  role="status"
+                  aria-live="polite"
+                  tabindex="-1"
+                  hidden
+                >
+                  Dziękujemy. Skontaktujemy się z Państwem możliwie szybko.
+                </div>
+              </form>
+            </div>
             <div class="card" data-reveal>
               <h2 class="card__title">Nasze biuro</h2>
               <p class="text-muted">ul. Marynarki Wojennej 12, 33-100 Tarnów, Polska</p>

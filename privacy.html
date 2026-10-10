@@ -231,8 +231,8 @@
                 JavaScripcie jego zatwierdzenie jest obsługiwane wyłącznie w
                 przeglądarce, a kod Serwisu nie przesyła wprowadzonych danych do
                 Administratora, na serwer ani do zewnętrznego dostawcy obsługi
-                formularzy. Sposób działania Formularza, w tym ograniczenie
-                występujące bez JavaScriptu, opisano w punkcie 3.
+                formularzy. Sposób działania Formularza, w tym jego zachowanie
+                bez JavaScriptu, opisano w punkcie 3.
               </p>
               <p>
                 Do Formularza
@@ -341,24 +341,19 @@
                 podejmie kontakt.
               </p>
               <p>
-                Formularz ma znane ograniczenie. Bez JavaScriptu lub w przypadku
-                błędu jego działania przeglądarka może wysłać Formularz w sposób
-                domyślny – jako żądanie GET ponownie otwierające stronę Kontakt
-                / Formularz. Wartości pól (imię i nazwisko, adres e-mail,
-                telefon kontaktowy, preferowany kontakt, zakres pomocy i
-                dodatkowe informacje) zostają wówczas umieszczone w adresie URL.
-                Taki adres może zostać zapisany w historii przeglądarki, a jako
-                część żądania trafia do infrastruktury dostawcy hostingu –
-                podobnie jak dane techniczne połączenia opisane poniżej. Nie
-                jest to kanał kontaktu z Administratorem, a Projekt nie
-                przewiduje odczytywania ani wykorzystywania danych przekazanych
-                w ten sposób.
+                Formularz staje się aktywny dopiero wtedy, gdy JavaScript
+                Serwisu przejmie obsługę jego zatwierdzenia. Bez JavaScriptu lub
+                gdy skrypt Serwisu się nie wczyta, pola Formularza pozostają
+                nieaktywne: nie można ich wypełnić ani wysłać Formularza, więc
+                wprowadzone dane nie trafiają do adresu URL, historii
+                przeglądarki ani żądania do serwera. Zamiast tego wyświetlany
+                jest komunikat z odnośnikami do adresu e-mail i numeru telefonu
+                Administratora.
               </p>
               <p>
-                Z tego powodu Formularza nie należy używać bez działającego
-                JavaScriptu. Niezależnie od trybu działania nie należy
-                wprowadzać do niego prawdziwych danych osobowych, informacji
-                poufnych ani danych wrażliwych.
+                Niezależnie od trybu działania nie należy wprowadzać do
+                Formularza prawdziwych danych osobowych, informacji poufnych ani
+                danych wrażliwych.
               </p>
 
               <h3 class="legal-section__subheading">
@@ -757,13 +752,6 @@
                   niezbędny do obsługi żądania przeglądarki; zakres i okres
                   ewentualnego przechowywania ich w logach serwera określa
                   dostawca hostingu,
-                </li>
-                <li>
-                  dane umieszczone w adresie URL w wyniku domyślnego wysłania
-                  Formularza bez JavaScriptu mogą pozostać w historii
-                  przeglądarki do czasu jej wyczyszczenia, a ich ewentualne
-                  przechowywanie w logach serwera podlega zasadom opisanym dla
-                  danych technicznych połączenia,
                 </li>
                 <li>
                   preferencja motywu zapisana w pamięci

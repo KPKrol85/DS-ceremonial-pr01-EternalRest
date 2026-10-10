@@ -56,23 +56,9 @@ The main weakness is verification. The repository has no automated tests (README
 
 ### IMP-QUALITY-04 — Prevent the no-JavaScript contact form submission from placing entered data in the URL
 
-- **Affected area:** The contact form when `js/main.js` does not run, and the README and legal statements that describe this state.
-- **Evidence:** `contact.html:29`; `contact.html:36`, `contact.html:49`, `contact.html:62`, `contact.html:90`, `contact.html:94`, `contact.html:108`; `js/main.js:292-293`; README lines 9 and 155; `privacy.html:344-361`, `privacy.html:761-766`; `terms.html:504-510`, `terms.html:666-670`.
-- **Current implementation:** Submission is prevented only by the module's `submit` handler. The form has no `method` or `action`. Without JavaScript, or if the module fails, the browser sends a default GET request to `contact.html` with all six named fields in the query string: name, e-mail, phone, preferred contact, topic and message. README, the privacy policy and the terms document this as a known limitation and tell visitors not to use the form without JavaScript. That mitigation is text only, and visitors to the public demo URL may never read those documents.
-- **Proposed improvement:** Keep the form from submitting until `js/main.js` has attached its handler. In the no-JavaScript state, show a short visible Polish notice that points to the existing phone and e-mail links. Neither the submit button nor implicit Enter-key submission may then send the fields while the script is not running.
-- **Expected quality value:** This removes the only documented path by which entered personal data reaches the URL, browser history and hosting request logs, so privacy no longer depends on visitors reading the policy. The legal texts can then describe a simpler and safer behavior.
-- **Implementation scope:**
-  - Code: `contact.html`, the form setup in `js/main.js`, and CSS for the notice following the existing `.no-js` patterns.
-  - Documentation: update the known-limitation passages in `privacy.html`, `terms.html` and README (both languages) so they describe the new behavior consistently, and add a CHANGELOG entry.
-  - Preserve: all JavaScript-enabled form behavior, field names, labels, ARIA relationships, error recovery and the success message.
-  - Avoid a visible flash of the notice during normal loading; `partials/disclosure-init.html` is the existing `js-pending` precedent.
-  - No backend or form service.
-- **Acceptance criteria:**
-  - The following holds both with JavaScript disabled and with the `main.js` request blocked: clicking the submit button and pressing Enter in a text field leave the URL unchanged, with no query string, and the notice with working phone and e-mail links is visible.
-  - With JavaScript enabled, validation, focus, the success message and reset behave as before at 375 px and 1280 px.
-  - A normal load shows no visible flash of the notice.
-  - README and the legal pages no longer describe a GET fallback that can no longer occur.
-  - `npm run lint` and `npm run build` pass.
+- **Status:** COMPLETED — implemented and verified.
+- **Result:** The form in `contact.html` carries the native `inert` attribute, and `js/main.js` sets `form.inert = false` only after the `submit` handler with `preventDefault()` is attached, then hides the fallback notice. A Polish notice with the existing `mailto:` and `tel:` links sits outside the form in the same grid column; `contact.html` now includes `partials/disclosure-init.html`, and `.js-pending` hides the notice during normal loading. Field names, labels, `data-*` hooks, ARIA relationships, validation and success behavior are unchanged, and README, `privacy.html` and `terms.html` describe the new behavior.
+- **Verification:** On the built site via `vite preview`, headless Chrome over CDP with script execution disabled and, separately, with the `main.js` request blocked: the form stayed inert, clicking the submit button and pressing Enter in text fields left the URL unchanged with no query-string request, the notice was visible and its links were focusable and hit-testable; a control run with `inert` removed did produce the GET query string. With JavaScript at 375 px and 1280 px, the notice stayed hidden while `main.js` was held back, and required-field and e-mail format errors, `aria-invalid`, error recovery, focus, success focus and reset behaved as before without navigation; `npm run lint`, `npm run build` and `npm run check:references` passed. Other browser engines, screen readers and real `mailto:`/`tel:` handler launches were not tested.
 - **Impact:** Medium
 - **Effort:** Medium
 

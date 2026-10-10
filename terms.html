@@ -505,8 +505,8 @@
                 elementów Serwisu. Podstawowe publiczne treści oraz odnośniki do
                 sekcji Regulaminu pozostają dostępne bez JavaScriptu.
                 Demonstracyjny Formularz wymaga prawidłowo działającego
-                JavaScriptu i nie należy z niego korzystać, gdy JavaScript jest
-                wyłączony lub nie działa. Wyłączenie pamięci przeglądarki może
+                JavaScriptu; gdy JavaScript jest wyłączony lub nie działa,
+                Formularz pozostaje nieaktywny. Wyłączenie pamięci przeglądarki może
                 uniemożliwić zapamiętanie preferencji motywu i ograniczyć
                 obsługę jego zmiany.
               </p>
@@ -664,10 +664,11 @@
               </p>
               <p>
                 Demonstracyjny Formularz wymaga prawidłowo działającego
-                JavaScriptu. Nie należy korzystać z niego bez JavaScriptu ani w
-                przypadku błędu jego działania: domyślne zachowanie przeglądarki
-                może wówczas umieścić dane pól w adresie URL i przesłać je w
-                żądaniu otwarcia strony.
+                JavaScriptu. Bez JavaScriptu lub gdy skrypt Serwisu się nie
+                wczyta, Formularz pozostaje nieaktywny i nie można go wypełnić
+                ani wysłać, więc dane pól nie trafiają do adresu URL ani żądania
+                do serwera. W takim przypadku Serwis wyświetla komunikat z
+                odnośnikami do adresu e-mail i numeru telefonu Operatora.
               </p>
               <p>
                 Użytkownik nie powinien umieszczać w Formularzu prawdziwych
@@ -972,7 +973,7 @@
                 Formularz ma charakter demonstracyjny i przy prawidłowo
                 działającym JavaScripcie nie przekazuje jego zawartości do
                 Operatora ani dostawcy obsługi formularzy. Wymagania oraz
-                ograniczenia tego trybu, w tym zakaz używania Formularza bez
+                ograniczenia tego trybu, w tym zachowanie Formularza bez
                 działającego JavaScriptu, opisano w punkcie 9 Regulaminu.
               </p>
               <p>
