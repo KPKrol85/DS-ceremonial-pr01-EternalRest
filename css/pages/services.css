@@ -1,4 +1,5 @@
 .services-list {
+  --services-anchor-offset: 6rem;
   display: grid;
   gap: var(--space-lg);
 }
@@ -8,6 +9,7 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-surface);
+  scroll-margin-top: var(--services-anchor-offset);
 }
 
 .section--alt .services-list__item {
@@ -28,8 +30,14 @@
   gap: var(--space-xs);
 }
 
+/* Without JavaScript the shared header is not sticky, so anchors need no header offset. */
+.no-js .services-list {
+  --services-anchor-offset: var(--space-lg);
+}
+
 @media (min-width: 760px) {
   .services-list {
+    --services-anchor-offset: 8rem;
     grid-template-columns: repeat(2, 1fr);
   }
 }
