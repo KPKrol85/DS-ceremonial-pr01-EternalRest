@@ -4,6 +4,8 @@ import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const distDir = path.resolve(__dirname, "../dist");
+const initializerFile = "partials/disclosure-init.html";
+const initializerPath = path.resolve(__dirname, "..", initializerFile);
 
 // Attributes holding a whitespace-separated list of IDs on any element.
 const ID_LIST_ATTRIBUTES = [
@@ -32,6 +34,11 @@ const NON_MARKUP =
 const START_TAG = /<([a-z][a-z0-9-]*)((?:"[^"]*"|'[^']*'|[^"'>])*)>/gi;
 const ATTRIBUTE =
   /([^\s"'<>/=]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+)))?/g;
+
+// The `appModule` regular-expression literal declared by the disclosure initializer:
+// its pattern (with escapes and character classes, which may contain "/") and flags.
+const APP_MODULE_DECLARATION =
+  /\bconst\s+appModule\s*=\s*\/((?:\\.|\[(?:\\.|[^\]\\\n])*\]|[^/\\[\n])+)\/([a-z]*)\s*;/g;
 
 const blank = (text) => text.replace(/[^\n]/g, " ");
 
@@ -117,6 +124,147 @@ const readPage = (page) => {
   return { html, ids, references };
 };
 
+// Lists the <script> elements of an HTML source with their attributes and raw content.
+// Offsets are equal in the source and its markup, so the content comes from the source.
+const readScripts = (source) => {
+  const html = toMarkup(source);
+  const scripts = [];
+  for (const tag of html.matchAll(START_TAG)) {
+    if (tag[1].toLowerCase() !== "script") continue;
+    const start = tag.index + tag[0].length;
+    const end = html.indexOf("<", start);
+    scripts.push({
+      attributes: readAttributes(tag),
+      content: source.slice(start, end === -1 ? undefined : end),
+      line: lineAt(html, tag.index),
+    });
+  }
+  return scripts;
+};
+
+const isInline = ({ attributes }) => !attributes.has("src");
+// Vite indents inserted partials, so initializer copies are compared without layout.
+const normalize = (text) => text.replace(/\s+/g, " ").trim();
+
+// Reads the canonical initializer and compiles its appModule expression without
+// running any of its code. Throws a diagnostic when the contract cannot be read.
+const readInitializer = () => {
+  if (!existsSync(initializerPath)) {
+    throw new Error(`brak pliku ${initializerFile}`);
+  }
+  const scripts = readScripts(readFileSync(initializerPath, "utf8"));
+  const inline = scripts.filter(isInline);
+  if (inline.length !== 1) {
+    throw new Error(
+      `${initializerFile}: oczekiwano jednego skryptu inline, znaleziono ${inline.length}`,
+    );
+  }
+  const { content } = inline[0];
+  const declarations = [...content.matchAll(APP_MODULE_DECLARATION)];
+  if (declarations.length !== 1) {
+    throw new Error(
+      `${initializerFile}: oczekiwano jednej deklaracji "const appModule = /…/;" z literałem wyrażenia regularnego, znaleziono ${declarations.length}`,
+    );
+  }
+  const [, source, flags] = declarations[0];
+  const literal = `/${source}/${flags}`;
+  try {
+    return { pattern: new RegExp(source, flags), literal, content };
+  } catch (error) {
+    throw new Error(
+      `${initializerFile}: nie można skompilować ${literal} (${error.message})`,
+    );
+  }
+};
+
+// The initializer clears .js-pending only for errors from a URL its appModule expression
+// matches, so each built page that includes it must load a module with a matching path.
+const checkModulePaths = (pages) => {
+  console.log(`\nKontrakt ścieżki modułu aplikacji (${initializerFile}):`);
+  let initializer;
+  try {
+    initializer = readInitializer();
+  } catch (error) {
+    console.error(`Nie można sprawdzić kontraktu: ${error.message}`);
+    return false;
+  }
+  console.log(`  Wyrażenie appModule: ${initializer.literal}`);
+
+  const expected = normalize(initializer.content);
+  const errors = [];
+  const skipped = [];
+  let matched = 0;
+
+  for (const page of pages) {
+    const scripts = readScripts(readFileSync(path.join(distDir, page), "utf8"));
+    const inline = scripts.filter(isInline);
+    if (!inline.some(({ content }) => normalize(content) === expected)) {
+      const copy = inline.find(({ content }) => content.includes("appModule"));
+      if (copy) {
+        errors.push(
+          `${page}:${copy.line} skrypt inline z appModule różni się od ${initializerFile}`,
+        );
+      } else {
+        skipped.push(page);
+      }
+      continue;
+    }
+
+    const modules = scripts.filter(
+      ({ attributes }) =>
+        attributes.has("src") &&
+        attributes.get("type")?.value.trim().toLowerCase() === "module",
+    );
+    if (modules.length !== 1) {
+      const lines = modules.map(({ line }) => line).join(", ");
+      errors.push(
+        `${page}: oczekiwano jednego <script type="module" src>, znaleziono ${modules.length}${lines ? ` (wiersze: ${lines})` : ""}`,
+      );
+      continue;
+    }
+
+    const [{ attributes, line }] = modules;
+    const src = attributes.get("src").value;
+    const base = `${SITE_ORIGIN}/${page}`;
+    const where = `${page}:${line} src="${src}"`;
+    const url = URL.canParse(src, base) ? new URL(src, base) : null;
+    if (!url) {
+      errors.push(`${where}: nieprawidłowy adres URL`);
+    } else if (url.origin !== SITE_ORIGIN) {
+      errors.push(
+        `${where}: moduł spoza witryny, a inicjalizator rozpoznaje tylko moduły z tego samego źródła`,
+      );
+    } else if (!initializer.pattern.test(url.pathname)) {
+      errors.push(
+        `${where}: ścieżka ${url.pathname} nie pasuje do ${initializer.literal}`,
+      );
+    } else {
+      matched += 1;
+      console.log(`  ${page}: ${url.pathname}`);
+    }
+  }
+
+  console.log(
+    `  Pominięte strony bez inicjalizatora: ${skipped.length ? skipped.join(", ") : "brak"}`,
+  );
+
+  if (!matched && !errors.length) {
+    errors.push(
+      `żadna strona w dist/ nie zawiera inicjalizatora z ${initializerFile}`,
+    );
+  }
+  if (errors.length) {
+    console.error(`\nBłędy kontraktu ścieżki modułu: ${errors.length}`);
+    errors.forEach((error) => console.error(`  ${error}`));
+    return false;
+  }
+
+  console.log(
+    `Moduł aplikacji pasuje do wyrażenia appModule na stronach z inicjalizatorem: ${matched}.`,
+  );
+  return true;
+};
+
 const run = () => {
   const pages = existsSync(distDir)
     ? readdirSync(distDir, { withFileTypes: true })
@@ -184,12 +332,13 @@ const run = () => {
     console.error(`\nBłędy odwołań do identyfikatorów: ${errors.length}`);
     errors.forEach((error) => console.error(`  ${error}`));
     process.exitCode = 1;
-    return;
+  } else {
+    console.log(
+      "Wszystkie odwołania wskazują istniejące id; brak zduplikowanych id.",
+    );
   }
 
-  console.log(
-    "Wszystkie odwołania wskazują istniejące id; brak zduplikowanych id.",
-  );
+  if (!checkModulePaths(pages)) process.exitCode = 1;
 };
 
 run();

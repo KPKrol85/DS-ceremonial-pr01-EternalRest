@@ -56,6 +56,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 ### Build and Tooling
 
 - Added read-only `npm run check:references`, a dependency-free check of the built `dist/` pages that fails on duplicate IDs and on `aria-controls`, `aria-describedby`, `aria-labelledby`, `label[for]` and internal fragment-link references without a target.
+- Extended `npm run check:references` to verify that each built page with `partials/disclosure-init.html` loads exactly one application module whose resolved path matches the initializer's `appModule` expression, read from the partial itself, so build naming drift cannot silently disable the disclosure fallback.
 - Added build-time HTML partials for shared page chrome, with Vite integration, page-aware navigation states and development reload support.
 - Added `.gitattributes` rules for consistent LF line endings and binary image handling.
 - Added read-only `npm run format:check` and `.prettierignore` to control formatting scope.
