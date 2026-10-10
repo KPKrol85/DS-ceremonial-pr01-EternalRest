@@ -48,20 +48,9 @@ The main weakness is verification. The repository has no automated tests (README
 
 ### IMP-QUALITY-03 — Announce the pricing filter result to assistive technologies
 
-- **Affected area:** Pricing filter on `pricing.html`.
-- **Evidence:** `pricing.html:29-37`, `pricing.html:39`, `pricing.html:60`, `pricing.html:81`; `js/main.js:235-245`; `css/utilities.css:36-38`, `css/utilities.css:40-48`; `css/components.css:810-813`; `contact.html:120-129`.
-- **Current implementation:** Changing the select toggles `.is-hidden` (`display: none !important`) on the package cards, which removes the non-matching cards from rendering and from the accessibility tree. Nothing reports how many packages remain. The only live region in the project is the contact form's success message. A screen-reader user who changes the filter gets no confirmation and has to move past the filter to discover what changed.
-- **Proposed improvement:** Add a visually hidden polite status region next to the filter. On each filter change, update it with a short Polish summary of the visible packages, for example "Wyświetlane pakiety: 1 z 3".
-- **Expected quality value:** Non-visual users get the immediate feedback that sighted users get from the layout change. The change reuses the existing `.sr-only` utility and the project's established `role="status"` pattern.
-- **Implementation scope:** `pricing.html` and the pricing-filter handler in `js/main.js`, plus a CHANGELOG entry for the accessibility behavior. Place the region inside the `.pricing-filter` wrapper so that the existing no-JavaScript fallback hides it together with the filter. The region stays empty on page load so that nothing is announced on load. Preserve the filter values, `data-category` matching, `.is-hidden` behavior, package-detail disclosures and layout.
-- **Acceptance criteria:**
-  - On load, the region is present, empty and not visible.
-  - Selecting each option sets the correct count: 3 of 3 for "Wszystkie pakiety" and 1 of 3 for each category.
-  - The region is exposed as a polite status in the accessibility tree.
-  - With JavaScript disabled, the filter and the region are both hidden.
-  - Layout is unchanged at 375 px and 1280 px.
-  - `npm run lint` and `npm run build` pass.
-  - The spoken announcement is checked with a screen reader, or recorded as not tested. No conformance claim is made.
+- **Status:** COMPLETED — implemented and verified.
+- **Result:** `pricing.html` now has an initially empty `<p class="sr-only" role="status" aria-live="polite" data-pricing-status>` inside the `.pricing-filter` wrapper, directly after the select, so the existing no-JavaScript rule hides it with the filter without new CSS. On each filter change, `js/main.js` keeps the existing `data-category` matching and `.is-hidden` toggling, then counts the cards without `.is-hidden` and sets `textContent` to "Wyświetlane pakiety: X z Y", where Y is the size of the package-card collection. Focus, option values and the package-detail disclosures are unchanged.
+- **Verification:** `npm run lint`, `npm run build` and `npm run check:references` passed. In the built preview in Chromium at 1280 px and 375 px, the region was empty and clipped to 1 × 1 px on load, every option produced the expected count (3 z 3, or 1 z 3 with only the matching card shown), the accessibility tree exposed it as a status with `aria-live="polite"`, the filter, card-grid and page geometry were identical with and without the region, and a package-detail disclosure still expanded and collapsed. With all scripts stripped and with a failed `main.js` load, the filter wrapper was `display: none` and the region had no rendered box. Limitation: no screen reader was available, so the spoken announcement was not tested; JavaScript-disabled states were emulated in Chromium rather than by a browser setting, and no conformance claim is made.
 - **Impact:** Medium
 - **Effort:** Small
 

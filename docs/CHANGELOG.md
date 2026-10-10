@@ -36,6 +36,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 - Added light, dark and system themes with versioned preferences stored in `localStorage`.
 - Added accessible mobile navigation, keyboard focus management, skip links and Escape handling.
 - Added ceremony-type filtering and expandable pricing details with synchronized ARIA states.
+- Added a visually hidden polite status region to the pricing filter that announces the number of visible packages, for example "Wyświetlane pakiety: 1 z 3", after each filter change; it stays empty on load and is hidden with the filter when JavaScript is unavailable.
 - Added FAQ accordions on the home and guide pages.
 - Added a demonstration contact form with contact preferences, validation and local success feedback; no server submission or enquiry storage.
 - Added contact-form error recovery: a failed submission focuses the first empty required field below the sticky header, and each field's error clears as soon as it holds a value.

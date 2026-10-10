@@ -233,14 +233,22 @@
   });
 
   const pricingFilter = document.querySelector("[data-pricing-filter]");
+  const pricingStatus = document.querySelector("[data-pricing-status]");
   if (pricingFilter) {
     pricingFilter.addEventListener("change", (event) => {
       const value = event.target.value;
-      document.querySelectorAll("[data-pricing-card]").forEach((card) => {
+      const cards = document.querySelectorAll("[data-pricing-card]");
+      cards.forEach((card) => {
         const category = card.dataset.category;
         const shouldShow = value === "all" || value === category;
         card.classList.toggle("is-hidden", !shouldShow);
       });
+      if (pricingStatus) {
+        const visibleCount = Array.from(cards).filter(
+          (card) => !card.classList.contains("is-hidden")
+        ).length;
+        pricingStatus.textContent = `Wyświetlane pakiety: ${visibleCount} z ${cards.length}`;
+      }
     });
   }
 
