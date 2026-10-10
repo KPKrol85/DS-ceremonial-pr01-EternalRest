@@ -371,6 +371,22 @@
   color: var(--color-text-muted);
 }
 
+/* Inline contact links stay underlined at rest; nowrap keeps the phone number on one line. */
+.card__link {
+  text-decoration-line: underline;
+  text-decoration-color: var(--color-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  white-space: nowrap;
+  transition: color var(--transition-fast);
+}
+
+.card__link:hover,
+.card__link:focus-visible {
+  color: var(--color-text);
+  text-decoration-thickness: 2px;
+}
+
 .badge {
   display: inline-flex;
   align-items: center;

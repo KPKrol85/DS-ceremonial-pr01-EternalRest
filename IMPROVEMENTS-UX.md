@@ -36,18 +36,9 @@ Several parts already work well: navigation orientation (`aria-current`, skip li
 
 ### IMP-UX-03 — Make the displayed e-mail address and phone number actionable
 
-- **Affected journey:** Contacting directly from the footer on all nine pages and from the "Nasze biuro" card on the contact page.
-- **Evidence:** Plain-text e-mail and phone in `partials/footer-marketing.html:57-65` (lines `60-61`), `partials/footer-legal.html:34-41` (lines `37-38`) and `contact.html:129`. The same values are already links elsewhere: `tel:+48533537091` in `partials/site-header.html:75`, `index.html:29` and `contact.html:146`, and `mailto:kontakt@kp-code.pl` in the legal pages. The terms describe e-mail as the real way to reach the operator (`terms.html:682-687`). Browser check: `contact.html` contains no `mailto:` link. At 375×812 the header call button is inside the collapsed menu panel, and the only in-page call button starts about 1,727 px down the page.
-- **Current experience:** The address and number are visible but can only be copied by hand. E-mail cannot be started from any marketing page. The number in the office card is not tappable; a separate call button sits below the map placeholder.
-- **Proposed improvement:** Render the footer and office-card e-mail and phone values as `mailto:` and `tel:` links, using exactly the values already linked elsewhere in the project.
-- **Expected user value:** On touch devices, a call or e-mail starts with a single tap. The e-mail channel, which the terms identify as the actual contact path, becomes reachable from every page.
-- **Implementation scope:** Both footer partials and `contact.html:129`. Reuse the existing `.footer__links a` styles (`css/components.css:612-627`) and an existing link treatment for the card. Keep the values themselves, the "Kontakt — demonstracja" heading in the legal footer, the address and availability lines as plain text, the existing call buttons and the partial mechanism. Introduce no new contact data.
-- **Acceptance criteria:**
-  - On all nine built pages, the footer e-mail is a `mailto:kontakt@kp-code.pl` link and the footer phone is a `tel:+48533537091` link, with unchanged visible text.
-  - On `contact.html`, the office-card e-mail and phone are links with the same targets.
-  - The new links have visible hover and `:focus-visible` states consistent with existing footer links in light and dark themes.
-  - The footer and card layouts do not overflow at 375 px or 1280 px.
-  - `npm run build` succeeds with all partials resolved.
+- **Status:** COMPLETED — implemented and verified.
+- **Result:** Rendered the e-mail address and phone number in both footer partials and the "Nasze biuro" card as `mailto:kontakt@kp-code.pl` and `tel:+48533537091` links. The footer links reuse the existing `.footer__links a` styles; the card links use a new `.card__link` treatment with an accent underline, a stronger hover and `:focus-visible` state and an unbroken phone number. Preserved the visible values, the address and availability text, the "Kontakt — demonstracja" heading, the existing call buttons and the partial mechanism.
+- **Verification:** ESLint and the production build passed, with partials resolved and both footer links present on all nine pages. Focused Chromium checks confirmed the link targets, unchanged visible text, keyboard focus order with visible focus outlines, hover states and readable link colors in light, dark and system themes, and no horizontal overflow of the footer or card at 375 px and 1280 px. Theme colors were read after completing transitions programmatically because the browser pane was hidden. `contact.html` and `css/components.css` already had Prettier differences; the new card markup follows the file's existing style. Opening mail or phone applications, screen readers, touch devices and other browser engines were not tested.
 - **Impact:** Medium
 - **Effort:** Small
 

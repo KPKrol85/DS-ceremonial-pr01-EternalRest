@@ -40,6 +40,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 - Added a demonstration contact form with contact preferences, validation and local success feedback; no server submission or enquiry storage.
 - Added contact-form error recovery: a failed submission focuses the first empty required field below the sticky header, and each field's error clears as soon as it holds a value.
 - Added visible and programmatic required-field indicators to the contact form, with a leading instruction and the message field relabelled "Treść wiadomości".
+- Made the e-mail address and phone number in both footer variants and the contact-page "Nasze biuro" card actionable `mailto:` and `tel:` links with visible hover and focus states.
 - Added scroll-triggered reveals and a back-to-top control with reduced-motion support.
 - Added reusable primary and secondary button variants, separating interactive actions from static badges and the header CTA.
 - Added a responsive three-column pricing comparison layout from 760 px, with independently expanding cards and a constrained filter.
