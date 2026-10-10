@@ -6,6 +6,7 @@
   --color-text: light-dark(#2a2420, #f0e9e1);
   --color-text-muted: light-dark(#5f534c, #c6b9ad);
   --color-accent: light-dark(#9a6a3a, #c58a52);
+  --color-on-accent: #fff;
   --color-accent-soft: light-dark(#d7b38a, #8f6a44);
   --color-border: light-dark(#e1d3c4, #2f2924);
   --color-success: light-dark(#3c6f55, #6cb08a);

@@ -62,7 +62,7 @@ ol {
   left: -999px;
   top: var(--space-sm);
   background: var(--color-accent);
-  color: #fff;
+  color: var(--color-on-accent);
   padding: var(--space-xs) var(--space-md);
   border-radius: var(--radius-pill);
   font-weight: 600;

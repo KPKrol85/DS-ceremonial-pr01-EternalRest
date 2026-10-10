@@ -63,24 +63,11 @@ The five proposals below address these areas without new dependencies, framework
 
 ### IMP-TECH-05 — Add a text-on-accent color token
 
-- **Affected area:** Accent-filled controls in `css/base.css` and `css/components.css`; token layer in `css/tokens.css`.
-- **Evidence:**
-  - `css/base.css:60-69`: `.skip-link` has `color: #fff` at line 65.
-  - `css/components.css`: `.site-header__cta` at 78-90 (line 87), `.back-to-top` at 447-462 (line 454) and `.button--primary` at 493-497 (line 496).
-  - All other colors come from `css/tokens.css:1-55`. A search of `css/` and the HTML pages finds no other color literal outside `css/tokens.css`.
-  - `docs/archive/improvements/IMPROVEMENTS-UI-2026-10-06.md:113` records the contrast defect of this color pairing.
-- **Current implementation:** Every color in the component and page stylesheets comes from a theme token, except the text color on the accent background. That color is the literal `#fff` in four rules across two files, so it is not part of the theme layer and cannot vary by theme without editing all four rules.
-- **Proposed improvement:** Add one on-accent foreground token to `css/tokens.css` with the current value `#fff`, and use it in the four rules.
-- **Expected engineering value:** The token layer covers every color role, and a future per-theme adjustment of text on accent becomes a one-place token change.
-- **Implementation scope:**
-  - Change `css/tokens.css`, `css/base.css` and `css/components.css`.
-  - The value stays `#fff` in every theme, so rendering is unchanged.
-  - This proposal does not fix the known contrast defect of white text on the dark-theme accent (2.94:1 in the archived UI report). That defect needs a separately approved fix.
-  - If IMP-TECH-02 is implemented first, the new token follows its single-declaration form.
-- **Acceptance criteria:**
-  - No color literal remains in `css/` outside `css/tokens.css`.
-  - The four rules use the new token, and their computed text color is unchanged in light and dark themes.
-  - `npm run build` succeeds.
+- **Status:** Completed — one theme-independent on-accent token with unchanged rendering.
+- **Original issue:** The text color on accent backgrounds was the literal `#fff` in four rules across `css/base.css` and `css/components.css`, the only color role outside the token layer.
+- **Implemented result:** `css/tokens.css` declares `--color-on-accent: #fff` once on `:root`, next to `--color-accent`, as a single value rather than a `light-dark()` pair because it is the same in both themes. `.skip-link`, `.site-header__cta`, `.back-to-top` and `.button--primary` use it instead of the literal. Selectors, other declarations, the accent colors, markup and `js/main.js` are unchanged, and no color literal remains in `css/` outside `css/tokens.css`.
+- **Verification:** ESLint and the nine-page production build passed, and the changed lines add no Prettier differences. In Chromium, the computed styles and layout boxes of the four controls and their descendants on the nine pages matched the pre-change values at 375 px and 1280 px in explicit light, explicit dark, system light and system dark mode, with the back-to-top control both hidden and shown. The keyboard-focused skip link matched its pre-change values in explicit light and dark mode, and the hovered header CTA and the four controls on three pages of the production build keep `#fff` text.
+- **Known limitations:** The contrast defect of white text on the dark-theme accent (2.94:1 in the archived UI report) remains and needs a separately approved fix. Other browser engines were not tested.
 - **Impact:** Low
 - **Effort:** Small
 
