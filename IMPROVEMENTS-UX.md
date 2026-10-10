@@ -28,18 +28,9 @@ Several parts already work well: navigation orientation (`aria-current`, skip li
 
 ### IMP-UX-02 — State the contact form's required fields before submission
 
-- **Affected journey:** Contact page — filling in the form.
-- **Evidence:** `data-required` on all five fields at `contact.html:37, 49, 61, 90, 106`. Labels at `contact.html:31, 43, 55, 89, 100` carry no required indication, and the message field is labelled "Dodatkowe informacje" (`contact.html:100`). The only form hint is "Nie pobieramy żadnych danych wrażliwych." (`contact.html:113`). Validation targets `[data-required]` (`js/main.js:261-277`). Browser check: no field exposes `required` or `aria-required`, and the form contains no required-field instruction.
-- **Current experience:** All five fields are mandatory, but neither the visible labels nor the accessibility tree says so. Users find out only from the errors shown after submitting. The label "Dodatkowe informacje" ("additional information") reads as optional, yet an empty message blocks submission.
-- **Proposed improvement:** Make each field's required status visible and programmatic before any interaction. Add a short form-level instruction and a required indicator in each label, expose a required state to assistive technology, and word the message label so it does not suggest the field is optional.
-- **Expected user value:** Users know what the form expects before they start, which avoids a round trip through validation errors. Screen-reader users hear the required state as they reach each field.
-- **Implementation scope:** Form markup in `contact.html` (labels, one instruction element and a required state such as `aria-required="true"` while keeping `novalidate`). Add a small indicator style in `css/components.css` if needed. Keep the set of required fields, the validation rule and messages, the `data-required` hooks and the `aria-describedby` identifiers. Making the message optional instead would be a separate owner decision.
-- **Acceptance criteria:**
-  - Before any interaction, a Polish instruction placed before the first field states how required fields are marked.
-  - Every `data-required` field shows a visible required indicator in its label and exposes a required state in the accessibility tree.
-  - The message field's label no longer implies that the field is optional.
-  - Validation behavior is unchanged: the same fields, the same non-empty rule and the same messages.
-  - The indicator is legible in light, dark and system themes at 375 px and 1280 px.
+- **Status:** COMPLETED — implemented and verified.
+- **Result:** Added a Polish instruction before the first field ("Pola oznaczone gwiazdką (*) są wymagane."), a token-styled asterisk hidden from assistive technology in all five required labels, and native `required` attributes alongside the retained `novalidate`. Renamed the message label to "Treść wiadomości". Preserved the five `data-required` fields, the trimmed non-empty rule, the error message, ARIA relationships, IMP-UX-01 error recovery and successful submission behavior.
+- **Verification:** ESLint and the production build passed. Focused Chromium checks confirmed the instruction, indicators, accessible names without the asterisk and the native `required` property on all five fields, field-level errors, focus on the first invalid field, immediate error clearing and successful submission with status focus and form reset. Indicators were checked at 375 px and 1280 px in light, dark and system themes without horizontal overflow. Existing Prettier differences remain unchanged. The computed accessibility-tree required flag, screen readers, touch devices and other browser engines were not tested.
 - **Impact:** Medium
 - **Effort:** Small
 

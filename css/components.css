@@ -530,6 +530,11 @@
   border-color: var(--color-error);
 }
 
+.form__required {
+  color: var(--color-error);
+  font-weight: 700;
+}
+
 .form__hint {
   font-size: var(--font-size-xs);
   color: var(--color-text-muted);

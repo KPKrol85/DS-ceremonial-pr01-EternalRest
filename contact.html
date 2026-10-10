@@ -27,37 +27,41 @@
           </div>
           <div class="grid grid--two">
             <form class="form" data-validate-form novalidate>
+              <p class="form__hint">Pola oznaczone gwiazdką (*) są wymagane.</p>
               <div class="form__field">
-                <label for="name">Imię i nazwisko</label>
+                <label for="name">Imię i nazwisko <span class="form__required" aria-hidden="true">*</span></label>
                 <input
                   class="form__input"
                   id="name"
                   name="name"
                   type="text"
+                  required
                   data-required
                   aria-describedby="error-name"
                 />
                 <span class="form__error" id="error-name"></span>
               </div>
               <div class="form__field">
-                <label for="email">Adres e-mail</label>
+                <label for="email">Adres e-mail <span class="form__required" aria-hidden="true">*</span></label>
                 <input
                   class="form__input"
                   id="email"
                   name="email"
                   type="email"
+                  required
                   data-required
                   aria-describedby="error-email"
                 />
                 <span class="form__error" id="error-email"></span>
               </div>
               <div class="form__field">
-                <label for="phone">Telefon kontaktowy</label>
+                <label for="phone">Telefon kontaktowy <span class="form__required" aria-hidden="true">*</span></label>
                 <input
                   class="form__input"
                   id="phone"
                   name="phone"
                   type="tel"
+                  required
                   data-required
                   aria-describedby="error-phone"
                 />
@@ -86,8 +90,8 @@
                 <input type="hidden" name="preferred" value="Telefon" data-contact-input />
               </div>
               <div class="form__field">
-                <label for="topic">Zakres pomocy</label>
-                <select class="form__select" id="topic" name="topic" data-required aria-describedby="error-topic">
+                <label for="topic">Zakres pomocy <span class="form__required" aria-hidden="true">*</span></label>
+                <select class="form__select" id="topic" name="topic" required data-required aria-describedby="error-topic">
                   <option value="">Wybierz temat</option>
                   <option>Organizacja ceremonii</option>
                   <option>Transport i logistyka</option>
@@ -97,12 +101,13 @@
                 <span class="form__error" id="error-topic"></span>
               </div>
               <div class="form__field">
-                <label for="message">Dodatkowe informacje</label>
+                <label for="message">Treść wiadomości <span class="form__required" aria-hidden="true">*</span></label>
                 <textarea
                   class="form__textarea"
                   id="message"
                   name="message"
                   rows="4"
+                  required
                   data-required
                   aria-describedby="error-message"
                 ></textarea>
