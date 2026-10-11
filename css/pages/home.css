@@ -63,3 +63,118 @@
     padding-top: var(--space-xs);
   }
 }
+
+/* Trust: a compact list of statements separated by hairline rules rather than equal blocks. */
+.trust-list {
+  max-width: 56rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.trust-list__item {
+  display: grid;
+  gap: var(--space-2xs);
+  padding-block: var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+
+.trust-list__title,
+.service-index__title {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-heading);
+  line-height: var(--line-height-heading);
+}
+
+.trust-list__text {
+  max-width: 38rem;
+  color: var(--color-text-muted);
+}
+
+/* Services: one featured entry leads; the other two form a quieter ruled index. */
+.service-index {
+  display: grid;
+  gap: var(--space-xl);
+}
+
+.service-index__item {
+  display: grid;
+  align-content: start;
+  gap: var(--space-xs);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+
+.service-index__text {
+  max-width: 36rem;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+/* The featured entry stands out through scale and air, not through a surface. */
+.service-index__item--featured {
+  gap: var(--space-sm);
+  padding-top: var(--space-lg);
+}
+
+.service-index__item--featured .service-index__title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-display);
+  line-height: var(--line-height-display);
+  letter-spacing: var(--letter-spacing-display);
+}
+
+.service-index__item--featured .service-index__text {
+  font-size: var(--font-size-lg);
+}
+
+.service-index__item--featured > .button {
+  justify-self: start;
+  margin-top: var(--space-xs);
+}
+
+/* Supporting entries use an underlined text link so only the featured entry carries a button. */
+.service-index__link {
+  justify-self: start;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-label);
+  text-decoration-line: underline;
+  text-decoration-color: var(--color-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+}
+
+.service-index__link:hover,
+.service-index__link:focus-visible {
+  text-decoration-thickness: 2px;
+}
+
+/* Tablet: trust statements become label-and-text rows; supporting services share one row. */
+@media (min-width: 760px) {
+  .trust-list__item {
+    grid-template-columns: minmax(0, 13rem) minmax(0, 1fr);
+    column-gap: var(--space-xl);
+    align-items: baseline;
+  }
+
+  .service-index {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2xl) var(--space-xl);
+  }
+
+  .service-index__item--featured {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Desktop: the featured entry holds a wide column beside the stacked supporting index. */
+@media (min-width: 1024px) {
+  .service-index {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: var(--space-xl) var(--space-3xl);
+  }
+
+  .service-index__item--featured {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
+}
