@@ -20,6 +20,8 @@
   text-transform: uppercase;
   letter-spacing: 0.14em;
   font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-label);
+  line-height: var(--line-height-heading);
   color: var(--color-accent);
   margin-bottom: var(--space-xs);
 }
@@ -27,9 +29,17 @@
 .section__title {
   font-family: var(--font-serif);
   font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-display);
   line-height: var(--line-height-display);
+  letter-spacing: var(--letter-spacing-display);
   text-wrap: balance;
   margin-bottom: var(--space-sm);
+}
+
+/* Inner-page titles share .section__title but sit one tier above section titles. */
+h1.section__title {
+  font-size: var(--font-size-3xl);
+  line-height: var(--line-height-tight);
 }
 
 .section__lead {
@@ -67,6 +77,10 @@
 
   .section__title {
     font-size: var(--font-size-3xl);
+  }
+
+  h1.section__title {
+    font-size: var(--font-size-4xl);
   }
 
   .grid--three {

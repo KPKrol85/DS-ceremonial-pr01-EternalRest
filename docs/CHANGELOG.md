@@ -27,6 +27,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Added
 
+- Established an editorial typography system for the marketing pages: shared display, heading and label weight tokens replace browser-default bold headings with Playfair Display 400 for the hero, page and section titles and 500 for component headings; inner-page H1 titles now sit one size tier above H2 section titles, the home hero gains a larger, tighter display scale, eyebrows use a firmer Manrope label weight, step numbers and price ranges use Playfair lining figures, and testimonial quotations are set in Playfair italic. Heading semantics, markup and legal-page typography are unchanged.
 - Self-hosted the declared Playfair Display (upright and italic, weights 400–900) and Manrope (weights 200–800) typefaces as variable WOFF2 files under `assets/fonts/` with their SIL Open Font License texts, registered through `css/fonts.css` with `font-display: swap` and the existing fallback stacks; pages now render the intended faces, including Polish diacritics, instead of system fallbacks.
 - Consolidated theme colors and shadows using CSS `light-dark()`, eliminating duplicated dark palettes and adopting the Baseline 2024 browser requirement.
 - Refined shared headers, navigation, footer layouts and back-to-top controls across all nine pages, improving responsiveness and keyboard accessibility.

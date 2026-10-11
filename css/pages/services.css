@@ -20,6 +20,7 @@
 .services-list__title {
   font-family: var(--font-serif);
   font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-heading);
   line-height: var(--line-height-heading);
   margin-bottom: var(--space-xs);
 }

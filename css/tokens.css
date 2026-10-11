@@ -25,9 +25,18 @@
   --font-size-3xl: 2.25rem;
   --font-size-4xl: 2.85rem;
   --font-size-5xl: 3.4rem;
+  --font-size-6xl: 4rem;
 
+  /* Editorial weights: light display serif, measured component headings, firm labels. */
+  --font-weight-display: 400;
+  --font-weight-heading: 500;
+  --font-weight-label: 600;
+
+  --line-height-tight: 1.15;
   --line-height-display: 1.2;
   --line-height-heading: 1.4;
+
+  --letter-spacing-display: -0.01em;
 
   --space-2xs: 0.25rem;
   --space-xs: 0.5rem;
