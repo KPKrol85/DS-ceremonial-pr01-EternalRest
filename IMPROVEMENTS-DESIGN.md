@@ -142,17 +142,9 @@ Priorities express design implementation value and dependency order, not defect 
 
 ### IMP-DESIGN-03 — Recompose the home hero around one quiet anchor
 
-- **Status:** Proposed
-- **Priority:** P1
-- **Affected area:** `index.html` `.hero` markup and `.hero__*` styles in `css/components.css` and `css/pages/home.css`.
-- **Evidence:** Source: hero contains H1, lead, two buttons, three `.hero__stat` tiles and an elevated `.hero__card` with its own eyebrow, H2, body and badge. Visual: at 1440 px the card's heading competes with the H1; at 820 px the card column narrows so its heading wraps to four lines and body copy to two or three words per line.
-- **Current state:** Two competing focal points and three equal stat boxes in the first viewport.
-- **Design judgment:** the hero tries to say everything at once; the reassurance of immediate help is buried in a second card rather than integrated into the main statement.
-- **Proposed improvement:** compose the hero as a single typographic statement with one supporting element: the headline and lead as the visual anchor, the primary action and the 24/7 phone as one composed action group, and the availability message and facts rendered as a quiet ruled aside or caption line rather than as a separate elevated card and tiles. Define distinct compositions for mobile, the 760–1023 px range and desktop rather than relying on column collapse.
-- **Expected value:** a calm, recognisable first impression; clearer path to the primary action; elimination of the cramped tablet composition.
-- **Implementation scope:** hero markup and styles only; header, theme controls and the following sections unchanged. Phone link, contact link and heading semantics preserved; H2 in the card may become non-heading text only if heading outline review approves it.
-- **Dependencies:** IMP-DESIGN-01, IMP-DESIGN-02; owner decision on the "35+ lat doświadczenia" and other fact claims.
-- **Acceptance criteria:** at 390, 820 and 1440 px the H1 is the single dominant element in the first viewport, the primary action and phone number are visible without scrolling at 1440 × 900 and 820 × 1180, no text column in the hero wraps to fewer than roughly four words per line, reading order is headline → lead → actions → supporting facts, and both themes, keyboard access and 200% zoom are verified.
+- **Status:** COMPLETED — implemented and verified.
+- **Result:** The H1, lead and consultation/phone actions form the single hero statement; the elevated card became a heading-free ruled aside with the availability note, service summary, location and three facts, stacked below the statement up to 1023 px (a two-part band from 760 px) and a narrow caption column from 1024 px. Unverified claims were replaced with "Ceremonie dopasowane do potrzeb" and "Pomoc w formalnościach"; DOM order, `contact.html` and `tel:` links, focus order and `data-reveal` are preserved.
+- **Verification:** Build, reference checks and lint passed; Chromium checks at 320–1440 px and the 759/760 and 1023/1024 boundaries in light, dark, system and manual themes found no overflow, both actions above the fold at 820 × 1180 and 1440 × 900, hero text contrast of at least 4.67:1, visible keyboard focus and pixel-identical following sections. Prettier warnings in the touched HTML and CSS files are pre-existing; 200% zoom was approximated by a 720 px viewport, not real browser zoom, and other browsers were not verified.
 - **Impact:** High
 - **Effort:** Medium
 

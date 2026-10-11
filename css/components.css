@@ -319,6 +319,11 @@
   gap: var(--space-2xl);
 }
 
+/* The statement keeps a comfortable measure in the single-column range. */
+.hero__main {
+  max-width: 46rem;
+}
+
 .hero__title {
   font-family: var(--font-serif);
   font-size: var(--font-size-4xl);
@@ -330,6 +335,7 @@
 }
 
 .hero__lead {
+  max-width: 36rem;
   font-size: var(--font-size-lg);
   color: var(--color-text-muted);
 }
@@ -340,13 +346,6 @@
   flex-wrap: wrap;
   gap: var(--space-sm);
   margin-top: var(--space-lg);
-}
-
-/* Supporting note: a flat paper sheet opened by a hairline rule instead of a floating panel. */
-.hero__card {
-  background: var(--color-surface);
-  padding: var(--space-lg);
-  border-top: 1px solid var(--color-border);
 }
 
 .card {
@@ -967,11 +966,6 @@
     display: inline;
   }
 
-  .hero__inner {
-    grid-template-columns: 1.2fr 0.8fr;
-    align-items: center;
-  }
-
   .hero__title {
     font-size: var(--font-size-5xl);
   }
@@ -1012,6 +1006,13 @@
   .site-header__nav-link {
     padding-inline: var(--space-xs);
     font-size: var(--font-size-sm);
+  }
+
+  /* Desktop: the statement anchors the left; the supporting note settles at its foot. */
+  .hero__inner {
+    grid-template-columns: minmax(0, 1fr) minmax(16rem, 20rem);
+    column-gap: var(--space-3xl);
+    align-items: end;
   }
 
   .hero__title {

@@ -1,24 +1,65 @@
-.hero__stats {
+/* Supporting note: quiet ruled text beneath (or beside) the hero statement, never a second focal point. */
+.hero__aside {
   display: grid;
-  gap: var(--space-sm);
-  margin-top: var(--space-lg);
+  gap: var(--space-lg);
+  max-width: 46rem;
+}
+
+.hero__note,
+.hero__fact {
+  border-top: 1px solid var(--color-border);
+}
+
+.hero__note {
+  padding-top: var(--space-md);
+}
+
+.hero__note-title {
+  font-weight: var(--font-weight-heading);
+  line-height: var(--line-height-heading);
+}
+
+.hero__note-text {
+  max-width: 36rem;
+  margin-top: var(--space-xs);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.hero__note .badge {
+  margin-top: var(--space-md);
 }
 
 /* Facts read as quiet typographic notes under a hairline rule rather than filled tiles. */
-.hero__stat {
-  padding-top: var(--space-sm);
-  border-top: 1px solid var(--color-border);
+.hero__fact {
+  padding-block: var(--space-xs);
   font-size: var(--font-size-sm);
 }
 
-@media (min-width: 480px) {
-  .hero__stats {
-    grid-template-columns: repeat(2, 1fr);
+.hero__fact:last-child {
+  padding-bottom: 0;
+}
+
+/* Tablet: one wide reading column; the note and the facts share a single ruled band below it. */
+@media (min-width: 760px) {
+  .hero__aside {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    column-gap: var(--space-xl);
+    align-items: start;
+  }
+
+  .hero__fact:first-child {
+    padding-top: var(--space-md);
   }
 }
 
-@media (min-width: 760px) {
-  .hero__stats {
-    grid-template-columns: repeat(3, 1fr);
+/* Desktop: the aside becomes a narrow caption column, so the note and facts stack again. */
+@media (min-width: 1024px) {
+  .hero__aside {
+    grid-template-columns: none;
+  }
+
+  .hero__fact:first-child {
+    padding-top: var(--space-xs);
   }
 }
