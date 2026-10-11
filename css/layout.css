@@ -22,7 +22,7 @@
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-label);
   line-height: var(--line-height-heading);
-  color: var(--color-accent);
+  color: var(--color-accent-text);
   margin-bottom: var(--space-xs);
 }
 
