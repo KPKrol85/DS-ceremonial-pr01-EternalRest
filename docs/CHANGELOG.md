@@ -27,6 +27,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Added
 
+- Self-hosted the declared Playfair Display (upright and italic, weights 400–900) and Manrope (weights 200–800) typefaces as variable WOFF2 files under `assets/fonts/` with their SIL Open Font License texts, registered through `css/fonts.css` with `font-display: swap` and the existing fallback stacks; pages now render the intended faces, including Polish diacritics, instead of system fallbacks.
 - Consolidated theme colors and shadows using CSS `light-dark()`, eliminating duplicated dark palettes and adopting the Baseline 2024 browser requirement.
 - Refined shared headers, navigation, footer layouts and back-to-top controls across all nine pages, improving responsiveness and keyboard accessibility.
 - Added `cookies.html` with project-specific cookie and browser-storage information, shared legal styling and footer navigation.
