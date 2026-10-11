@@ -4,17 +4,11 @@
   gap: var(--space-lg);
 }
 
+/* Ruled entries: each service opens under a hairline instead of sitting in a box. */
 .services-list__item {
-  padding: var(--space-lg);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: var(--color-surface);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-border);
   scroll-margin-top: var(--services-anchor-offset);
-}
-
-.section--alt .services-list__item {
-  background: var(--color-bg);
-  box-shadow: var(--shadow-sm);
 }
 
 .services-list__title {

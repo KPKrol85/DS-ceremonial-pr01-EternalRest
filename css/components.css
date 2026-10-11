@@ -360,6 +360,23 @@
   gap: var(--space-sm);
 }
 
+/* Informational variant: open typography under a hairline rule instead of a raised panel.
+   Content packs to the top so a block stretched to its row keeps an even internal rhythm. */
+.card--editorial {
+  align-content: start;
+  padding: var(--space-lg) 0 0;
+  border: 0;
+  border-top: 1px solid var(--color-border);
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+
+/* Actions keep their own width so they read as controls rather than block footers. */
+.card--editorial > .button {
+  justify-self: start;
+}
+
 .card__title,
 .steps__title,
 .pricing__title {
@@ -407,10 +424,8 @@
 }
 
 .steps__item {
-  background: var(--color-surface);
-  padding: var(--space-lg);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-border);
 }
 
 .steps__number {
@@ -428,12 +443,10 @@
   line-height: var(--line-height-display);
 }
 
+/* A quiet quotation: one hairline at the start edge instead of a raised box. */
 .testimonial {
-  background: var(--color-surface);
-  padding: var(--space-lg);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-sm);
+  padding-left: var(--space-lg);
+  border-left: 1px solid var(--color-border);
 }
 
 /* The quotation itself is the one italic voice; the attribution stays in the sans face. */
@@ -443,11 +456,9 @@
   font-style: italic;
 }
 
-.section--alt .card,
-.section--alt .steps__item,
-.section--alt .testimonial {
+/* Raised cards keep a contrasting surface on alternate bands; open blocks stay on the band. */
+.section--alt .card:not(.card--editorial) {
   background: var(--color-bg);
-  box-shadow: var(--shadow-sm);
 }
 
 .accordion {
