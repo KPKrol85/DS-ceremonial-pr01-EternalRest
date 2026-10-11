@@ -4,11 +4,10 @@
   margin-top: var(--space-lg);
 }
 
+/* Facts read as quiet typographic notes under a hairline rule rather than filled tiles. */
 .hero__stat {
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border);
-  background: var(--color-surface-alt);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-border);
   font-size: var(--font-size-sm);
 }
 

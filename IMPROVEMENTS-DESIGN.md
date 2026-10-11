@@ -134,17 +134,9 @@ Priorities express design implementation value and dependency order, not defect 
 
 ### IMP-DESIGN-02 — Replace boxed repetition with a paper-and-hairline material language
 
-- **Status:** Proposed
-- **Priority:** P1
-- **Affected area:** `.card`, `.steps__item`, `.testimonial`, `.hero__stat`, `.badge`, `.services-list__item` treatments and their use on home, about, guide and services.
-- **Evidence:** Source: border + radius + shadow on all content boxes in `css/components.css`; pills shared by buttons, badges and stats. Runtime: 13 bordered boxes on the home page. Visual: informational text consistently presented as floating cards.
-- **Current state:** Elevation and pill shapes are applied uniformly to controls, labels, facts and prose.
-- **Design judgment:** the uniform card treatment is the main source of the template feel and blurs the difference between what can be pressed and what is to be read.
-- **Proposed improvement:** define a material hierarchy for the direction: hairline rules and open typographic blocks for informational content (value statements, steps, team roster, trust points, service descriptors), paper-tone surfaces without shadow for grouped reading content, and elevation or filled shapes reserved for interactive or persistent surfaces (buttons, pricing interaction, header, back-to-top).
-- **Expected value:** clearer distinction between content roles; calmer, more stationery-like surfaces; a reusable vocabulary for IMP-DESIGN-03 to 08.
-- **Implementation scope:** component-level CSS and, where needed, class changes in page markup. Shadow and color tokens may be reused or retired but palette values stay. `data-reveal`, ARIA attributes, accordion and pricing behavior unchanged. May be delivered as separate slices: material tokens/rules, informational blocks, label/badge treatment.
-- **Dependencies:** Prerequisite — dark accent/on-accent contrast correction; benefits from IMP-DESIGN-01.
-- **Acceptance criteria:** informational blocks on home, about, guide and services no longer use shadows; elevation appears only on interactive or persistent elements; badges are visually distinct from buttons; light and dark themes both show readable separation between sections and content with measured contrast for borders and text; no change to DOM order, focus order or interaction behavior.
+- **Status:** COMPLETED — implemented and verified.
+- **Result:** Informational content on the home, about, guide and services pages uses open blocks under hairline rules, start-edge-ruled quotations, ruled hero facts, a flat paper hero card and hairline-led text badges without shadows; elevation and filled pills are reserved for interactive and persistent elements such as buttons, header controls, back-to-top and pricing cards. DOM order, focus order, `data-reveal`, ARIA and interactions are unchanged; the contact-page office card, outside the affected area, keeps its raised panel for IMP-DESIGN-08.
+- **Verification:** Build, reference checks and lint passed; Chromium checks at 320–1440 px and breakpoint boundaries in light, dark, system and manual themes found no overflow or informational shadows, normal-text contrast of at least 5.32:1 and visible decorative hairlines measuring 1.19–1.41:1. Prettier reported pre-existing issues; 200% zoom was approximated by viewport emulation, and other browsers were not verified.
 - **Impact:** High
 - **Effort:** Medium
 
