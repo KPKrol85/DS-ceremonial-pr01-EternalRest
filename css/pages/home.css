@@ -178,3 +178,89 @@
     grid-row: 1 / span 2;
   }
 }
+
+/* Process: a numbered timeline; editorial numerals sit on a rail joined by a hairline. */
+.timeline {
+  --timeline-rail: 3rem;
+  --timeline-numeral: var(--font-size-3xl);
+  max-width: 48rem;
+}
+
+.timeline__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--timeline-rail) minmax(0, 1fr);
+  column-gap: var(--space-md);
+  align-items: baseline;
+  padding-bottom: var(--space-xl);
+}
+
+/* Decorative connector from one numeral down to the next; the last step has none. */
+.timeline__item:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--timeline-numeral) + var(--space-sm));
+  bottom: var(--space-sm);
+  left: calc(var(--timeline-rail) / 2);
+  border-left: 1px solid var(--color-accent-soft);
+}
+
+.timeline__item:last-child {
+  padding-bottom: 0;
+}
+
+/* Lining figures keep the numerals on one even baseline with the step title. */
+.timeline__number {
+  justify-self: center;
+  font-family: var(--font-serif);
+  font-size: var(--timeline-numeral);
+  font-weight: var(--font-weight-display);
+  font-variant-numeric: lining-nums;
+  line-height: 1;
+  color: var(--color-accent);
+}
+
+.timeline__title,
+.timeline__text {
+  grid-column: 2;
+}
+
+.timeline__title {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-heading);
+  line-height: var(--line-height-heading);
+}
+
+.timeline__text {
+  max-width: 36rem;
+  margin-top: var(--space-2xs);
+  color: var(--color-text-muted);
+}
+
+/* Tablet: the same vertical sequence with larger numerals and more air between steps. */
+@media (min-width: 760px) {
+  .timeline {
+    --timeline-rail: 4rem;
+    --timeline-numeral: var(--font-size-4xl);
+  }
+
+  .timeline__item {
+    column-gap: var(--space-xl);
+    padding-bottom: var(--space-2xl);
+  }
+}
+
+/* Desktop: the section introduction holds a narrow column beside the timeline. */
+@media (min-width: 1024px) {
+  .process {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    column-gap: var(--space-3xl);
+    align-items: start;
+  }
+
+  .process .section__header {
+    margin-bottom: 0;
+  }
+}
