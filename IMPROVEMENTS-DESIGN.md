@@ -150,17 +150,9 @@ Priorities express design implementation value and dependency order, not defect 
 
 ### IMP-DESIGN-04 — Give the home page a deliberate editorial sequence
 
-- **Status:** Proposed
-- **Priority:** P1
-- **Affected area:** `index.html` sections after the hero (trust, services, process, testimonials, FAQ) and related layout styles.
-- **Evidence:** Runtime: five post-hero sections between 488 and 545 px at 1440 px; mobile page height 6 402 px. Source: each section uses eyebrow + title + lead + `.grid--three` of boxes (or accordion). Visual: identical section anatomy and alternating bands.
-- **Current state:** Every section carries equal visual weight and identical structure.
-- **Design judgment:** the page has no pacing; testimonials, process and trust points read as interchangeable.
-- **Proposed improvement:** assign each section a distinct composition from the shared vocabulary: trust points as a short ruled statement list, services as a featured index leading to the services page, the process as a numbered sequence with editorial numerals and connecting rule, testimonials as one quotation-led moment rather than three equal boxes, and the FAQ as a quiet, narrower close. Vary section density and band usage intentionally rather than alternating mechanically.
-- **Expected value:** a readable narrative order; moments of emphasis and quiet; a shorter, more purposeful mobile sequence.
-- **Implementation scope:** home-page section markup and page-level CSS; links, fragment targets (`services.html#…`), accordion contract (`data-accordion`, `aria-controls`, disclosure fallback via `partials/disclosure-init.html`) and section order preserved. Deliverable in slices per section.
-- **Dependencies:** IMP-DESIGN-01, IMP-DESIGN-02; owner content decision on testimonial labelling before the quotation treatment.
-- **Acceptance criteria:** no two consecutive home sections share the same layout structure; testimonials are presented without implying unverified authenticity; the process sequence remains an ordered, readable list with numbers available to assistive technology; FAQ works with and without JavaScript; reading order matches visual order at 390, 820 and 1440 px in both themes.
+- **Status:** COMPLETED — implemented and verified.
+- **Result:** The home page now reads as a ruled trust statement list, a featured services index, a numbered process timeline (native ordered list), one centred quotation captioned "Przykładowa wypowiedź — treść demonstracyjna" in place of three fictional testimonials, and a narrower hairline-ruled FAQ close. Content outside the testimonials, links, heading levels, section order, `data-reveal`, the accordion ARIA contract and the shared components used on other pages are unchanged.
+- **Verification:** The final stage passed `npm run build`, `npm run check:references` and `npm run lint`, and the complete five-section sequence was reviewed in Chromium at 320–1440 px (including the 760/1024 px boundaries) in light and dark themes and with a manual theme override, with DOM order matching visual order and no horizontal overflow; both FAQ items were operated by mouse, Enter and Space with correct `aria-expanded`/panel states, answers and the guide link stayed readable with JavaScript disabled and after a forced `main.js` load failure, and the hero, trust, services and process sections rendered pixel-identical to the baseline. 200% zoom was emulated (720 px viewport at DPR 2), not exercised as real browser zoom, and no screen reader was used.
 - **Impact:** High
 - **Effort:** Large
 

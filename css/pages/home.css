@@ -264,3 +264,85 @@
     margin-bottom: 0;
   }
 }
+
+/* Quotation: one centred, unboxed moment on open paper; the caption labels it as demonstration content. */
+.quote-moment {
+  max-width: 44rem;
+  text-align: center;
+}
+
+.quote-moment .section__header {
+  margin-bottom: var(--space-xl);
+}
+
+/* A short accent hairline opens the quotation instead of a box or oversized quote marks. */
+.quote-moment__figure::before {
+  content: "";
+  display: block;
+  width: var(--space-2xl);
+  margin: 0 auto var(--space-xl);
+  border-top: 1px solid var(--color-accent-soft);
+}
+
+.quote-moment__quote {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-2xl);
+  font-style: italic;
+  font-weight: var(--font-weight-display);
+  line-height: var(--line-height-display);
+  text-wrap: balance;
+}
+
+.quote-moment__caption {
+  margin-top: var(--space-lg);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-wrap: balance;
+}
+
+/* FAQ: a narrow, quiet closing column on the page's start edge; questions sit between hairlines
+   instead of a filled box. */
+.faq-close .accordion {
+  max-width: 44rem;
+  border-width: 1px 0;
+  border-radius: 0;
+  /* Unclipped, so the focus outline around each question stays fully visible. */
+  overflow: visible;
+}
+
+.faq-close .accordion__button {
+  padding-inline: 0;
+  background: transparent;
+}
+
+/* Questions stay recognisable as controls: firm label weight, chevron and an underline on hover. */
+.faq-close .accordion__label {
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+  transition: text-decoration-color var(--transition-fast);
+}
+
+.faq-close .accordion__button:hover .accordion__label {
+  text-decoration-color: var(--color-accent);
+}
+
+.faq-close .accordion__panel {
+  max-width: 36rem;
+  padding-inline: 0;
+}
+
+.faq-close__more {
+  margin-top: var(--space-xl);
+}
+
+@media (min-width: 760px) {
+  .quote-moment__quote {
+    font-size: var(--font-size-3xl);
+  }
+
+  .quote-moment__figure::before {
+    margin-bottom: var(--space-2xl);
+  }
+}
