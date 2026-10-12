@@ -47,6 +47,65 @@ h1.section__title {
   font-size: var(--font-size-lg);
 }
 
+/* Opening of inner marketing pages: an eyebrow led by a short hairline, the page title,
+   the lead and an optional ruled row of facts already present on the page. */
+.page-masthead {
+  margin-bottom: var(--space-xl);
+}
+
+.page-masthead__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.page-masthead__eyebrow::before {
+  content: "";
+  flex-shrink: 0;
+  width: var(--space-xl);
+  border-top: 1px solid var(--color-accent-soft);
+}
+
+.page-masthead__title {
+  max-width: 22ch;
+  margin-bottom: var(--space-md);
+}
+
+.page-masthead__lead {
+  max-width: 62ch;
+  text-wrap: pretty;
+}
+
+.page-masthead__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs) var(--space-xl);
+  margin-top: var(--space-lg);
+  padding-block: var(--space-sm);
+  border-block: 1px solid var(--color-border);
+  font-size: var(--font-size-sm);
+}
+
+.page-masthead__fact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--space-sm);
+  min-width: 0;
+}
+
+.page-masthead__label {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.page-masthead__value {
+  overflow-wrap: anywhere;
+}
+
 .grid {
   display: grid;
   gap: var(--space-lg);
@@ -81,6 +140,10 @@ h1.section__title {
 
   h1.section__title {
     font-size: var(--font-size-4xl);
+  }
+
+  .page-masthead {
+    margin-bottom: var(--space-2xl);
   }
 
   .grid--three {

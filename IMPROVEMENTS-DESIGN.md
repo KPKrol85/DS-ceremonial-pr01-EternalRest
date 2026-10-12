@@ -158,17 +158,9 @@ Priorities express design implementation value and dependency order, not defect 
 
 ### IMP-DESIGN-05 — Introduce a page-opening masthead for inner marketing pages
 
-- **Status:** Proposed
-- **Priority:** P2
-- **Affected area:** opening `.section__header` of `about.html`, `services.html`, `pricing.html`, `contact.html`, `guide.html`.
-- **Evidence:** Source: inner-page H1 uses `.section__title` (36 px from 760 px), identical to H2 section titles. Visual: every inner page opens with the same small header on the plain background, indistinguishable from mid-page section heads; the legal pages instead use a dedicated `legal-hero` with hairline-ruled meta row.
-- **Current state:** No page-level opening composition outside the home hero and legal pages.
-- **Design judgment:** inner pages lack a sense of arrival; the legal-page pattern already demonstrates the appropriate editorial answer.
-- **Proposed improvement:** define one shared masthead composition for inner marketing pages — page-title tier from IMP-DESIGN-01, lead at a comfortable measure, and an optional hairline-ruled line of factual orientation drawn from existing page content — visually related to `legal-hero` but tuned for marketing pages.
-- **Expected value:** consistent sense of place across pages; continuity between marketing and legal families.
-- **Implementation scope:** a shared masthead style and the opening markup of five pages; header partial, navigation `aria-current`, and page content unchanged. No new claims added to orientation lines.
-- **Dependencies:** IMP-DESIGN-01.
-- **Acceptance criteria:** all five inner pages open with the same masthead pattern whose H1 is visibly larger than any H2 on that page; the masthead does not push the first content block below the fold at 1440 × 900; layout verified at 390, 820 and 1440 px in both themes and at 200% zoom.
+- **Status:** COMPLETED — implemented and verified.
+- **Result:** A shared `.page-masthead` in `css/layout.css` replaces the opening `.section__header` on the about, services, pricing, contact and guide pages: an eyebrow led by a short accent hairline, the existing IMP-DESIGN-01 H1 tier at a 22ch measure and the lead at 62ch. Contact adds the optional ruled `dl` row with the phone and office address already on the page; copy, heading levels, content order and interaction contracts are unchanged.
+- **Verification:** `npm run build` and `npm run check:references` passed; headless Chromium at 390, 820 and 1440 px in light and dark showed no horizontal overflow, H1 above every H2 and the first content block starting at or above 509 px in the 1440 × 900 viewport; pricing filter, accordion, form activation and focus order were exercised. 200% zoom was emulated as a 720 × 450 viewport at DPR 2, not as actual browser zoom.
 - **Impact:** Medium
 - **Effort:** Small
 
