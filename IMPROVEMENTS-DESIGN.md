@@ -166,7 +166,8 @@ Priorities express design implementation value and dependency order, not defect 
 
 ### IMP-DESIGN-06 — Present services and packages as a composed offering index
 
-- **Status:** Proposed
+- **Status:** Proposed — partially implemented; the services slice (IMP-DESIGN-06A) is completed, the pricing slice (IMP-DESIGN-06B) remains open.
+- **IMP-DESIGN-06A — Services Index:** COMPLETED — implemented and verified. The six services are a native ordered list of the existing `article` entries, numbered 01–06 from the list-item counter with empty alternative text, between hairline rules in one column (numeral, title and description columns from 1024 px), with the existing hairline-led labels as notes; content, order, fragment IDs, `scroll-margin-top` offsets, `data-reveal` and H2 levels are unchanged. Build and reference checks passed; Chromium at 390, 820 and 1440 px in light and dark themes found no horizontal overflow, numerals absent from the accessibility tree and all six fragments landing below the sticky header (and with JavaScript disabled); real zoom, a screen reader and other browsers were not verified.
 - **Priority:** P2
 - **Affected area:** `services.html` `.services-list`, `pricing.html` `.pricing__card` presentation (`css/pages/services.css`, pricing rules in `css/components.css`).
 - **Evidence:** Source: six equal `.services-list__item` boxes with two `.badge` pills each; three `.pricing__card` with price in the sans face at `--font-size-2xl` bold. Historical: the responsive pricing layout and filter constraint were completed in IMP-UI-02. Visual: services and pricing read as generic card grids.
