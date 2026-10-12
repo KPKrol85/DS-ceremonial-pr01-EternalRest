@@ -519,33 +519,45 @@
   display: none;
 }
 
+/* Price list: packages are open entries between hairline rules instead of raised cards,
+   closed by a final rule; packages stay independently sized. */
 .pricing {
   display: grid;
-  gap: var(--space-lg);
   align-items: start;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .pricing__card {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-lg);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-sm);
   display: grid;
-  gap: var(--space-md);
+  gap: var(--space-sm);
+  padding-block: var(--space-lg);
+  border-top: 1px solid var(--color-border);
 }
 
 .pricing__card > .button {
   justify-self: start;
+  margin-top: var(--space-xs);
 }
 
+/* Playfair has no tabular figures, so tabular-nums only reaches the fallback faces.
+   Balanced wrapping breaks a range at its dash rather than inside an amount. */
 .pricing__price {
   font-size: var(--font-size-2xl);
+  font-variant-numeric: lining-nums tabular-nums;
+  text-wrap: balance;
 }
 
 .pricing__details {
-  border-top: 1px solid var(--color-border);
-  padding-top: var(--space-md);
+  margin-top: var(--space-xs);
+}
+
+/* A short hairline opens the details, distinct from the full rules between packages. */
+.pricing__details::before {
+  content: "";
+  display: block;
+  width: var(--space-xl);
+  margin-bottom: var(--space-md);
+  border-top: 1px solid var(--color-accent-soft);
 }
 
 .pricing__details[hidden] {
@@ -974,8 +986,16 @@
     grid-template-columns: repeat(3, 1fr);
   }
 
+  /* Comparison: three columns between one opening and one closing rule. */
   .pricing {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: var(--space-xl);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .pricing__card {
+    padding-block: var(--space-xl);
+    border-top: 0;
   }
 
   .pricing-filter {
@@ -1017,6 +1037,14 @@
 
   .hero__title {
     font-size: var(--font-size-6xl);
+  }
+
+  .pricing {
+    column-gap: var(--space-2xl);
+  }
+
+  .pricing__price {
+    font-size: var(--font-size-3xl);
   }
 
   .footer__grid {
