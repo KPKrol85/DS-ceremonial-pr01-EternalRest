@@ -438,9 +438,8 @@
 }
 
 /* Editorial numerals: Playfair defaults to old-style figures, so lining figures keep
-   step numbers and price ranges on one even baseline. */
-.steps__number,
-.pricing__price {
+   step numbers on one even baseline. */
+.steps__number {
   font-family: var(--font-serif);
   font-weight: var(--font-weight-display);
   font-variant-numeric: lining-nums;
@@ -539,11 +538,14 @@
   margin-top: var(--space-xs);
 }
 
-/* Playfair has no tabular figures, so tabular-nums only reaches the fallback faces.
+/* Playfair has no tabular figures, so price ranges use Manrope's equal-width tnum digits.
    Balanced wrapping breaks a range at its dash rather than inside an amount. */
 .pricing__price {
+  font-family: var(--font-sans);
   font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-display);
   font-variant-numeric: lining-nums tabular-nums;
+  line-height: var(--line-height-display);
   text-wrap: balance;
 }
 
