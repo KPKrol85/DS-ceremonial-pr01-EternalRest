@@ -176,17 +176,9 @@ Priorities express design implementation value and dependency order, not defect 
 
 ### IMP-DESIGN-07 — Develop one line-drawn signature motif from the existing brand vocabulary
 
-- **Status:** Proposed
-- **Priority:** P2
-- **Affected area:** brand mark usage, section transitions, the contact illustration, and selected editorial moments (hero, quotation, closing).
-- **Evidence:** Source: the only brand devices are the circular `.brand-mark` monogram and the arc-and-dot SVG in `contact.html`; no other illustration exists in `assets/`. Visual: the monogram appears only at 40 px in header and footer.
-- **Current state:** No graphic element carries the atmosphere in the absence of photography.
-- **Design judgment:** a single, restrained line motif — derived from the monogram ring and the horizon arc already present — can give the site recognisability without introducing imagery that could misrepresent a demonstration business.
-- **Proposed improvement:** define one motif family (for example a ring or horizon line drawn in the accent-soft hairline) with a small set of approved uses and sizes, implemented as inline, theme-aware SVG or CSS, and used sparingly at the moments defined by IMP-DESIGN-03, 04 and 08.
-- **Expected value:** recognisable identity beyond the wordmark; atmosphere without asset or licensing risk.
-- **Implementation scope:** decorative, `aria-hidden` SVG or CSS only; no raster assets, no animation beyond the existing reveal, no new dependencies. Brand-mark markup in partials changes only if the owner approves.
-- **Dependencies:** IMP-DESIGN-02; owner approval of the motif.
-- **Acceptance criteria:** the motif appears in no more than a small, documented number of places; it uses theme tokens and is visible but subordinate in both themes; it is hidden from assistive technology; it does not cause overflow at 390 px or 200% zoom.
+- **Status:** COMPLETED — implemented and verified.
+- **Result:** Added the Eternal Horizon arc and axial light point as two identical decorative inline SVGs: in the home hero note and above the quotation, replacing its pseudo-element hairline. Shared home-page styles use `--color-accent-soft`; content, semantics, responsive grids, reveal behavior and existing logo integration are preserved.
+- **Verification:** Build, reference checks and lint passed; Edge checks covered 390, 820 and 1440 px in light/dark, system/manual themes, unchanged Tab order, accessibility-tree exclusion, reduced motion and the no-JavaScript fallback. Native 200% browser zoom passed in a 1440 px window (708 px content), without overflow or overlap. Pre-existing overflow at 195 px and HTML formatting warnings remain outside scope; screen readers and other browsers were not tested.
 - **Impact:** Medium
 - **Effort:** Small
 

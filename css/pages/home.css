@@ -1,3 +1,10 @@
+/* Eternal Horizon: the logo's shallow arc and axial light, shared by two quiet accents. */
+.horizon-motif {
+  width: var(--space-4xl);
+  height: auto;
+  color: var(--color-accent-soft);
+}
+
 /* Supporting note: quiet ruled text beneath (or beside) the hero statement, never a second focal point. */
 .hero__aside {
   display: grid;
@@ -12,6 +19,10 @@
 
 .hero__note {
   padding-top: var(--space-md);
+}
+
+.hero__motif {
+  margin-bottom: var(--space-md);
 }
 
 .hero__note-title {
@@ -275,13 +286,10 @@
   margin-bottom: var(--space-xl);
 }
 
-/* A short accent hairline opens the quotation instead of a box or oversized quote marks. */
-.quote-moment__figure::before {
-  content: "";
-  display: block;
-  width: var(--space-2xl);
+/* The same horizon opens the quotation at a smaller, centred scale. */
+.quote-moment__motif {
+  width: var(--space-3xl);
   margin: 0 auto var(--space-xl);
-  border-top: 1px solid var(--color-accent-soft);
 }
 
 .quote-moment__quote {
@@ -342,7 +350,7 @@
     font-size: var(--font-size-3xl);
   }
 
-  .quote-moment__figure::before {
+  .quote-moment__motif {
     margin-bottom: var(--space-2xl);
   }
 }
