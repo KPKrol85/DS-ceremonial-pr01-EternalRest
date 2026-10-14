@@ -336,18 +336,74 @@ html[data-theme="dark"] .brand__emblem {
   display: none;
 }
 
-.hero {
-  padding: var(--space-4xl) 0 var(--space-3xl);
+/* Cinematic stage: the statement sits on the dark side of the photograph. The photograph is
+   dark in every theme, so the stage uses the dark scheme and light-dark() tokens resolve to
+   their dark values here; the supporting aside below follows the page theme. */
+.hero__stage {
+  /* Narrow screens: the photograph is a top band that fades into the stage under the text. */
+  --hero-media-height: clamp(22rem, 115vw, 32rem);
+  position: relative;
+  isolation: isolate;
+  color-scheme: dark;
+  color: var(--color-text);
+  /* Also the stand-in before the photograph loads. */
+  background: var(--color-bg);
+}
+
+/* Decorative and inert: the photograph and its shading never take pointer input. */
+.hero__media {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: -1;
+  height: var(--hero-media-height);
+  pointer-events: none;
+}
+
+.hero__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 52%,
+    color-mix(in srgb, var(--color-bg) 84%, transparent) 72%,
+    var(--color-bg)
+  );
+}
+
+.hero__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Keeps the light at the end of the road inside the narrow crop. */
+  object-position: 88% 50%;
 }
 
 .hero__inner {
-  display: grid;
-  gap: var(--space-2xl);
+  padding-block: calc(var(--hero-media-height) * 0.72) var(--space-2xl);
 }
 
-/* The statement keeps a comfortable measure in the single-column range. */
 .hero__main {
-  max-width: 46rem;
+  max-width: 34rem;
+}
+
+/* A short hairline leads the eyebrow, as in the inner-page mastheads. */
+.hero__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.hero__eyebrow::before {
+  content: "";
+  flex-shrink: 0;
+  width: var(--space-xl);
+  border-top: 1px solid var(--color-accent-soft);
+}
+
+.hero__title,
+.hero__lead {
+  text-shadow: 0 1px 24px color-mix(in srgb, var(--color-bg) 60%, transparent);
 }
 
 .hero__title {
@@ -361,9 +417,23 @@ html[data-theme="dark"] .brand__emblem {
 }
 
 .hero__lead {
-  max-width: 36rem;
+  max-width: 32rem;
   font-size: var(--font-size-lg);
   color: var(--color-text-muted);
+  text-wrap: pretty;
+}
+
+/* Over the photograph the secondary action takes a lighter outline, keeping its boundary
+   at 3:1 or more against every crop; hover still turns it to the accent. */
+.hero__actions .button--secondary {
+  border-color: color-mix(in srgb, var(--color-text) 55%, var(--color-bg));
+}
+
+/* Forced colors replace the stage colors, so the photograph steps aside for system contrast. */
+@media (forced-colors: active) {
+  .hero__media {
+    display: none;
+  }
 }
 
 .hero__actions,
@@ -1057,6 +1127,44 @@ html[data-theme="dark"] .brand__emblem {
     display: inline;
   }
 
+  /* Tablet and up: the photograph fills the stage and a shade from the start edge carries
+     the statement, fading out before the light at the end of the road. */
+  .hero__stage {
+    --hero-media-height: 100%;
+    display: grid;
+    align-items: center;
+    min-height: clamp(34rem, 72svh, 44rem);
+  }
+
+  .hero__media::after {
+    background:
+      linear-gradient(
+        to right,
+        var(--color-bg),
+        color-mix(in srgb, var(--color-bg) 88%, transparent) 30%,
+        color-mix(in srgb, var(--color-bg) 45%, transparent) 55%,
+        transparent 75%
+      ),
+      linear-gradient(
+        to top,
+        var(--color-bg),
+        color-mix(in srgb, var(--color-bg) 55%, transparent) 14%,
+        transparent 38%
+      );
+  }
+
+  .hero__image {
+    object-position: 50% 60%;
+  }
+
+  .hero__inner {
+    padding-block: var(--space-4xl);
+  }
+
+  .hero__main {
+    max-width: 28rem;
+  }
+
   .hero__title {
     font-size: var(--font-size-5xl);
   }
@@ -1107,11 +1215,12 @@ html[data-theme="dark"] .brand__emblem {
     font-size: var(--font-size-sm);
   }
 
-  /* Desktop: the statement anchors the left; the supporting note settles at its foot. */
-  .hero__inner {
-    grid-template-columns: minmax(0, 1fr) minmax(16rem, 20rem);
-    column-gap: var(--space-3xl);
-    align-items: end;
+  .hero__stage {
+    min-height: clamp(36rem, 80svh, 48rem);
+  }
+
+  .hero__main {
+    max-width: 34rem;
   }
 
   .hero__title {

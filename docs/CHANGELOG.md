@@ -27,6 +27,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Added
 
+- Redesigned the home hero as a cinematic photograph of a misty tree-lined road, with the statement and both actions over its dark side in every theme, served as a prioritized AVIF with a WebP fallback; the supporting note and facts moved to a quiet band beneath it.
 - Moved the marketing footer's social links into a centred row beneath the columns, with brand-colored GitHub, Facebook, Instagram and X icons replacing the Facebook, Instagram and LinkedIn glyphs; destinations remain placeholders.
 - Replaced the Eternal Horizon logo with the new monochrome symbol in the header and both footer variants, shown dark in the light theme and light in the dark theme, including system mode.
 - Redesigned the contact page's office panel as a content-height column with ruled contact rows, 24/7 availability and an illustrative schematic labelled "Schemat poglądowy" in place of the map placeholder.

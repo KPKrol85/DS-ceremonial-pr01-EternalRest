@@ -5,11 +5,11 @@
   color: var(--color-accent-soft);
 }
 
-/* Supporting note: quiet ruled text beneath (or beside) the hero statement, never a second focal point. */
+/* Supporting note: a quiet ruled band in the page theme beneath the photograph, never a second focal point. */
 .hero__aside {
   display: grid;
   gap: var(--space-lg);
-  max-width: 46rem;
+  padding-block: var(--space-2xl) var(--space-3xl);
 }
 
 .hero__note,
@@ -51,7 +51,7 @@
   padding-bottom: 0;
 }
 
-/* Tablet: one wide reading column; the note and the facts share a single ruled band below it. */
+/* Tablet and up: the note and the facts share one ruled band beneath the photograph. */
 @media (min-width: 760px) {
   .hero__aside {
     grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
@@ -64,14 +64,10 @@
   }
 }
 
-/* Desktop: the aside becomes a narrow caption column, so the note and facts stack again. */
 @media (min-width: 1024px) {
   .hero__aside {
-    grid-template-columns: none;
-  }
-
-  .hero__fact:first-child {
-    padding-top: var(--space-xs);
+    column-gap: var(--space-3xl);
+    padding-block: var(--space-3xl) var(--space-4xl);
   }
 }
 

@@ -17,50 +17,63 @@
 
     <main id="main">
       <section class="hero">
-        <div class="container hero__inner">
-          <div class="hero__main">
-            <p class="section__eyebrow">Eternal Rest</p>
-            <h1 class="hero__title">Ceremonie, które oddają szacunek i spokój.</h1>
-            <p class="hero__lead">
-              Wspieramy rodziny w najtrudniejszych chwilach, oferując kompleksową opiekę,
-              godne pożegnania i dyskretne doradztwo 24/7.
-            </p>
-            <div class="hero__actions">
-              <a class="button button--primary" href="contact.html">Umów konsultację</a>
-              <a class="button button--secondary" href="tel:+48533537091">+48 533 537 091</a>
-            </div>
-          </div>
-          <div class="hero__aside" data-reveal>
-            <div class="hero__note">
-              <svg
-                class="horizon-motif hero__motif"
-                width="80"
-                height="44"
-                viewBox="0 0 80 44"
-                aria-hidden="true"
-                focusable="false"
-              >
-                <path
-                  d="M4 38C28 18.5 52 18.5 76 38"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1"
-                />
-                <circle cx="40" cy="6" r="1.25" fill="currentColor" />
-              </svg>
-              <p class="hero__note-title">Dyskretna pomoc od pierwszego telefonu</p>
-              <p class="hero__note-text">
-                Organizujemy ceremonie tradycyjne i świeckie, pomagamy w formalnościach,
-                zapewniamy transport oraz oprawę zgodną z życzeniami rodziny.
+        <div class="hero__stage">
+          <picture class="hero__media">
+            <source srcset="assets/images/hero.avif" type="image/avif" />
+            <img
+              class="hero__image"
+              src="assets/images/hero.webp"
+              width="1536"
+              height="1024"
+              alt=""
+              fetchpriority="high"
+            />
+          </picture>
+          <div class="container hero__inner">
+            <div class="hero__main">
+              <p class="section__eyebrow hero__eyebrow">Eternal Rest</p>
+              <h1 class="hero__title">Ceremonie, które oddają szacunek i spokój.</h1>
+              <p class="hero__lead">
+                Wspieramy rodziny w najtrudniejszych chwilach, oferując kompleksową opiekę,
+                godne pożegnania i dyskretne doradztwo 24/7.
               </p>
-              <p class="badge">Tarnów i okolice</p>
+              <div class="hero__actions">
+                <a class="button button--primary" href="contact.html">Umów konsultację</a>
+                <a class="button button--secondary" href="tel:+48533537091">+48 533 537 091</a>
+              </div>
             </div>
-            <ul class="hero__facts">
-              <li class="hero__fact">Ceremonie dopasowane do potrzeb</li>
-              <li class="hero__fact">Pomoc w formalnościach</li>
-              <li class="hero__fact">Opieka 24/7</li>
-            </ul>
           </div>
+        </div>
+        <div class="container hero__aside" data-reveal>
+          <div class="hero__note">
+            <svg
+              class="horizon-motif hero__motif"
+              width="80"
+              height="44"
+              viewBox="0 0 80 44"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M4 38C28 18.5 52 18.5 76 38"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1"
+              />
+              <circle cx="40" cy="6" r="1.25" fill="currentColor" />
+            </svg>
+            <p class="hero__note-title">Dyskretna pomoc od pierwszego telefonu</p>
+            <p class="hero__note-text">
+              Organizujemy ceremonie tradycyjne i świeckie, pomagamy w formalnościach,
+              zapewniamy transport oraz oprawę zgodną z życzeniami rodziny.
+            </p>
+            <p class="badge">Tarnów i okolice</p>
+          </div>
+          <ul class="hero__facts">
+            <li class="hero__fact">Ceremonie dopasowane do potrzeb</li>
+            <li class="hero__fact">Pomoc w formalnościach</li>
+            <li class="hero__fact">Opieka 24/7</li>
+          </ul>
         </div>
       </section>
 
