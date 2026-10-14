@@ -761,35 +761,89 @@ html[data-theme="dark"] .brand__emblem {
   gap: var(--space-2xs) var(--space-lg);
 }
 
-.socials {
+/* Social row: centred under all columns, between fading horizon hairlines. */
+.footer__social {
   display: flex;
-  gap: var(--space-xs);
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-md);
+  margin-top: var(--space-2xl);
 }
 
-.socials__link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.footer__social::before,
+.footer__social::after {
+  content: "";
+  flex: 0 1 8rem;
+  height: 1px;
+  background: linear-gradient(to left, var(--color-accent-soft), transparent);
+}
+
+.footer__social::after {
+  background: linear-gradient(to right, var(--color-accent-soft), transparent);
+}
+
+/* A 44px target around a smaller visual disc; the icon is stacked over it. */
+.footer__social-link {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  transition: transform var(--transition-fast);
+}
+
+/* The icons keep their brand colors, so each sits on a paper disc; the dark
+   theme uses a muted taupe that keeps the dark GitHub and X marks legible. */
+.footer__social-link::before {
+  content: "";
+  grid-area: 1 / 1;
+  box-sizing: border-box;
   width: 2.5rem;
   height: 2.5rem;
   border: 1px solid var(--color-border);
   border-radius: 50%;
-  background: var(--color-surface);
-  color: var(--color-text-muted);
+  background: light-dark(var(--color-surface), #ad9f90);
   transition:
-    color var(--transition-fast),
+    box-shadow var(--transition-fast),
     border-color var(--transition-fast);
 }
 
-.socials__link:hover {
-  border-color: var(--color-accent-soft);
-  color: var(--color-accent);
+/* Keeps the shared 3px gap between the focus ring and the visible disc. */
+.footer__social-link:focus-visible {
+  outline-offset: 1px;
 }
 
-.socials__icon {
-  width: 18px;
-  height: 18px;
-  fill: currentcolor;
+.footer__social-link:hover::before,
+.footer__social-link:focus-visible::before {
+  border-color: var(--color-accent-soft);
+  box-shadow: var(--shadow-sm);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .footer__social-link:hover,
+  .footer__social-link:focus-visible {
+    transform: translateY(-2px);
+  }
+}
+
+.footer__social-link:active {
+  transform: none;
+}
+
+.footer__social-link:active::before {
+  box-shadow: none;
+}
+
+.footer__social-icon {
+  grid-area: 1 / 1;
+  width: 1.375rem;
+  height: 1.375rem;
+}
+
+/* A rounded square reads larger than the circular marks at the same size. */
+.footer__social-icon--square {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 /* Hidden controls are also removed from the focus order. */
