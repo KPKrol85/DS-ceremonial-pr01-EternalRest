@@ -27,6 +27,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Added
 
+- Redesigned the contact page's office panel as a content-height column with ruled contact rows, 24/7 availability and an illustrative schematic labelled "Schemat poglądowy" in place of the map placeholder.
 - Added a shared editorial closing with the 24/7 availability statement and phone to the home, about, services, pricing and guide pages, absorbing each page's final contact action.
 - Added Eternal Horizon line motifs to the home hero and quotation, replacing the quotation hairline.
 - Replaced the ER monogram with the Eternal Horizon SVG logo in the header and both footer variants.

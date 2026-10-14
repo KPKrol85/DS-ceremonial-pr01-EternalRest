@@ -184,17 +184,9 @@ Priorities express design implementation value and dependency order, not defect 
 
 ### IMP-DESIGN-08 — Compose a calm closing and a credible contact composition
 
-- **Status:** Proposed
-- **Priority:** P2
-- **Affected area:** page endings of the marketing pages before the footer; `contact.html` "Nasze biuro" aside and map illustration.
-- **Evidence:** Source and visual: pages end with a lone primary button above the footer; the contact aside is stretched to form height with large internal gaps and shows the visible caption "Mapa dojazdu (placeholder)".
-- **Current state:** Pages stop abruptly; the contact page's second column looks unfinished.
-- **Design judgment:** for this subject the closing should restate, quietly, that a person is available now; the contact page should feel composed and honest about being illustrative.
-- **Proposed improvement:** define one closing composition reused across marketing pages — a brief existing statement with the phone and contact action set in the editorial vocabulary, without adding competing CTAs — and recompose the contact aside as a structured office panel (address, contact links, availability) with an illustrative map treatment that is labelled appropriately for a demonstration.
-- **Expected value:** a finished, consistent page ending; a contact page that matches the quality of the form beside it.
-- **Implementation scope:** pre-footer composition and contact aside only; footer partials, form markup, `inert` contract, validation, fallback notice and `mailto:`/`tel:` links unchanged. Uses existing copy only.
-- **Dependencies:** IMP-DESIGN-02; contact-card layout correction (section 4); owner decision on map labelling.
-- **Acceptance criteria:** each marketing page ends with at most one primary action before the footer; the contact aside has no stretched empty gaps at 820 and 1440 px; the map is clearly illustrative and decorative; both themes, keyboard order and the no-JavaScript contact notice are verified.
+- **Status:** COMPLETED — implemented and verified.
+- **Result:** Stage A added a shared `.page-closing` with the 24/7 statement and phone to the home, about, services, pricing and guide pages, each with at most one primary action. Stage B sets the contact form and the "Nasze biuro" panel in a page-scoped 3fr/2fr layout from 760 px (one column below), where the panel keeps its own height: a label-sized title, the address in Playfair, an `aria-hidden` Eternal Horizon schematic captioned "Schemat poglądowy" in place of the map placeholder, ruled phone, e-mail and 24/7 rows and the existing call action. Form markup, the `inert` contract, the fallback notice and the `mailto:`/`tel:` links are unchanged.
+- **Verification:** Build, reference checks and lint passed; Chromium at 390, 820 and 1440 px in light, dark and a stored manual theme, plus 320 px and the 759/760 and 1023/1024 boundaries, showed no overflow, a 547–607 px panel beside the 849 px form, visible focus on the panel's three links in DOM order, the schematic absent from the accessibility tree and, without JavaScript, the fallback notice with an inert form. Stage A was verified separately; Prettier warnings in `contact.html` are pre-existing, and real zoom, screen readers and other browsers were not tested.
 - **Impact:** Medium
 - **Effort:** Medium
 

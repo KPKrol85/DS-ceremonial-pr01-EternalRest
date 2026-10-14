@@ -1,0 +1,124 @@
+/* Contact: the form leads; the office panel keeps its own height in a narrower column
+   instead of stretching to the form beside it. */
+.contact-layout {
+  display: grid;
+  gap: var(--space-2xl);
+}
+
+/* Office panel: an open block — a label-sized title, the address in the display serif,
+   an illustrative schematic, ruled contact rows and the call action. Stacked below the
+   form, a hairline separates it. */
+.contact-office {
+  display: grid;
+  align-content: start;
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-border);
+}
+
+.contact-office__title {
+  margin-bottom: var(--space-sm);
+}
+
+.contact-office__address {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-xl);
+  font-style: normal;
+  font-weight: var(--font-weight-display);
+  font-variant-numeric: lining-nums;
+  line-height: var(--line-height-heading);
+}
+
+/* One measure for the schematic and the rows, so neither grows across a wide single column. */
+.contact-office__schematic,
+.contact-office__details {
+  max-width: 28rem;
+}
+
+.contact-office__schematic {
+  margin-top: var(--space-lg);
+}
+
+/* Schematic: the Eternal Horizon arc beneath a marked point on dotted paper. It locates
+   nothing; the caption labels it as illustrative. */
+.contact-office__art {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+}
+
+.contact-office__art-dot {
+  fill: color-mix(in srgb, var(--color-accent-soft) 55%, transparent);
+}
+
+.contact-office__art-line {
+  fill: none;
+  stroke: var(--color-accent-soft);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.contact-office__art-ring {
+  stroke-dasharray: 2 4;
+}
+
+.contact-office__art-mark {
+  stroke: var(--color-accent);
+}
+
+.contact-office__art-point {
+  fill: var(--color-accent);
+}
+
+.contact-office__caption {
+  margin-top: var(--space-sm);
+}
+
+.contact-office__details {
+  margin-top: var(--space-lg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.contact-office__detail {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  column-gap: var(--space-md);
+  align-items: baseline;
+  padding-block: var(--space-sm);
+  border-top: 1px solid var(--color-border);
+}
+
+.contact-office__label {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.contact-office__action {
+  justify-self: start;
+  margin-top: var(--space-lg);
+}
+
+/* Tablet and desktop: a wider form column beside the office panel, both aligned to the top.
+   The masthead rule above now opens both columns, so the panel drops its own. */
+@media (min-width: 760px) {
+  .contact-layout {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    column-gap: var(--space-xl);
+    align-items: start;
+  }
+
+  .contact-office {
+    padding-top: 0;
+    border-top: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .contact-layout {
+    column-gap: var(--space-3xl);
+  }
+}

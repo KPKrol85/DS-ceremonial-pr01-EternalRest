@@ -6,7 +6,7 @@
     <title>Eternal Rest | Kontakt i formularz</title>
     <meta
       name="description"
-      content="Skontaktuj się z Eternal Rest w Tarnowie. Formularz zgłoszeniowy, szybkie wsparcie 24/7 oraz mapa dojazdu."
+      content="Skontaktuj się z Eternal Rest w Tarnowie. Formularz zgłoszeniowy, szybkie wsparcie 24/7 oraz adres biura."
     />
     <!-- partial:disclosure-init -->
     <link rel="stylesheet" href="css/main.css" />
@@ -38,7 +38,7 @@
               </div>
             </dl>
           </header>
-          <div class="grid grid--two">
+          <div class="contact-layout">
             <div class="contact-form">
               <p class="contact-form__notice" data-form-fallback>
                 Formularz demonstracyjny działa tylko przy włączonym JavaScripcie. Napisz do nas na
@@ -149,32 +149,54 @@
                 </div>
               </form>
             </div>
-            <div class="card" data-reveal>
-              <h2 class="card__title">Nasze biuro</h2>
-              <p class="text-muted">ul. Marynarki Wojennej 12, 33-100 Tarnów, Polska</p>
-              <p class="text-muted">
-                <a class="card__link" href="mailto:kontakt@kp-code.pl">kontakt@kp-code.pl</a> ·
-                <a class="card__link" href="tel:+48533537091">+48 533 537 091</a>
-              </p>
-              <div class="mt-lg">
-                <svg viewBox="0 0 320 200" aria-hidden="true">
-                  <rect width="320" height="200" rx="16" fill="var(--color-surface-alt)" />
-                  <path
-                    d="M40 140c40-36 80-54 120-54s80 18 120 54"
-                    fill="none"
-                    stroke="var(--color-accent)"
-                    stroke-width="3"
-                  />
-                  <circle cx="160" cy="90" r="10" fill="var(--color-accent)" />
-                  <text x="50" y="170" font-size="12" fill="var(--color-text-muted)">
-                    Mapa dojazdu (placeholder)
-                  </text>
+            <section class="contact-office" aria-labelledby="contact-office-title" data-reveal>
+              <h2 class="section__eyebrow contact-office__title" id="contact-office-title">
+                Nasze biuro
+              </h2>
+              <address class="contact-office__address">
+                ul. Marynarki Wojennej 12<br />
+                33-100 Tarnów, Polska
+              </address>
+              <figure class="contact-office__schematic">
+                <svg
+                  class="contact-office__art"
+                  width="320"
+                  height="160"
+                  viewBox="0 0 320 160"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <defs>
+                    <pattern id="contact-office-dots" width="16" height="16" patternUnits="userSpaceOnUse">
+                      <circle class="contact-office__art-dot" cx="8" cy="8" r="0.9" />
+                    </pattern>
+                  </defs>
+                  <rect width="320" height="160" fill="url(#contact-office-dots)" />
+                  <path class="contact-office__art-line" d="M32 132C117 92 203 92 288 132" />
+                  <circle class="contact-office__art-line contact-office__art-ring" cx="160" cy="62" r="28" />
+                  <circle class="contact-office__art-line contact-office__art-mark" cx="160" cy="62" r="11" />
+                  <circle class="contact-office__art-point" cx="160" cy="62" r="3" />
                 </svg>
-              </div>
-              <div class="mt-lg">
-                <a class="button button--secondary" href="tel:+48533537091">Zadzwoń teraz</a>
-              </div>
-            </div>
+                <figcaption class="badge contact-office__caption">Schemat poglądowy</figcaption>
+              </figure>
+              <dl class="contact-office__details">
+                <div class="contact-office__detail">
+                  <dt class="contact-office__label">Telefon</dt>
+                  <dd><a class="card__link" href="tel:+48533537091">+48 533 537 091</a></dd>
+                </div>
+                <div class="contact-office__detail">
+                  <dt class="contact-office__label">E-mail</dt>
+                  <dd><a class="card__link" href="mailto:kontakt@kp-code.pl">kontakt@kp-code.pl</a></dd>
+                </div>
+                <div class="contact-office__detail">
+                  <dt class="contact-office__label">Dostępność</dt>
+                  <dd>24/7</dd>
+                </div>
+              </dl>
+              <a class="button button--secondary contact-office__action" href="tel:+48533537091">
+                Zadzwoń teraz
+              </a>
+            </section>
           </div>
         </div>
       </section>
