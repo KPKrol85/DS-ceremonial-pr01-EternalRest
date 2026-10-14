@@ -27,6 +27,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Added
 
+- Added a shared editorial closing with the 24/7 availability statement and phone to the home, about, services, pricing and guide pages, absorbing each page's final contact action.
 - Added Eternal Horizon line motifs to the home hero and quotation, replacing the quotation hairline.
 - Replaced the ER monogram with the Eternal Horizon SVG logo in the header and both footer variants.
 - Redesigned pricing packages as an editorial list with tabular Manrope price figures and responsive columns.
