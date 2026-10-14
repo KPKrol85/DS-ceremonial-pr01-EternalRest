@@ -1,8 +1,25 @@
-/* Eternal Horizon lockup shared by the header and both footer variants. */
+/* Brand lockup shared by the header and both footer variants. */
 .brand__emblem {
+  --brand-emblem-size: 3.25rem;
   flex-shrink: 0;
-  width: 2.75rem;
+  width: var(--brand-emblem-size);
   height: auto;
+  /* logo.svg keeps a transparent inset (about 10% vertically, 11% horizontally);
+     trimming it lets alignment and gaps follow the visible symbol. */
+  margin: calc(var(--brand-emblem-size) * -0.1)
+    calc(var(--brand-emblem-size) * -0.11);
+  /* The monochrome logo is recolored to a dark or light silhouette per theme. */
+  filter: brightness(0);
+}
+
+html[data-theme="dark"] .brand__emblem {
+  filter: brightness(0) invert(1);
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .brand__emblem {
+    filter: brightness(0) invert(1);
+  }
 }
 
 .site-header {
