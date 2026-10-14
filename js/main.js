@@ -50,6 +50,12 @@
   applyTheme(themeState.mode);
 
   if (themeToggle) {
+    // Enable icon transitions only after the initial theme has been painted.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        themeToggle.classList.add("theme-toggle--ready");
+      });
+    });
     themeToggle.addEventListener("click", () => {
       const nextMode =
         themeState.mode === "dark" ? "light" : "dark";
