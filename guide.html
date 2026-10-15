@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Eternal Rest | O projekcie i FAQ</title>
+    <title>Eternal Rest | Poradnik i FAQ</title>
     <meta
       name="description"
-      content="Poznaj Eternal Rest — projekt portfolio KP_Code Digital Studio dla branży ceremonialnej. Założenia, funkcje strony, zakres demonstracji i kontakt ze studiem." />
+      content="Poradnik Eternal Rest — odpowiedzi na najczęstsze pytania rodzin dotyczące organizacji ceremonii, formalności i wsparcia." />
     <!-- partial:disclosure-init -->
     <link rel="stylesheet" href="css/main.css" />
     <script type="module" src="js/main.js"></script>
@@ -18,88 +18,79 @@
       <section class="section">
         <div class="container">
           <header class="page-masthead">
-            <p class="section__eyebrow page-masthead__eyebrow">O projekcie</p>
-            <h1 class="section__title page-masthead__title">Eternal Rest — od koncepcji do strony</h1>
+            <p class="section__eyebrow page-masthead__eyebrow">Poradnik</p>
+            <h1 class="section__title page-masthead__title">Najczęstsze pytania rodzin</h1>
             <p class="section__lead page-masthead__lead">
-              Projekt portfolio KP_Code Digital Studio pokazuje, jak może wyglądać strona
-              dla branży pogrzebowej i ceremonialnej. Poznaj założenia tej koncepcji,
-              działające funkcje i granice demonstracji.
+              Przygotowaliśmy odpowiedzi na pytania, które pojawiają się najczęściej w pierwszych
+              godzinach po stracie. Jeżeli potrzebujesz wsparcia, skontaktuj się z nami 24/7.
             </p>
           </header>
-          <div class="project-faq project-faq--expanded">
-            <div class="project-faq__item">
-              <h2 class="project-faq__question">Co pokazuje projekt Eternal Rest?</h2>
-              <p class="project-faq__answer">
-                Kompletną koncepcję wielostronicowej witryny: od prezentacji marki i przykładowej
-                oferty po układ informacji kontaktowych. Można przejść między podstronami
-                i sprawdzić działanie interfejsu. Projekt łączy spokojny język wizualny
-                z uporządkowaniem treści odpowiednim dla wrażliwej tematyki.
-              </p>
+          <div class="accordion" data-accordion>
+            <div class="accordion__item">
+              <button
+                class="accordion__button"
+                type="button"
+                data-accordion-trigger
+                aria-expanded="false"
+                aria-controls="faq-1"
+              >
+                <span class="accordion__label">
+                  Jakie dokumenty są potrzebne do rozpoczęcia formalności?
+                </span>
+              </button>
+              <div class="accordion__panel" id="faq-1">
+                Najczęściej potrzebujemy aktu zgonu oraz dowodu osobistego osoby zmarłej. Pomagamy
+                zebrać brakujące dokumenty i kontaktujemy się z urzędami.
+              </div>
             </div>
-            <div class="project-faq__item">
-              <h2 class="project-faq__question">Kto odpowiada za koncepcję i wykonanie?</h2>
-              <p class="project-faq__answer">
-                Autorem jest KP_Code Digital Studio. Eternal Rest stanowi część portfolio studia
-                i pozwala obejrzeć jego podejście do kompozycji, typografii oraz wdrożenia interfejsu
-                w działającej stronie. To autorska demonstracja, a nie realizacja przedstawiona
-                w imieniu rzeczywistego domu pogrzebowego.
-              </p>
+            <div class="accordion__item">
+              <button
+                class="accordion__button"
+                type="button"
+                data-accordion-trigger
+                aria-expanded="false"
+                aria-controls="faq-2"
+              >
+                <span class="accordion__label">
+                  Czy mogę zorganizować ceremonię świecką?
+                </span>
+              </button>
+              <div class="accordion__panel" id="faq-2">
+                Tak. Mamy doświadczonych mistrzów ceremonii, którzy przygotują indywidualny scenariusz
+                oraz oprawę słowną i muzyczną.
+              </div>
             </div>
-            <div class="project-faq__item">
-              <h2 class="project-faq__question">Jakim firmom może służyć podobna strona?</h2>
-              <p class="project-faq__answer">
-                Koncepcja jest punktem odniesienia dla domów pogrzebowych, organizatorów ceremonii
-                i firm zajmujących się upamiętnianiem. Pokazuje sposób prezentacji usług i danych
-                kontaktowych. W projekcie dla konkretnej firmy treści, struktura i funkcje
-                powinny wynikać z jej rzeczywistej oferty oraz potrzeb odbiorców.
-              </p>
+            <div class="accordion__item">
+              <button
+                class="accordion__button"
+                type="button"
+                data-accordion-trigger
+                aria-expanded="false"
+                aria-controls="faq-3"
+              >
+                <span class="accordion__label">
+                  Jak długo trwa przygotowanie ceremonii?
+                </span>
+              </button>
+              <div class="accordion__panel" id="faq-3">
+                Standardowo 24–72 godziny. Termin zależy od dostępności miejsca i życzeń rodziny.
+              </div>
             </div>
-            <div class="project-faq__item">
-              <h2 class="project-faq__question">Czy marka, oferta i ceny są rzeczywiste?</h2>
-              <p class="project-faq__answer">
-                Eternal Rest jest fikcyjną marką. Opisy usług, pakiety, ceny i przykładowe wypowiedzi
-                ilustrują sposób prezentacji treści; nie stanowią oferty handlowej ani relacji
-                klientów. Projekt nie prowadzi działalności pogrzebowej, nie organizuje ceremonii
-                i nie umożliwia zakupu przedstawionych usług.
-              </p>
-            </div>
-            <div class="project-faq__item">
-              <h2 class="project-faq__question">Jakie rozwiązania zostały wdrożone?</h2>
-              <p class="project-faq__answer">
-                Strona korzysta z Vite w układzie wielostronicowym, semantycznego HTML,
-                JavaScriptu bez frameworka oraz wspólnych tokenów CSS. Warstwę wizualną tworzą
-                kroje Playfair Display i Manrope, subtelne linie podziału oraz motyw horyzontu.
-                Wdrożenie obejmuje nawigację klawiaturą, widoczne stany fokusu i ograniczenie
-                animacji zgodnie z preferencją użytkownika.
-              </p>
-            </div>
-            <div class="project-faq__item">
-              <h2 class="project-faq__question">Jak strona dostosowuje się do urządzeń i motywu?</h2>
-              <p class="project-faq__answer">
-                Responsywny układ dostosowuje kolumny, odstępy i nawigację do szerokości ekranu
-                telefonu, tabletu lub komputera. Dostępne są motywy jasny, ciemny i systemowy,
-                który podąża za ustawieniami urządzenia. Wybrany motyw jest zapamiętywany
-                lokalnie w przeglądarce, jeśli pozwalają na to jej ustawienia.
-              </p>
-            </div>
-            <div class="project-faq__item">
-              <h2 class="project-faq__question">Czy formularz wysyła wiadomości lub rezerwacje?</h2>
-              <p class="project-faq__answer">
-                Nie. Formularz kontaktowy jest demonstracją interfejsu: sprawdza poprawność
-                wymaganych pól w przeglądarce i wyświetla komunikaty. Nie wysyła danych,
-                nie zapisuje zgłoszeń na serwerze i nie rezerwuje usług. Obsługa rzeczywistych
-                zapytań wymagałaby osobnego wdrożenia oraz uzgodnienia zasad przetwarzania danych.
-              </p>
-            </div>
-            <div class="project-faq__item">
-              <h2 class="project-faq__question">Jak porozmawiać o podobnej stronie dla swojej firmy?</h2>
-              <p class="project-faq__answer">
-                Napisz do KP_Code Digital Studio na
-                <a class="card__link" href="mailto:kontakt@kp-code.pl">kontakt@kp-code.pl</a>.
-                Możesz krótko opisać działalność, odbiorców i zakres potrzebnej strony.
-                To punkt wyjścia do rozmowy o indywidualnym projekcie. Link otwiera program
-                pocztowy; formularz demonstracyjny nie służy do kontaktu ze studiem.
-              </p>
+            <div class="accordion__item">
+              <button
+                class="accordion__button"
+                type="button"
+                data-accordion-trigger
+                aria-expanded="false"
+                aria-controls="faq-4"
+              >
+                <span class="accordion__label">
+                  Czy zapewniacie wsparcie po ceremonii?
+                </span>
+              </button>
+              <div class="accordion__panel" id="faq-4">
+                Tak. Zapewniamy kontakt po ceremonii, konsultacje i możliwość spotkań z psychologiem.
+              </div>
             </div>
           </div>
         </div>
@@ -108,30 +99,23 @@
       <section class="section section--alt">
         <div class="container">
           <div class="section__header">
-            <p class="section__eyebrow">Założenia koncepcji</p>
-            <h2 class="section__title">Spokojna forma, czytelne informacje</h2>
-            <p class="section__lead">
-              W branży ceremonialnej sposób podania treści ma znaczenie.
-              Ta koncepcja opiera się na dwóch prostych założeniach.
-            </p>
+            <p class="section__eyebrow">Wskazówki</p>
+            <h2 class="section__title">Pierwsze kroki po stracie</h2>
+            <p class="section__lead">Krótkie podpowiedzi, które pomagają uporządkować najważniejsze sprawy.</p>
           </div>
-          <div class="project-context">
-            <div class="project-context__item">
-              <h3 class="project-context__title">Uporządkowana prezentacja</h3>
-              <p class="project-context__text">
-                Osobne podstrony poświęcone ofercie, pakietom i kontaktowi pokazują, jak rozdzielić
-                informacje według ich roli. Wyraźne nagłówki i krótkie sekcje pozwalają zapoznać się
-                z treścią we własnym tempie.
-              </p>
-            </div>
-            <div class="project-context__item">
-              <h3 class="project-context__title">Powściągliwa oprawa</h3>
-              <p class="project-context__text">
-                Stylistyka Paper &amp; Stillness łączy ciepłą paletę, redakcyjną typografię
-                i przestrzeń wokół tekstu. Subtelny motyw horyzontu buduje tożsamość projektu,
-                pozostawiając pierwszeństwo informacjom.
-              </p>
-            </div>
+          <div class="grid grid--three">
+            <article class="card card--editorial" data-reveal>
+              <h3 class="card__title">Skontaktuj się z nami</h3>
+              <p class="card__text">Wystarczy telefon, aby rozpocząć niezbędne formalności.</p>
+            </article>
+            <article class="card card--editorial" data-reveal>
+              <h3 class="card__title">Zbierz dokumenty</h3>
+              <p class="card__text">Akt zgonu, dowód osobisty i dokumenty ubezpieczeniowe.</p>
+            </article>
+            <article class="card card--editorial" data-reveal>
+              <h3 class="card__title">Ustal charakter ceremonii</h3>
+              <p class="card__text">Wspólnie wybierzemy rytuał i oprawę zgodną z wartościami rodziny.</p>
+            </article>
           </div>
         </div>
       </section>
@@ -139,13 +123,17 @@
       <section class="page-closing" aria-labelledby="page-closing-title">
         <div class="container page-closing__inner">
           <div>
-            <p class="section__eyebrow">KP_Code Digital Studio</p>
+            <p class="section__eyebrow">Kontakt</p>
             <h2 class="section__title page-closing__title" id="page-closing-title">
-              Porozmawiajmy o stronie dla Twojej firmy
+              Jesteśmy dostępni przez całą dobę
             </h2>
           </div>
           <div class="page-closing__actions">
-            <a class="button button--primary" href="mailto:kontakt@kp-code.pl">Napisz do studia</a>
+            <a class="button button--primary" href="contact.html">Porozmawiaj z doradcą</a>
+            <p class="page-closing__phone">
+              <span class="page-closing__label">Telefon</span>
+              <a class="card__link" href="tel:+48533537091">+48 533 537 091</a>
+            </p>
           </div>
         </div>
       </section>
