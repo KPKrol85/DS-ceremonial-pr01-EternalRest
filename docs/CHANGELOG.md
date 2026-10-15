@@ -27,6 +27,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Added
 
+- Recomposed both footer variants with a single-column mobile order, content-width columns at equal gutters on tablet and desktop, tighter spacing, the "Nawigacja" heading and the copyright "© 2026 KP_Code Digital Studio | Wszelkie prawa zastrzeżone."; the back-to-top control is now an icon-only 44 px disc that rests beside the final footer row without covering it.
 - Redesigned the home hero as a cinematic photograph of a misty tree-lined road, with the statement and both actions over its dark side in every theme, served as a prioritized AVIF with a WebP fallback; the supporting note and facts moved to a quiet band beneath it.
 - Moved the marketing footer's social links into a centred row beneath the columns, with brand-colored GitHub, Facebook, Instagram and X icons replacing the Facebook, Instagram and LinkedIn glyphs; destinations remain placeholders.
 - Replaced the Eternal Horizon logo with the new monochrome symbol in the header and both footer variants, shown dark in the light theme and light in the dark theme, including system mode.

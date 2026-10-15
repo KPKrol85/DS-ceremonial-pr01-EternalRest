@@ -732,22 +732,28 @@ html[data-theme="dark"] .brand__emblem {
   display: none;
 }
 
-/* The bottom padding keeps the last row clear of the back-to-top control. */
+/* Geometry of the floating back-to-top control, shared with the footer's final row. */
+:root {
+  --back-to-top-size: 2.75rem;
+  --back-to-top-inset: var(--space-md);
+}
+
+/* The bottom padding centres the final row on the back-to-top control resting in the
+   viewport corner; --space-sm is about half the control's height minus a meta line. */
 .footer {
-  padding: var(--space-3xl) 0 var(--space-4xl);
+  padding: var(--space-2xl) 0 calc(var(--back-to-top-inset) + var(--space-sm));
   border-top: 1px solid var(--color-border);
   background: var(--color-surface-alt);
   font-size: var(--font-size-sm);
 }
 
+/* Mobile: one column in reading order — brand, navigation, services, contact. */
 .footer__grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-xl) var(--space-lg);
+  gap: var(--space-xl);
 }
 
 .footer__brand {
-  grid-column: 1 / -1;
   display: grid;
   align-content: start;
   justify-items: start;
@@ -760,26 +766,25 @@ html[data-theme="dark"] .brand__emblem {
   gap: var(--space-sm);
 }
 
+/* A short measure keeps the description calm; on desktop it also sets the brand
+   column's width. */
 .footer__text {
-  max-width: 38ch;
+  max-width: 32ch;
   color: var(--color-text-muted);
+  text-wrap: pretty;
 }
 
 .footer__column {
   display: grid;
   align-content: start;
-  gap: var(--space-sm);
+  gap: var(--space-md);
   color: var(--color-text-muted);
-}
-
-.footer__column--contact {
-  grid-column: 1 / -1;
 }
 
 .footer__heading {
   color: var(--color-text);
   font-size: var(--font-size-xxs);
-  font-weight: 700;
+  font-weight: var(--font-weight-label);
   letter-spacing: 0.14em;
   line-height: var(--line-height-heading);
   text-transform: uppercase;
@@ -790,6 +795,11 @@ html[data-theme="dark"] .brand__emblem {
 .pricing__features {
   display: grid;
   gap: var(--space-xs);
+}
+
+/* Keeps the postal code and town together on a line of their own. */
+.footer__address-line {
+  display: block;
 }
 
 .footer__links a,
@@ -815,14 +825,41 @@ html[data-theme="dark"] .brand__emblem {
   text-decoration-color: var(--color-accent);
 }
 
+/* Copyright and legal links share one row where it fits and stack where it does not.
+   The end padding keeps them clear of the back-to-top control in the viewport corner
+   and falls to zero once the page margin beside the container can hold the control. */
 .footer__meta {
-  display: grid;
-  gap: var(--space-sm);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-sm) var(--space-xl);
   margin-top: var(--space-2xl);
   padding-top: var(--space-lg);
+  padding-inline-end: max(
+    0px,
+    var(--back-to-top-inset) + var(--back-to-top-size) + var(--space-md) -
+      (100vw - 100%) / 2
+  );
   border-top: 1px solid var(--color-border);
   color: var(--color-text-muted);
   font-size: var(--font-size-xs);
+}
+
+.footer__social + .footer__meta {
+  margin-top: var(--space-xl);
+}
+
+/* Narrow screens wrap the copyright into balanced lines; the no-break space in the
+   markup keeps the separator at the end of the first one. */
+.footer__copyright {
+  text-wrap: balance;
+}
+
+/* A lighter accent stroke keeps the bar from reading as a capital I in Manrope. */
+.footer__separator {
+  color: var(--color-accent-text);
+  font-weight: 300;
 }
 
 .footer__legal-list {
@@ -916,33 +953,31 @@ html[data-theme="dark"] .brand__emblem {
   height: 1.25rem;
 }
 
-/* Hidden controls are also removed from the focus order. */
+/* An icon-only paper disc, raised above the page in both themes; the accessible name
+   comes from aria-label. Hidden controls are also removed from the focus order. */
 .back-to-top {
   position: fixed;
-  right: var(--space-md);
-  bottom: var(--space-md);
+  right: var(--back-to-top-inset);
+  bottom: var(--back-to-top-inset);
   z-index: 10;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-xs);
-  min-width: 2.75rem;
-  min-height: 2.75rem;
-  padding: 0 var(--space-sm);
-  border: 1px solid var(--color-accent);
-  border-radius: var(--radius-pill);
-  background: var(--color-accent);
-  color: var(--color-on-accent);
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  box-shadow: var(--shadow-md);
+  display: grid;
+  place-items: center;
+  width: var(--back-to-top-size);
+  height: var(--back-to-top-size);
+  border: 1px solid color-mix(in srgb, var(--color-text-muted) 35%, transparent);
+  border-radius: 50%;
+  background: light-dark(var(--color-surface), var(--color-surface-alt));
+  color: var(--color-text-muted);
+  box-shadow: var(--shadow-sm);
   opacity: 0;
   visibility: hidden;
   transform: translateY(0.5rem);
   transition:
     opacity var(--transition-med),
     transform var(--transition-med),
-    visibility 0s linear var(--transition-med);
+    visibility 0s linear var(--transition-med),
+    color var(--transition-fast),
+    border-color var(--transition-fast);
 }
 
 .back-to-top.is-visible {
@@ -952,22 +987,37 @@ html[data-theme="dark"] .brand__emblem {
   transition:
     opacity var(--transition-med),
     transform var(--transition-med),
-    visibility 0s;
+    visibility 0s,
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.back-to-top:hover,
+.back-to-top:focus-visible {
+  border-color: var(--color-accent-soft);
+  color: var(--color-accent-text);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .back-to-top.is-visible:hover,
+  .back-to-top.is-visible:focus-visible {
+    transform: translateY(-2px);
+  }
+}
+
+.back-to-top.is-visible:active {
+  box-shadow: none;
+  transform: none;
 }
 
 .back-to-top__icon {
-  width: 18px;
-  height: 18px;
+  width: 1.25rem;
+  height: 1.25rem;
   fill: none;
   stroke: currentcolor;
-  stroke-width: 2;
+  stroke-width: 1.5;
   stroke-linecap: round;
   stroke-linejoin: round;
-}
-
-/* The accessible name comes from aria-label; the visible label returns from 760 px. */
-.back-to-top__label {
-  display: none;
 }
 
 .button {
@@ -1117,14 +1167,8 @@ html[data-theme="dark"] .brand__emblem {
     padding: 0;
   }
 
-  .back-to-top {
-    right: var(--space-lg);
-    bottom: var(--space-lg);
-    padding: 0 var(--space-md) 0 var(--space-sm);
-  }
-
-  .back-to-top__label {
-    display: inline;
+  :root {
+    --back-to-top-inset: var(--space-lg);
   }
 
   /* Tablet and up: the photograph fills the stage and a shade from the start edge carries
@@ -1189,19 +1233,21 @@ html[data-theme="dark"] .brand__emblem {
     max-width: 20rem;
   }
 
+  .footer {
+    padding-top: var(--space-3xl);
+  }
+
+  /* Tablet: the brand leads above three content-width columns spread to equal
+     gutters. Under enlarged text the columns wrap rather than overflow. */
   .footer__grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .footer__column--contact {
-    grid-column: auto;
-  }
-
-  .footer__meta {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
-    align-items: center;
-    gap: var(--space-lg);
+    gap: var(--space-2xl) var(--space-xl);
+  }
+
+  .footer__brand {
+    flex-basis: 100%;
   }
 }
 
@@ -1235,12 +1281,8 @@ html[data-theme="dark"] .brand__emblem {
     font-size: var(--font-size-3xl);
   }
 
-  .footer__grid {
-    grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(0, 1fr));
-    column-gap: var(--space-xl);
-  }
-
+  /* Desktop: the brand joins the row and all four columns share equal gutters. */
   .footer__brand {
-    grid-column: auto;
+    flex-basis: auto;
   }
 }
