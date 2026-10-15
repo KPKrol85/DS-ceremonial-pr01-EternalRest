@@ -24,6 +24,7 @@
       aria-expanded="false"
       aria-label="Otwórz menu"
     >
+      <span class="site-header__toggle-text">Menu</span>
       <span class="site-header__toggle-line"></span>
     </button>
     <div class="site-header__panel" data-menu-panel id="site-nav">
@@ -80,8 +81,28 @@
         </ul>
       </nav>
       <div class="site-header__actions">
-        <a class="site-header__cta" href="tel:+48533537091">Zadzwoń 24/7</a>
-        <span class="site-header__phone">+48 533 537 091</span>
+        <a class="site-header__call" href="tel:+48533537091">
+          <span class="site-header__call-icon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M8.5 3.5h-3A1.5 1.5 0 0 0 4 5c0 8.284 6.716 15 15 15a1.5 1.5 0 0 0 1.5-1.5v-3l-4-1.5-2 2A11.9 11.9 0 0 1 8 9.5l2-2z"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+          <span class="site-header__call-text">
+            <span class="site-header__call-label">Zadzwoń 24/7</span>
+            <span class="site-header__call-number">+48 533 537 091</span>
+          </span>
+        </a>
         <div class="theme-switch" role="group" aria-label="Motyw kolorystyczny">
           <button
             class="theme-toggle theme-toggle--icon"
@@ -120,7 +141,28 @@
             </svg>
             <span class="sr-only">Zmień motyw</span>
           </button>
-          <button class="theme-toggle" type="button" data-theme-auto>
+          <button
+            class="theme-toggle theme-toggle--auto"
+            type="button"
+            title="Tryb systemowy"
+            data-theme-auto
+          >
+            <svg
+              class="theme-toggle__system-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="8.25"
+                stroke="currentColor"
+                stroke-width="1.6"
+              />
+              <path d="M12 3.75a8.25 8.25 0 0 1 0 16.5z" fill="currentColor" />
+            </svg>
             <span class="theme-toggle__label">Tryb systemowy</span>
           </button>
         </div>

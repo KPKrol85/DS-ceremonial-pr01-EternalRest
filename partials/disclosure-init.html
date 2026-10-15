@@ -1,10 +1,10 @@
 <script>
-  // Disclosure fallback (IMP-UX-05). Until main.js runs, .js-pending keeps the FAQ
-  // answers and package details collapsed, so a normal load shows no open state.
-  // If the main.js module fails to load or parse, .js-pending is removed and the
-  // no-JavaScript fallback is shown. A Content Security Policy must allow this
-  // inline script (for example by hash); otherwise the fallback shows until
-  // main.js runs.
+  // Disclosure fallback (IMP-UX-05). Until main.js runs, .js-pending keeps the header
+  // menu closed and the FAQ answers and package details collapsed, so a normal load
+  // shows no open state and no layout shift. If the main.js module fails to load or
+  // parse, .js-pending is removed and the no-JavaScript fallback is shown. A Content
+  // Security Policy must allow this inline script (for example by hash); otherwise
+  // the fallback shows until main.js runs.
   (() => {
     const root = document.documentElement;
     // js/main.js in development and assets/main-[hash].js in the Vite build.

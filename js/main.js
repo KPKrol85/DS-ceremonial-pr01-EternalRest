@@ -44,6 +44,9 @@
       );
       themeToggle.dataset.theme = isDark ? "dark" : "light";
     }
+    if (themeAuto) {
+      themeAuto.setAttribute("aria-pressed", String(mode === "auto"));
+    }
   };
 
   let themeState = getStoredTheme();
@@ -57,8 +60,8 @@
       });
     });
     themeToggle.addEventListener("click", () => {
-      const nextMode =
-        themeState.mode === "dark" ? "light" : "dark";
+      // Switch from the theme in view, as the label says, also in system mode.
+      const nextMode = themeToggle.dataset.theme === "dark" ? "light" : "dark";
       themeState = { version: THEME_VERSION, mode: nextMode };
       storeTheme(nextMode);
       applyTheme(nextMode);
@@ -101,7 +104,8 @@
   const menuButton = document.querySelector("[data-menu-button]");
   const menuPanel = document.querySelector("[data-menu-panel]");
   let lastFocused = null;
-  const desktopQuery = window.matchMedia("(min-width: 760px)");
+  // Matches the one-row desktop header in css/components.css.
+  const desktopQuery = window.matchMedia("(min-width: 1152px)");
 
   const closeMenu = () => {
     if (!menuPanel || !menuButton) return;
@@ -155,12 +159,13 @@
         closeMenu();
       }
       if (event.key === "Tab" && menuPanel.classList.contains("is-open")) {
-        const focusables = Array.from(
-          menuPanel.querySelectorAll(
+        // The menu button stays in the cycle so the menu can also be closed from it.
+        const focusables = [
+          menuButton,
+          ...menuPanel.querySelectorAll(
             "a, button, input, select, textarea, [tabindex]:not([tabindex='-1'])"
-          )
-        );
-        if (!focusables.length) return;
+          ),
+        ];
         const first = focusables[0];
         const last = focusables[focusables.length - 1];
         if (event.shiftKey && document.activeElement === first) {

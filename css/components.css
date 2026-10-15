@@ -22,21 +22,30 @@ html[data-theme="dark"] .brand__emblem {
   }
 }
 
+/* Site header. Below 1152px the bar holds the brand and a menu button; the menu opens the
+   navigation, the call action and the theme controls. From 1152px they share one row. */
 .site-header {
+  --site-header-pad: var(--space-sm);
+  --site-header-pad-compact: var(--space-xs);
   position: sticky;
   top: 0;
   z-index: 20;
-  padding: var(--space-sm) 0;
+  padding-block: var(--site-header-pad);
   background: color-mix(in srgb, var(--color-bg) 92%, transparent);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--color-border);
   transition:
     padding var(--transition-med),
+    margin var(--transition-med),
     box-shadow var(--transition-med);
 }
 
+/* The compact bar trades padding for an equal bottom margin, so the page keeps its place. */
 .site-header--compact {
-  padding: var(--space-xs) 0;
+  padding-block: var(--site-header-pad-compact);
+  margin-bottom: calc(
+    (var(--site-header-pad) - var(--site-header-pad-compact)) * 2
+  );
   box-shadow: var(--shadow-sm);
 }
 
@@ -48,7 +57,7 @@ html[data-theme="dark"] .brand__emblem {
   gap: var(--space-md);
 }
 
-/* Brand and toggle stay above the open mobile panel. */
+/* Brand and toggle stay above the open menu. */
 .site-header__brand,
 .site-header__toggle {
   position: relative;
@@ -100,6 +109,11 @@ html[data-theme="dark"] .brand__emblem {
   border-color: var(--color-accent-soft);
 }
 
+/* A visible "Menu" label joins the icon on tablet; the button's name stays its aria-label. */
+.site-header__toggle-text {
+  display: none;
+}
+
 .site-header__toggle-line {
   position: relative;
   width: 20px;
@@ -146,11 +160,14 @@ html[data-theme="dark"] .brand__emblem {
 /* Without JavaScript the navigation stays expanded in the page flow. */
 .site-header__panel {
   display: grid;
+  align-content: start;
   gap: var(--space-xl);
   width: 100%;
 }
 
-.js .site-header__panel {
+/* While main.js loads (.js-pending, set by partials/disclosure-init.html) and once it runs
+   (.js), the menu is a closed overlay from the first paint, so starting it shifts nothing. */
+:is(.js, .js-pending) .site-header__panel {
   position: fixed;
   top: 0;
   right: 0;
@@ -159,8 +176,9 @@ html[data-theme="dark"] .brand__emblem {
   height: 100dvh;
   overflow-y: auto;
   overscroll-behavior: contain;
-  align-content: start;
-  padding: 5.5rem var(--space-md) var(--space-xl);
+  /* The top padding clears the bar; the side padding follows the container edges. */
+  padding: 5.5rem max(var(--space-md), (100% - var(--container-width)) / 2)
+    var(--space-2xl);
   background: var(--color-bg);
   opacity: 0;
   visibility: hidden;
@@ -201,7 +219,9 @@ html[data-theme="dark"] .brand__emblem {
   text-decoration-color: transparent;
   text-decoration-thickness: 2px;
   text-underline-offset: 0.4em;
-  transition: text-decoration-color var(--transition-fast);
+  transition:
+    color var(--transition-fast),
+    text-decoration-color var(--transition-fast);
 }
 
 .site-header__nav-link:hover {
@@ -214,52 +234,74 @@ html[data-theme="dark"] .brand__emblem {
 
 .site-header__actions {
   display: grid;
-  gap: var(--space-sm);
+  justify-items: start;
+  gap: var(--space-lg);
 }
 
-.site-header__cta {
-  display: inline-flex;
+/* The single call action: a full-width card in the menu, a quiet lockup in the desktop row. */
+.site-header__call {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  gap: var(--space-xs);
-  min-height: 3rem;
-  padding: 0.65rem 1.4rem;
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--color-accent);
+  justify-self: stretch;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  transition: border-color var(--transition-fast);
+}
+
+.site-header__call:hover {
+  border-color: var(--color-accent-soft);
+}
+
+.site-header__call-icon {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
   background: var(--color-accent);
   color: var(--color-on-accent);
-  font-weight: 600;
-  white-space: nowrap;
   transition:
-    transform var(--transition-fast),
-    box-shadow var(--transition-fast);
+    background-color var(--transition-fast),
+    color var(--transition-fast);
 }
 
-.site-header__cta:hover,
-.site-header__cta:focus-visible {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-sm);
+.site-header__call-icon svg {
+  width: 1.125rem;
+  height: 1.125rem;
 }
 
-.site-header__cta:active {
-  transform: translateY(0);
-  box-shadow: none;
+.site-header__call-text {
+  display: grid;
+  gap: 0.125rem;
 }
 
-.site-header__phone {
+.site-header__call-label {
+  font-size: var(--font-size-xxs);
+  font-weight: var(--font-weight-label);
+  letter-spacing: 0.14em;
+  line-height: 1.2;
+  text-transform: uppercase;
   color: var(--color-text-muted);
-  font-size: var(--font-size-sm);
+}
+
+.site-header__call-number {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-label);
   font-variant-numeric: tabular-nums;
-  text-align: center;
+  line-height: 1.3;
   white-space: nowrap;
 }
 
+/* Two segments: the light/dark switch and the system mode. The active segment is filled:
+   the system button while it is pressed, the light/dark button while a theme is chosen. */
 .theme-switch {
   display: inline-flex;
   align-items: center;
-  justify-self: center;
   gap: 2px;
-  margin-top: var(--space-sm);
   padding: 3px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-pill);
@@ -271,7 +313,7 @@ html[data-theme="dark"] .brand__emblem {
   align-items: center;
   justify-content: center;
   gap: var(--space-xs);
-  min-height: 2.5rem;
+  min-height: 2.75rem;
   padding: 0 var(--space-md);
   border-radius: var(--radius-pill);
   color: var(--color-text-muted);
@@ -282,13 +324,19 @@ html[data-theme="dark"] .brand__emblem {
 
 .theme-toggle--icon {
   display: inline-grid;
-  width: 2.5rem;
+  width: 2.75rem;
   padding: 0;
 }
 
 .theme-toggle:hover {
-  background: var(--color-surface-alt);
+  background: color-mix(in srgb, var(--color-surface-alt) 55%, transparent);
   color: var(--color-text);
+}
+
+.theme-toggle[aria-pressed="true"],
+html[data-theme] .theme-toggle--icon {
+  background: var(--color-surface-alt);
+  color: var(--color-accent-text);
 }
 
 .theme-toggle__icon {
@@ -328,11 +376,29 @@ html[data-theme="dark"] .brand__emblem {
   white-space: nowrap;
 }
 
+.theme-toggle__system-icon {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+}
+
+/* Forced colors drop the segment fill, so the active segment keeps an outline. */
+@media (forced-colors: active) {
+  .theme-toggle[aria-pressed="true"],
+  html[data-theme] .theme-toggle--icon {
+    outline: 1px solid CanvasText;
+    outline-offset: -1px;
+  }
+}
+
 .no-js .site-header {
   position: static;
 }
 
-.no-js .site-header__toggle {
+/* Fallback when scripting is off, the inline script is blocked or main.js fails: the menu
+   button and the theme controls depend on main.js, so they are not shown. */
+.no-js:not(.js-pending) .site-header__toggle,
+.no-js:not(.js-pending) .theme-switch {
   display: none;
 }
 
@@ -1087,84 +1153,35 @@ html[data-theme="dark"] .brand__emblem {
 }
 
 @media (min-width: 760px) {
-  /* Two right-aligned rows: navigation above the call and theme actions. */
-  .site-header__inner {
-    flex-wrap: nowrap;
-    gap: var(--space-lg);
-  }
-
-  .site-header__brand {
-    flex-shrink: 0;
-  }
-
-  .site-header__toggle {
-    display: none;
-  }
-
+  /* Tablet: the menu sets the navigation beside a column with the call and theme controls. */
   .site-header__panel {
-    flex: 1;
-    justify-items: end;
-    gap: var(--space-xs);
-    width: auto;
-    min-width: 0;
+    grid-template-columns: minmax(0, 36rem) minmax(16rem, 20rem);
+    justify-content: space-between;
+    align-items: start;
+    column-gap: var(--space-3xl);
   }
 
-  .js .site-header__panel {
-    position: static;
-    height: auto;
-    overflow: visible;
-    padding: 0;
-    background: none;
-    opacity: 1;
-    visibility: visible;
-    transform: none;
-    transition: none;
-  }
-
-  .site-header__nav-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    border-top: 0;
-  }
-
-  .site-header__nav-list > li {
-    border-bottom: 0;
+  :is(.js, .js-pending) .site-header__panel {
+    padding-top: 6.5rem;
   }
 
   .site-header__nav-link {
-    padding: var(--space-2xs);
-    font-family: var(--font-sans);
-    font-size: var(--font-size-xs);
-    font-weight: 600;
+    font-size: var(--font-size-2xl);
   }
 
-  .site-header__actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-end;
-    gap: var(--space-xs) var(--space-md);
+  .site-header__toggle {
+    gap: 0.625rem;
+    width: auto;
+    padding-inline: 1.125rem 0.875rem;
   }
 
-  .site-header__cta {
-    min-height: 2.25rem;
-    padding: 0.4rem 1.15rem;
-    font-size: var(--font-size-sm);
-  }
-
-  .theme-switch {
-    margin-top: 0;
-  }
-
-  .theme-toggle {
-    min-height: 2rem;
-    padding: 0 var(--space-sm);
-  }
-
-  .theme-toggle--icon {
-    width: 2rem;
-    padding: 0;
+  .site-header__toggle-text {
+    display: inline;
+    font-size: var(--font-size-xxs);
+    font-weight: var(--font-weight-label);
+    letter-spacing: 0.14em;
+    line-height: 1;
+    text-transform: uppercase;
   }
 
   :root {
@@ -1252,15 +1269,6 @@ html[data-theme="dark"] .brand__emblem {
 }
 
 @media (min-width: 1024px) {
-  .site-header__nav-list {
-    gap: 0 var(--space-2xs);
-  }
-
-  .site-header__nav-link {
-    padding-inline: var(--space-xs);
-    font-size: var(--font-size-sm);
-  }
-
   .hero__stage {
     min-height: clamp(36rem, 80svh, 48rem);
   }
@@ -1284,5 +1292,138 @@ html[data-theme="dark"] .brand__emblem {
   /* Desktop: the brand joins the row and all four columns share equal gutters. */
   .footer__brand {
     flex-basis: auto;
+  }
+}
+
+/* Desktop: brand, navigation, call and theme controls share one row once the container
+   reaches its full width; narrower, they do not fit it. Matches desktopQuery in js/main.js. */
+@media (min-width: 1152px) {
+  .site-header {
+    --site-header-pad: 0.875rem;
+  }
+
+  .site-header__inner {
+    flex-wrap: nowrap;
+    gap: var(--space-xl);
+  }
+
+  .site-header__brand {
+    flex-shrink: 0;
+  }
+
+  .site-header__toggle {
+    display: none;
+  }
+
+  .site-header__panel,
+  :is(.js, .js-pending) .site-header__panel {
+    position: static;
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: var(--space-xl);
+    width: auto;
+    min-width: 0;
+    height: auto;
+    overflow: visible;
+    padding: 0;
+    background: none;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: none;
+  }
+
+  /* The links sit centred between the brand and the actions, with equal space on each side;
+     under enlarged text spacing they wrap instead of overflowing the row. */
+  .site-header__nav {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .site-header__nav-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    border-top: 0;
+  }
+
+  .site-header__nav-list > li {
+    border-bottom: 0;
+  }
+
+  .site-header__nav-link {
+    padding: var(--space-xs) 0.625rem;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    white-space: nowrap;
+    color: var(--color-text-muted);
+    text-underline-offset: 0.55em;
+  }
+
+  .site-header__nav-link:hover,
+  .site-header__nav-link[aria-current="page"] {
+    color: var(--color-text);
+  }
+
+  .site-header__actions {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--space-lg);
+  }
+
+  .site-header__call {
+    gap: var(--space-sm);
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: none;
+  }
+
+  .site-header__call-icon {
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid var(--color-border);
+    background: none;
+    color: var(--color-accent);
+  }
+
+  .site-header__call:hover .site-header__call-icon {
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+
+  .site-header__call-icon svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .site-header__call-number {
+    font-size: var(--font-size-sm);
+  }
+
+  .theme-toggle {
+    min-height: 2.25rem;
+  }
+
+  .theme-toggle--icon,
+  .theme-toggle--auto {
+    width: 2.25rem;
+    padding: 0;
+  }
+
+  /* The system button shows only its icon; its text stays the accessible name. */
+  .theme-toggle--auto .theme-toggle__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
   }
 }
