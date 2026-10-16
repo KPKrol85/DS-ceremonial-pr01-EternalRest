@@ -24,10 +24,14 @@
   };
 
   const storeTheme = (mode) => {
-    localStorage.setItem(
-      THEME_KEY,
-      JSON.stringify({ version: THEME_VERSION, mode })
-    );
+    try {
+      localStorage.setItem(
+        THEME_KEY,
+        JSON.stringify({ version: THEME_VERSION, mode })
+      );
+    } catch (error) {
+      // Keep theme switching available when storage writes fail.
+    }
   };
 
   const applyTheme = (mode) => {
