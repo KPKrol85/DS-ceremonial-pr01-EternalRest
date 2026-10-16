@@ -567,6 +567,62 @@ html[data-theme] .theme-toggle--icon {
   text-decoration-thickness: 2px;
 }
 
+/* Telephone icon, the header call glyph reused inline; it scales with the text around it. */
+.tel-icon {
+  flex-shrink: 0;
+  width: 1em;
+  height: 1em;
+  color: var(--color-accent);
+}
+
+/* Telephone links: the icon carries the hover feedback, so the number keeps a faint 1px
+   hairline that only warms slightly on hover; focus keeps the shared outline. The number
+   sets the baseline, so the link lines up with the labels beside it. */
+.tel-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5em;
+  white-space: nowrap;
+  transition: color var(--transition-fast);
+}
+
+.tel-link .tel-icon {
+  align-self: center;
+  color: var(--color-text-muted);
+  transition:
+    color var(--transition-fast),
+    border-color var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.tel-link__number {
+  text-decoration-line: underline;
+  text-decoration-color: color-mix(in srgb, var(--color-accent) 30%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+  transition: text-decoration-color var(--transition-fast);
+}
+
+.tel-link:hover,
+.tel-link:focus-visible {
+  color: var(--color-text);
+}
+
+.tel-link:hover .tel-icon,
+.tel-link:focus-visible .tel-icon {
+  color: var(--color-accent);
+}
+
+.tel-link:hover .tel-link__number,
+.tel-link:focus-visible .tel-link__number {
+  text-decoration-color: color-mix(in srgb, var(--color-accent) 55%, transparent);
+}
+
+.button .tel-icon {
+  width: 1.125em;
+  height: 1.125em;
+}
+
 /* Static label: a quiet note led by a short hairline, without the filled pill of a control. */
 .badge {
   display: inline-flex;
@@ -883,6 +939,11 @@ html[data-theme] .theme-toggle--icon {
 .footer__legal-list a:hover {
   color: var(--color-text);
   text-decoration-color: var(--color-accent);
+}
+
+/* The phone link draws its own hairline under the number, so the shared one is dropped. */
+.footer__links .tel-link {
+  text-decoration-line: none;
 }
 
 .footer__legal-list a[aria-current="page"] {

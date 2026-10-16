@@ -31,6 +31,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Added
 
+- Added the header's inline telephone icon (decorative, `currentColor`) to the home hero call button, the shared closing on five pages as a ringed lockup beside the label and number, the contact page's masthead, office details and call button, and the phone link in both footers. Telephone numbers now keep a faint 1px underline that stays 1px on hover while the icon carries the hover feedback; email, navigation and legal links are unchanged, and the shared focus outline is preserved.
 - Integrated the existing favicons and corrected manifest icon paths across all nine pages; added page-specific Open Graph and Twitter/X cards using the shared 1200 × 630 JPEG, crawl-permissive robots.txt and a nine-page production sitemap including legal pages. Verified the build, reference checks, generated metadata, asset copies, manifest and sitemap XML; updated Polish and English SEO documentation.
 - Added four local Chromium smoke tests with `@playwright/test` for mobile navigation, FAQ, pricing filters and contact-form preferences/validation; `npm run test:smoke` builds production output and manages Vite Preview on a dedicated strict port, with setup documented in Polish and English. GitHub Actions integration remains reserved for P3-B.
 - Named the preferred contact button group and distinguished its selected option with an underline and theme-aware border, including forced colors, preserving keyboard behavior and hidden-field synchronization.
