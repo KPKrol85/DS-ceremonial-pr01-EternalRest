@@ -25,6 +25,10 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ## [Unreleased]
 
+### Changed
+
+- Added one `noindex, follow` robots meta directive to each of the nine pages and removed the sitemap declaration from `robots.txt`, preserving crawler access, the demonstration sitemap, public access and social metadata; documented the policy in Polish and English.
+
 ### Added
 
 - Integrated the existing favicons and corrected manifest icon paths across all nine pages; added page-specific Open Graph and Twitter/X cards using the shared 1200 × 630 JPEG, crawl-permissive robots.txt and a nine-page production sitemap including legal pages. Verified the build, reference checks, generated metadata, asset copies, manifest and sitemap XML; updated Polish and English SEO documentation.

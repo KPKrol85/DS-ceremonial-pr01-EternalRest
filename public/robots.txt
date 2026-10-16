@@ -1,4 +1,2 @@
 User-agent: *
 Allow: /
-
-Sitemap: https://ds-ceremonial-pr01-eternalrest.netlify.app/sitemap.xml
