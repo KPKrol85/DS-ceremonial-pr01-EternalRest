@@ -27,6 +27,7 @@ Publiczna wersja demonstracyjna projektu: [ds-ceremonial-pr01-eternalrest.netlif
 - Vite do developmentu, budowania wielu stron i podglądu wyniku.
 - PostCSS z Autoprefixer do przetwarzania CSS.
 - ESLint do analizy JavaScript i Prettier do formatowania.
+- `@playwright/test` jako zależność developerska do lokalnych testów smoke w Chromium.
 - Sharp i fast-glob w osobnym skrypcie konwersji obrazów.
 - Node.js i npm jako środowisko narzędziowe; zależności zapisane w `package-lock.json`.
 
@@ -93,6 +94,12 @@ Wymagane są Node.js 22.20+ z linii 22.x oraz npm 10 lub nowszy. W katalogu gł�
 npm ci
 ```
 
+Przed pierwszym uruchomieniem testów przeglądarkowych zainstaluj Chromium dla wersji Playwright z pliku blokady (ponów po aktualizacji Playwright):
+
+```bash
+npx playwright install chromium
+```
+
 ### Dostępne skrypty
 
 Polecenia są zdefiniowane w [package.json](package.json).
@@ -102,6 +109,7 @@ Polecenia są zdefiniowane w [package.json](package.json).
 | `npm run dev` | Uruchamia Vite z `--host`, udostępniając serwer także w sieci lokalnej. |
 | `npm run build` | Buduje wszystkie strony HTML z katalogu głównego przez `vite build`. |
 | `npm run preview` | Uruchamia `vite preview`; wymaga wcześniejszego buildu. |
+| `npm run test:smoke` | Buduje stronę od nowa i uruchamia cztery testy Playwright w Chromium na lokalnym Vite Preview. |
 | `npm run lint` | Uruchamia ESLint wyłącznie dla `js/**/*.js`. |
 | `npm run check:references` | Sprawdza odwołania do identyfikatorów, duplikaty `id` i zgodność ścieżki modułu aplikacji z inicjalizatorem `partials/disclosure-init.html` w zbudowanych stronach `dist/`; wymaga wcześniejszego buildu i niczego nie zapisuje. |
 | `npm run format` | Uruchamia `prettier --write .` i nadpisuje niesformatowane pliki w zakresie formatowania. |
@@ -120,7 +128,11 @@ Konwersja obrazów jest osobnym etapem i nie jest wywoływana przez build. Obecn
 
 ### Testy i walidacja
 
-Konfiguracja ESLint korzysta z `eslint:recommended`, środowiska przeglądarkowego i ostrzeżeń dla nieużywanych zmiennych. Zakres lintowania nie obejmuje HTML, CSS ani skryptów w `scripts/`. Repozytorium nie zawiera automatycznych testów jednostkowych ani przeglądarkowych; sama konfiguracja narzędzi nie potwierdza poprawności interfejsu.
+Konfiguracja ESLint korzysta z `eslint:recommended`, środowiska przeglądarkowego i ostrzeżeń dla nieużywanych zmiennych. Zakres lintowania nie obejmuje HTML, CSS ani skryptów w `scripts/`. Repozytorium nie zawiera automatycznych testów jednostkowych.
+
+`npm run test:smoke` najpierw wykonuje build produkcyjny, a następnie uruchamia dokładnie cztery niezależne testy z `tests/smoke.spec.js`: menu mobilne (otwieranie, Escape i przywrócenie fokusu), rozwijanie i zwijanie FAQ w poradniku, filtrowanie cen z komunikatem liczby wyników oraz preferencje kontaktu i walidację pustego formularza z fokusem na pierwszym błędnym polu. Testy sprawdzają widoczność i powiązane stany ARIA; nie wpisują danych osobowych ani nie wysyłają zgłoszeń.
+
+`playwright.config.js` ogranicza wykonanie do Chromium z jednym workerem i bez ponowień. Playwright uruchamia i zatrzymuje Vite Preview pod `http://127.0.0.1:8182`; zajęty port powoduje błąd, zamiast użycia istniejącego serwera lub innego portu. Nieudany build lub test zwraca kod różny od zera. Testy działają lokalnie na `dist/`, nie na publicznym Netlify, i nie są jeszcze zintegrowane z GitHub Actions (osobny etap P3-B).
 
 `npm run check:references` sprawdza odwołania do identyfikatorów w stronach HTML z katalogu głównego `dist/`, czyli już po wstawieniu fragmentów z `partials/` przez Vite. Dlatego wymaga wcześniejszego `npm run build` i sam go nie uruchamia. Na każdej stronie wykrywa zduplikowane `id` oraz odwołania bez celu w `aria-controls`, `aria-describedby` i `aria-labelledby` (każdy identyfikator z listy rozdzielonej spacjami osobno), w `label[for]`, w odnośnikach `href="#id"` na tej samej stronie i w odnośnikach do fragmentów innych stron projektu, np. `services.html#id`, sprawdzanych na stronie docelowej. Ten sam `id` na różnych stronach nie jest duplikatem. Pomijane są adresy zewnętrzne, `mailto:`, `tel:` i placeholdery `href="#"`. Każdy błąd podaje stronę, wiersz, atrybut oraz brakujący lub zduplikowany identyfikator, a polecenie kończy się wtedy kodem różnym od zera; przy powodzeniu podaje liczbę sprawdzonych stron i odwołań. Brak `dist/` również kończy się błędem z poleceniem wykonania buildu. Skrypt korzysta wyłącznie z wbudowanych modułów Node.js, niczego nie zapisuje i nie jest częścią `npm run build`. Sprawdza tylko istnienie celów odwołań, a nie semantykę ARIA ani działanie interakcji w przeglądarce.
 
@@ -180,6 +192,7 @@ Public project demo: [ds-ceremonial-pr01-eternalrest.netlify.app](https://ds-cer
 - Vite for development, multi-page builds and build previews.
 - PostCSS with Autoprefixer for CSS processing.
 - ESLint for JavaScript analysis and Prettier for formatting.
+- `@playwright/test` as a development dependency for local Chromium smoke tests.
 - Sharp and fast-glob in a separate image conversion script.
 - Node.js and npm for tooling; dependencies recorded in `package-lock.json`.
 
@@ -246,6 +259,12 @@ Node.js 22.20+ within the 22.x line and npm 10 or newer are required. Install de
 npm ci
 ```
 
+Before the first browser test run, install Chromium for the locked Playwright version (repeat after updating Playwright):
+
+```bash
+npx playwright install chromium
+```
+
 ### Available Scripts
 
 Commands are defined in [package.json](package.json).
@@ -255,6 +274,7 @@ Commands are defined in [package.json](package.json).
 | `npm run dev` | Starts Vite with `--host`, also exposing the server to the local network. |
 | `npm run build` | Builds all root-level HTML pages through `vite build`. |
 | `npm run preview` | Starts `vite preview`; requires a prior build. |
+| `npm run test:smoke` | Creates a fresh production build and runs four Playwright tests in Chromium against local Vite Preview. |
 | `npm run lint` | Runs ESLint only on `js/**/*.js`. |
 | `npm run check:references` | Checks ID references, duplicate IDs and the application module path against the `partials/disclosure-init.html` initializer in the built `dist/` pages; requires a prior build and writes nothing. |
 | `npm run format` | Runs `prettier --write .` and overwrites unformatted files within the formatting scope. |
@@ -273,7 +293,11 @@ Image conversion is a separate step and is not invoked by the build. Current gra
 
 ### Testing and Validation
 
-ESLint is configured with `eslint:recommended`, a browser environment and warnings for unused variables. Linting does not cover HTML, CSS or the scripts in `scripts/`. The repository contains no automated unit or browser tests; tool configuration alone does not establish interface correctness.
+ESLint is configured with `eslint:recommended`, a browser environment and warnings for unused variables. Linting does not cover HTML, CSS or the scripts in `scripts/`. The repository contains no automated unit tests.
+
+`npm run test:smoke` first creates a production build, then runs exactly four independent tests from `tests/smoke.spec.js`: mobile navigation (opening, Escape and focus restoration), expanding and collapsing a guide FAQ answer, pricing filtering with result-count announcements, and contact preferences plus empty-form validation with focus on the first invalid field. Tests assert visibility and related ARIA states; they enter no personal information and send no enquiries.
+
+`playwright.config.js` uses Chromium only, one worker and no retries. Playwright starts and stops Vite Preview at `http://127.0.0.1:8182`; an occupied port fails instead of reusing an existing server or switching ports. A failed build or test returns a non-zero exit code. Browser tests run locally against `dist/`, never against public Netlify, and are not yet integrated into GitHub Actions (reserved for P3-B).
 
 `npm run check:references` checks ID references in the root-level HTML pages of `dist/`, after Vite has inserted the `partials/` content. It therefore requires a prior `npm run build` and does not run one itself. On every page it reports duplicate `id` values and references without a target in `aria-controls`, `aria-describedby` and `aria-labelledby` (each ID of a whitespace-separated list separately), in `label[for]`, in same-page `href="#id"` links and in fragment links to other project pages, such as `services.html#id`, which are checked on the target page. The same `id` on different pages is not a duplicate. External URLs, `mailto:`, `tel:` and `href="#"` placeholders are skipped. Each error names the page, line, attribute and the missing or duplicated ID, and the command then exits with a non-zero code; on success it reports how many pages and references it checked. A missing `dist/` also fails, with an instruction to build first. The script uses only built-in Node.js modules, writes nothing and is not part of `npm run build`. It checks only that reference targets exist, not ARIA semantics or interactive behavior in a browser.
 

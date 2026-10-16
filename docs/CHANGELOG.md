@@ -27,6 +27,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Added
 
+- Added four local Chromium smoke tests with `@playwright/test` for mobile navigation, FAQ, pricing filters and contact-form preferences/validation; `npm run test:smoke` builds production output and manages Vite Preview on a dedicated strict port, with setup documented in Polish and English. GitHub Actions integration remains reserved for P3-B.
 - Named the preferred contact button group and distinguished its selected option with an underline and theme-aware border, including forced colors, preserving keyboard behavior and hidden-field synchronization.
 - Redesigned the shared header as a single desktop row from 1152 px with one call link and a segmented light/dark/system theme control, a labelled two-column menu on tablet and a full-screen menu on mobile; the menu now renders closed from the first paint on all nine pages, removing the mobile layout shift on load (CLS about 0.59 at 390 px in throttled Chromium tests), and in system mode the theme toggle now switches away from the displayed theme.
 - Recomposed both footer variants with a single-column mobile order, content-width columns at equal gutters on tablet and desktop, tighter spacing, the "Nawigacja" heading and the copyright "© 2026 KP_Code Digital Studio | Wszelkie prawa zastrzeżone."; the back-to-top control is now an icon-only 44 px disc that rests beside the final footer row without covering it.
