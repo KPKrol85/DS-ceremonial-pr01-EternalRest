@@ -1,9 +1,15 @@
 {
-  "name": "eternal-rest-site",
+  "name": "eternal-rest",
   "version": "1.0.0",
+  "private": true,
+  "description": "Eternal Rest multi-page funeral home demo website built with Vite, CSS and vanilla JavaScript",
   "author": "Kamil Król — KP_Code Digital Studio",
   "license": "SEE LICENSE IN LICENSE.md",
-  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KPKrol85/DS-ceremonial-pr01-EternalRest.git"
+  },
+  "homepage": "https://ds-ceremonial-pr01-eternalrest.netlify.app/",
   "type": "module",
   "engines": {
     "node": ">=22.20.0 <23",
