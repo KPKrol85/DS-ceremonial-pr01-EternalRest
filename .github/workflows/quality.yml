@@ -36,3 +36,9 @@ jobs:
 
       - name: Check references
         run: npm run check:references
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Chromium smoke tests
+        run: npx playwright test

@@ -78,6 +78,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Build and Tooling
 
+- Integrated the four existing Chromium smoke tests into the read-only `Quality Checks` job after lint, build and reference validation: install with `npx playwright install --with-deps chromium`, then run `npx playwright test` against the existing production build; manual Netlify deployment is unchanged.
 - Added `npm run check:references` to validate HTML IDs, ARIA references, labels and internal links.
 - Extended `check:references` to detect disclosure initializer and application module mismatches.
 - Added build-time HTML partials for shared page chrome, with Vite integration, page-aware navigation states and development reload support.
