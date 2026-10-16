@@ -157,7 +157,7 @@ Są to mechanizmy obecne w kodzie, bez deklaracji zgodności z WCAG.
 
 ### SEO
 
-Każda strona zawiera polski atrybut języka dokumentu, własny tytuł i opis meta. Repozytorium nie zawiera konfiguracji adresów kanonicznych, Open Graph, danych strukturalnych, mapy witryny ani reguł dla robotów.
+Wszystkie dziewięć stron zawiera polski atrybut języka dokumentu, własny tytuł i opis meta oraz spójne deklaracje favicon (ICO, PNG 96 × 96, SVG i Apple Touch Icon 180 × 180) i manifestu z `public/favicons/`. Metadane Open Graph (`pl_PL`, typ `website`) i karty Twitter/X `summary_large_image` wykorzystują tytuł i opis danej strony oraz wspólny obraz `public/images/og.jpg` (JPEG 1200 × 630) z polskim opisem alternatywnym. Adresy stron w Open Graph i adres obrazu są bezwzględnymi adresami produkcyjnymi w domenie `https://ds-ceremonial-pr01-eternalrest.netlify.app/`. Plik `public/robots.txt` zezwala robotom na przeszukiwanie całej witryny i wskazuje produkcyjny `sitemap.xml`; mapa obejmuje dziewięć stron, w tym dokumenty prawne, a stronę główną reprezentuje adresem `/`, bez wymyślonych dat i parametrów aktualizacji. Vite kopiuje zawartość `public/` do katalogu głównego `dist/`, zachowując podkatalogi; ścieżki ikon w manifeście są względne wobec `favicons/site.webmanifest`. Nie dodano znaczników `link rel="canonical"` ani danych strukturalnych. Wdrożenie na Netlify pozostaje ręczne.
 
 ### Dane i trwałość stanu
 
@@ -324,7 +324,7 @@ These are mechanisms present in the code, without a claim of WCAG compliance.
 
 ### SEO
 
-Each page declares Polish as its document language and has its own title and meta description. The repository contains no canonical URL configuration, Open Graph metadata, structured data, sitemap or robot directives.
+All nine pages declare Polish as their document language and retain their own title and meta description, with consistent favicon declarations (ICO, 96 × 96 PNG, SVG and 180 × 180 Apple Touch Icon) and the manifest from `public/favicons/`. Open Graph metadata (`pl_PL`, type `website`) and Twitter/X `summary_large_image` cards reuse each page’s title and description and the shared `public/images/og.jpg` image (1200 × 630 JPEG) with Polish alternative text. Open Graph page URLs and the image URL are absolute production URLs under `https://ds-ceremonial-pr01-eternalrest.netlify.app/`. The `public/robots.txt` file allows crawling throughout the site and points to the production `sitemap.xml`; the sitemap lists all nine pages, including legal documents, represents the homepage as `/`, and includes no invented dates or update parameters. Vite copies `public/` into the root of `dist/`, preserving subdirectories; manifest icon paths are relative to `favicons/site.webmanifest`. No `link rel="canonical"` tags or structured data were added. Netlify deployment remains manual.
 
 ### Data and State Persistence
 
