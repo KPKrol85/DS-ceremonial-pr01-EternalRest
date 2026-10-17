@@ -202,7 +202,7 @@
   text-decoration-thickness: 2px;
 }
 
-/* E-mail links draw their own hairline under the address, so the legal underline is dropped. */
+/* E-mail links underline only the address on hover, so the legal underline is dropped. */
 .legal-meta .email-link,
 .legal-section__body .email-link {
   text-decoration-line: none;

@@ -575,9 +575,9 @@ html[data-theme] .theme-toggle--icon {
   color: var(--color-accent);
 }
 
-/* Telephone links: the icon carries the hover feedback, so the number keeps a faint 1px
-   hairline that only warms slightly on hover; focus keeps the shared outline. The number
-   sets the baseline, so the link lines up with the labels beside it. */
+/* Telephone links: the icon marks the link, so the number rests without an underline and
+   gains a 1px accent hairline on hover and focus, as the footer links do; focus keeps the
+   shared outline. The number sets the baseline, so the link lines up with the labels beside it. */
 .tel-link {
   display: inline-flex;
   align-items: baseline;
@@ -597,7 +597,7 @@ html[data-theme] .theme-toggle--icon {
 
 .tel-link__number {
   text-decoration-line: underline;
-  text-decoration-color: color-mix(in srgb, var(--color-accent) 30%, transparent);
+  text-decoration-color: transparent;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.25em;
   transition: text-decoration-color var(--transition-fast);
@@ -615,7 +615,7 @@ html[data-theme] .theme-toggle--icon {
 
 .tel-link:hover .tel-link__number,
 .tel-link:focus-visible .tel-link__number {
-  text-decoration-color: color-mix(in srgb, var(--color-accent) 55%, transparent);
+  text-decoration-color: var(--color-accent);
 }
 
 .button .tel-icon {
@@ -630,8 +630,8 @@ html[data-theme] .theme-toggle--icon {
   height: 1em;
 }
 
-/* E-mail links follow the telephone link pattern: the icon carries the hover feedback, the
-   address keeps a faint 1px hairline and sets the baseline; focus keeps the shared outline. */
+/* E-mail links follow the telephone link pattern: the icon marks the link, the address rests
+   without an underline, gains the accent hairline on hover and focus and sets the baseline. */
 .email-link {
   display: inline-flex;
   align-items: baseline;
@@ -647,7 +647,7 @@ html[data-theme] .theme-toggle--icon {
 
 .email-link__address {
   text-decoration-line: underline;
-  text-decoration-color: color-mix(in srgb, var(--color-accent) 30%, transparent);
+  text-decoration-color: transparent;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.25em;
   transition: text-decoration-color var(--transition-fast);
@@ -665,7 +665,7 @@ html[data-theme] .theme-toggle--icon {
 
 .email-link:hover .email-link__address,
 .email-link:focus-visible .email-link__address {
-  text-decoration-color: color-mix(in srgb, var(--color-accent) 55%, transparent);
+  text-decoration-color: var(--color-accent);
 }
 
 /* Static label: a quiet note led by a short hairline, without the filled pill of a control. */
@@ -986,7 +986,7 @@ html[data-theme] .theme-toggle--icon {
   text-decoration-color: var(--color-accent);
 }
 
-/* Phone and e-mail links draw their own hairline under the text, so the shared one is dropped. */
+/* Phone and e-mail links underline only their text on hover, so the shared underline is dropped. */
 .footer__links .tel-link,
 .footer__links .email-link {
   text-decoration-line: none;
