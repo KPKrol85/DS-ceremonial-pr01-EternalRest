@@ -217,7 +217,7 @@ html[data-theme="dark"] .brand__emblem {
   line-height: var(--line-height-heading);
   text-decoration-line: underline;
   text-decoration-color: transparent;
-  text-decoration-thickness: 2px;
+  text-decoration-thickness: 1px;
   text-underline-offset: 0.4em;
   transition:
     color var(--transition-fast),
