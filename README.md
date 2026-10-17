@@ -169,7 +169,7 @@ Treści i ceny są zapisane w HTML. Preferencja motywu trafia do `localStorage` 
 
 ### Licencja
 
-Projekt podlega [Własnościowej Licencji Projektu KP_CODE](LICENSE.md), wersja 1.0, i nie jest oprogramowaniem open source. Licencja opisuje ograniczony użytek lokalny do prywatnej, niekomercyjnej oceny; publiczne wdrożenie, redystrybucja i wykorzystanie komercyjne wymagają odrębnej pisemnej zgody. Materiały podmiotów trzecich zachowują własne warunki licencyjne.
+Projekt podlega [Własnościowej Licencji Projektu KP_CODE](LICENSE.md), wersja 1.0, i nie jest oprogramowaniem open source. Licencja opisuje ograniczony użytek lokalny do prywatnej, niekomercyjnej oceny; publiczne wdrożenie, redystrybucja i wykorzystanie komercyjne wymagają odrębnej pisemnej zgody. Materiały podmiotów trzecich zachowują własne warunki licencyjne; ich wykaz zawiera plik [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
 
 ## EN
 
@@ -340,4 +340,4 @@ Content and prices are stored in HTML. The theme preference is saved in `localSt
 
 ### License
 
-The project is covered by the [KP_CODE Proprietary Project License](LICENSE.md), version 1.0, and is not open-source software. The license describes limited local use for private, non-commercial evaluation; public deployment, redistribution and commercial use require separate written permission. Third-party materials retain their own license terms.
+The project is covered by the [KP_CODE Proprietary Project License](LICENSE.md), version 1.0, and is not open-source software. The license describes limited local use for private, non-commercial evaluation; public deployment, redistribution and commercial use require separate written permission. Third-party materials retain their own license terms and are listed in [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
