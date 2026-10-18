@@ -969,12 +969,14 @@ html[data-theme] .theme-toggle--icon {
   display: block;
 }
 
-/* Secondary attribution under the contact details; inline-size containment keeps the
-   sentence from widening the content-width column, so it wraps within it instead. */
+/* Secondary attribution under the contact details, set as two intentional lines; the
+   first line may widen the content-width column and still wraps under enlarged text. */
 .footer__note {
-  contain: inline-size;
   font-size: var(--font-size-xs);
-  text-wrap: pretty;
+}
+
+.footer__note-line {
+  display: block;
 }
 
 .footer__links a,
