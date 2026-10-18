@@ -1,3 +1,85 @@
+/* Masthead with a still life of the writing desk: stacked beneath the text on narrow screens,
+   an asymmetric pair from tablet up with the photograph as the quieter, narrower column. */
+.guide-hero {
+  display: grid;
+  gap: var(--space-xl);
+}
+
+.guide-hero__media {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  /* A landscape crop keeps the stacked photograph short of the FAQ. */
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-sm);
+  /* Also the stand-in before the photograph loads. */
+  background: var(--color-surface-alt);
+}
+
+.guide-hero__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Every crop is wider than the portrait photograph, so only the height is trimmed: mostly
+     from the top, keeping the open notebook whole and the window light in view. */
+  object-position: 50% 72%;
+}
+
+/* Spotlight: a warm, diffused light drifting over the paper. It is drawn only for a fine
+   hovering pointer with motion allowed; js/main.js moves it and fades it in while the
+   pointer is over the photograph, so without JavaScript the photograph stays still. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .guide-hero__media::after {
+    /* Lamplight belongs to the photograph, which looks the same in every theme. */
+    --guide-hero-light: 255 214 160;
+
+    content: "";
+    position: absolute;
+    inset: 0;
+    /* Soft light keeps the paper's texture; the stepped falloff leaves no visible rim. */
+    background: radial-gradient(
+      circle 14rem at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
+      rgb(var(--guide-hero-light) / 0.6),
+      rgb(var(--guide-hero-light) / 0.36) 30%,
+      rgb(var(--guide-hero-light) / 0.13) 60%,
+      rgb(var(--guide-hero-light) / 0.03) 82%,
+      transparent
+    );
+    mix-blend-mode: soft-light;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-slow);
+  }
+
+  .guide-hero__media.is-lit::after {
+    opacity: 1;
+  }
+}
+
+/* Tablet and up: the text settles on the photograph's lower edge. The crop widens as the
+   title shortens to one line, so the photograph never towers over the text. */
+@media (min-width: 760px) {
+  .guide-hero {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    align-items: end;
+    column-gap: var(--space-2xl);
+  }
+
+  .guide-hero__media {
+    aspect-ratio: 1;
+  }
+}
+
+@media (min-width: 1024px) {
+  .guide-hero {
+    column-gap: var(--space-3xl);
+  }
+
+  .guide-hero__media {
+    aspect-ratio: 5 / 4;
+  }
+}
+
 /* Demonstration note under the FAQ: small and muted, on the editorial accordion's column. */
 .guide-faq-note {
   max-width: 44rem;
