@@ -189,7 +189,7 @@ Public project demo: [ds-ceremonial-pr01-eternalrest.netlify.app](https://ds-cer
 - Expandable mobile navigation and a back-to-top button.
 - Package filtering by ceremony type and expandable package details.
 - FAQ accordions on the home and guide pages.
-- Preferred contact method selection and local validation for non-empty form fields and the e-mail address format.
+- Local validation for non-empty form fields and the e-mail address format.
 - Terms (17 sections), Privacy Policy (14 sections) and Cookies Policy (9 sections) with native section indexes and return links that work without JavaScript. The Privacy Policy describes the actual behavior of e-mail correspondence, theme storage and the demonstration form, while the Cookies Policy documents theme storage in `localStorage` as the only storage technology, with no application-set cookies.
 
 ### Tech Stack

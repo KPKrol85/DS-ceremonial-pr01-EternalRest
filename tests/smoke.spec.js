@@ -74,27 +74,8 @@ test("pricing filter shows the selected category and announces results", async (
   await expect(status).toHaveText("Wyświetlane pakiety: 3 z 3");
 });
 
-test("contact preference stays synchronized and empty submission focuses the first error", async ({
-  page,
-}) => {
+test("empty contact submission focuses the first error", async ({ page }) => {
   await page.goto("/contact.html");
-
-  const choices = page.getByRole("group", { name: "Preferowany kontakt" });
-  const phone = choices.getByRole("button", { name: "Telefon", exact: true });
-  const email = choices.getByRole("button", { name: "E-mail", exact: true });
-  const preference = page.locator("[data-contact-input]");
-  await expect(phone).toHaveAttribute("aria-pressed", "true");
-  await expect(email).toHaveAttribute("aria-pressed", "false");
-  await expect(preference).toHaveValue("Telefon");
-
-  await email.click();
-  await expect(email).toHaveAttribute("aria-pressed", "true");
-  await expect(phone).toHaveAttribute("aria-pressed", "false");
-  await expect(preference).toHaveValue("E-mail");
-  await phone.click();
-  await expect(phone).toHaveAttribute("aria-pressed", "true");
-  await expect(email).toHaveAttribute("aria-pressed", "false");
-  await expect(preference).toHaveValue("Telefon");
 
   await page.getByRole("button", { name: "Wyślij zgłoszenie" }).click();
   for (const id of ["name", "email", "phone", "topic", "message"]) {

@@ -5,19 +5,6 @@
   gap: var(--space-2xl);
 }
 
-.contact-form .form__choices .button[aria-pressed="true"] {
-  border-color: var(--color-text);
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 0.2em;
-}
-
-@media (forced-colors: active) {
-  .contact-form .form__choices .button[aria-pressed="true"] {
-    border-color: ButtonText;
-  }
-}
-
 /* Office panel: an open block — a label-sized title, the address in the display serif,
    an illustrative schematic, ruled contact rows, the call action and an attribution note.
    Stacked below the form, a hairline separates it. */

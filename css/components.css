@@ -502,8 +502,7 @@ html[data-theme] .theme-toggle--icon {
   }
 }
 
-.hero__actions,
-.form__choices {
+.hero__actions {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-sm);

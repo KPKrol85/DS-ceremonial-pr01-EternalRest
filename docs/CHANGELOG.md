@@ -27,6 +27,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Changed
 
+- Removed the redundant “Preferowany kontakt” field from the contact form, including its “Telefon”/“E-mail” toggle group, the hidden `preferred` input, the button-group synchronization script and the now-unused `.form__choices` and selected-state rules. The remaining fields, required-field rules, validation messages, error focus handling and the no-JavaScript fallback are unchanged.
 - Removed the duplicated telephone and office-address facts row from the contact page masthead and added a small, muted two-line “Dane kontaktowe autora projektu / KP_Code Digital Studio.” attribution below the office panel's call button, matching the footer notice; the now-unused `.page-masthead__facts` rules were removed from the shared layout styles. The form, office details, contact links and call action are unchanged.
 - Replaced the homepage FAQ content with four informational questions about commissioning a similar site, the project's demonstrational nature, adapting it to another industry and the contact form not sending messages; the section is now headed “Warto wiedzieć” (eyebrow “Informacje”), the answer about the form links to `kontakt@kp-code.pl`, and the closing guide button became a discreet “Kontakt z autorem projektu” mailto link. The accordion markup, `data-accordion` behavior, unique panel IDs, ARIA state synchronization and no-JavaScript readability are unchanged.
 

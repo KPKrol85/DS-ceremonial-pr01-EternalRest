@@ -275,18 +275,6 @@
     });
   });
 
-  const contactButtons = document.querySelectorAll("[data-contact-method]");
-  const contactInput = document.querySelector("[data-contact-input]");
-  if (contactButtons.length && contactInput) {
-    contactButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        contactButtons.forEach((btn) => btn.setAttribute("aria-pressed", "false"));
-        button.setAttribute("aria-pressed", "true");
-        contactInput.value = button.dataset.contactMethod;
-      });
-    });
-  }
-
   const form = document.querySelector("[data-validate-form]");
   if (form) {
     const success = form.querySelector("[data-form-success]");
