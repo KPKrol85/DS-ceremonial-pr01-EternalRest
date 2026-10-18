@@ -278,6 +278,57 @@
   const form = document.querySelector("[data-validate-form]");
   if (form) {
     const success = form.querySelector("[data-form-success]");
+    const failure = form.querySelector("[data-form-failure]");
+    const submitButton = form.querySelector('[type="submit"]');
+    const submitLabel = submitButton ? submitButton.textContent : "";
+    const SUBMIT_TIMEOUT = 15000;
+    let isSubmitting = false;
+
+    const setSubmitting = (state) => {
+      isSubmitting = state;
+      form.setAttribute("aria-busy", String(state));
+      if (submitButton) {
+        // aria-disabled keeps the focused button focusable, unlike disabled.
+        submitButton.setAttribute("aria-disabled", String(state));
+        submitButton.textContent = state ? "Wysyłanie…" : submitLabel;
+      }
+    };
+
+    const showMessage = (message) => {
+      if (!message) return;
+      message.hidden = false;
+      message.focus();
+    };
+
+    const sendForm = async () => {
+      setSubmitting(true);
+      let isSent = false;
+      try {
+        // Netlify Forms accepts URL-encoded POSTs that carry the form-name field.
+        const response = await fetch("/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams(new FormData(form)).toString(),
+          signal:
+            typeof AbortSignal.timeout === "function"
+              ? AbortSignal.timeout(SUBMIT_TIMEOUT)
+              : undefined,
+        });
+        isSent = response.ok;
+      } catch (error) {
+        // Network failures and timeouts are reported like HTTP errors below.
+      }
+      // aria-busy is cleared first so the status or alert is not suppressed.
+      setSubmitting(false);
+      if (isSent) {
+        form.reset();
+        showMessage(success);
+      } else {
+        // Entered values stay in the form so the user can retry.
+        showMessage(failure);
+      }
+    };
+
     const getFieldError = (field) => {
       if (!field.value.trim()) {
         return "To pole jest wymagane.";
@@ -310,8 +361,12 @@
     });
     form.addEventListener("submit", (event) => {
       event.preventDefault();
+      if (isSubmitting) return;
       if (success) {
         success.hidden = true;
+      }
+      if (failure) {
+        failure.hidden = true;
       }
       let firstInvalid = null;
       const fields = form.querySelectorAll("[data-required]");
@@ -324,14 +379,12 @@
       });
       if (firstInvalid) {
         firstInvalid.focus();
-      } else if (success) {
-        success.hidden = false;
-        success.focus();
-        form.reset();
+      } else {
+        sendForm();
       }
     });
-    // The form is inert in the markup so it cannot submit its fields in a GET query
-    // string without this handler; it is activated only once the handler is attached.
+    // The form is inert in the markup so it cannot be submitted natively without this
+    // handler; it is activated only once the handler is attached.
     form.inert = false;
     const fallback = document.querySelector("[data-form-fallback]");
     if (fallback) {

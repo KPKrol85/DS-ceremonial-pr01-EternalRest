@@ -7,7 +7,7 @@
     <title>Eternal Rest | Kontakt i formularz</title>
     <meta
       name="description"
-      content="Skontaktuj się z Eternal Rest w Tarnowie. Formularz zgłoszeniowy, szybkie wsparcie 24/7 oraz adres biura."
+      content="Kontakt w demonstracyjnym projekcie Eternal Rest. Formularz zapytań do KP_Code Digital Studio, autora projektu, oraz przykładowe dane biura."
     />
     <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="/favicons/favicon.ico" />
     <link rel="icon" type="image/png" sizes="96x96" href="/favicons/favicon-96x96.png" />
@@ -17,7 +17,7 @@
     <meta property="og:title" content="Eternal Rest | Kontakt i formularz" />
     <meta
       property="og:description"
-      content="Skontaktuj się z Eternal Rest w Tarnowie. Formularz zgłoszeniowy, szybkie wsparcie 24/7 oraz adres biura."
+      content="Kontakt w demonstracyjnym projekcie Eternal Rest. Formularz zapytań do KP_Code Digital Studio, autora projektu, oraz przykładowe dane biura."
     />
     <meta property="og:type" content="website" />
     <meta
@@ -40,7 +40,7 @@
     <meta name="twitter:title" content="Eternal Rest | Kontakt i formularz" />
     <meta
       name="twitter:description"
-      content="Skontaktuj się z Eternal Rest w Tarnowie. Formularz zgłoszeniowy, szybkie wsparcie 24/7 oraz adres biura."
+      content="Kontakt w demonstracyjnym projekcie Eternal Rest. Formularz zapytań do KP_Code Digital Studio, autora projektu, oraz przykładowe dane biura."
     />
     <meta
       name="twitter:image"
@@ -64,19 +64,30 @@
             <p class="section__eyebrow page-masthead__eyebrow">Kontakt</p>
             <h1 class="section__title page-masthead__title">Jesteśmy dostępni przez całą dobę</h1>
             <p class="section__lead page-masthead__lead">
-              Skorzystaj z formularza, aby otrzymać kontakt zwrotny lub umówić konsultację.
-              Oddzwaniamy w ciągu 30 minut.
+              Eternal Rest jest fikcyjną marką i nie świadczy usług pogrzebowych. Wiadomości
+              wysłane przez formularz trafiają do KP_Code Digital Studio, autora projektu, i
+              dotyczą zapytań o strony internetowe.
             </p>
           </header>
           <div class="contact-layout">
             <div class="contact-form">
               <p class="contact-form__notice" data-form-fallback>
-                Formularz demonstracyjny działa tylko przy włączonym JavaScripcie. Napisz do nas na
+                Formularz działa tylko przy włączonym JavaScripcie. Napisz do KP_Code Digital
+                Studio na
                 <a class="card__link" href="mailto:kontakt@kp-code.pl">kontakt@kp-code.pl</a> lub
                 zadzwoń pod numer
                 <a class="card__link" href="tel:+48533537091">+48 533 537 091</a>.
               </p>
-              <form class="form" data-validate-form novalidate inert>
+              <form
+                class="form"
+                name="kontakt-kp-code"
+                method="POST"
+                data-netlify="true"
+                data-validate-form
+                novalidate
+                inert
+              >
+                <input type="hidden" name="form-name" value="kontakt-kp-code" />
                 <p class="form__hint">Pola oznaczone gwiazdką (*) są wymagane.</p>
                 <div class="form__field">
                   <label for="name">Imię i nazwisko <span class="form__required" aria-hidden="true">*</span></label>
@@ -118,12 +129,12 @@
                   <span class="form__error" id="error-phone"></span>
                 </div>
                 <div class="form__field">
-                  <label for="topic">Zakres pomocy <span class="form__required" aria-hidden="true">*</span></label>
+                  <label for="topic">Temat zapytania <span class="form__required" aria-hidden="true">*</span></label>
                   <select class="form__select" id="topic" name="topic" required data-required aria-describedby="error-topic">
                     <option value="">Wybierz temat</option>
-                    <option>Organizacja ceremonii</option>
-                    <option>Transport i logistyka</option>
-                    <option>Wsparcie formalne</option>
+                    <option>Nowa strona internetowa</option>
+                    <option>Modernizacja istniejącej strony</option>
+                    <option>Pytanie o projekt Eternal Rest</option>
                     <option>Inne zapytanie</option>
                   </select>
                   <span class="form__error" id="error-topic"></span>
@@ -143,7 +154,10 @@
                 </div>
                 <div class="form__field">
                   <button class="button button--primary" type="submit">Wyślij zgłoszenie</button>
-                  <p class="form__hint">Nie pobieramy żadnych danych wrażliwych.</p>
+                  <p class="form__hint">
+                    Wiadomość otrzyma KP_Code Digital Studio. Nie podawaj danych wrażliwych. Zasady
+                    przetwarzania danych opisuje <a href="privacy.html">Polityka prywatności</a>.
+                  </p>
                 </div>
                 <div
                   class="form__success"
@@ -153,7 +167,12 @@
                   tabindex="-1"
                   hidden
                 >
-                  Dziękujemy. Skontaktujemy się z Państwem możliwie szybko.
+                  Dziękujemy. Wiadomość została wysłana do KP_Code Digital Studio.
+                </div>
+                <div class="form__failure" data-form-failure role="alert" tabindex="-1" hidden>
+                  Nie udało się wysłać wiadomości. Wpisane dane pozostały w formularzu – spróbuj
+                  ponownie za chwilę lub napisz na
+                  <a href="mailto:kontakt@kp-code.pl">kontakt@kp-code.pl</a>.
                 </div>
               </form>
             </div>

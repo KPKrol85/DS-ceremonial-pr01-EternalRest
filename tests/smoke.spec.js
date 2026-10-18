@@ -93,3 +93,127 @@ test("empty contact submission focuses the first error", async ({ page }) => {
   await expect(page.locator("[data-form-success]")).toBeHidden();
   await expect(page).toHaveURL("/contact.html");
 });
+
+// Submissions are intercepted in the browser, so tests never reach Netlify.
+const isSubmission = (url) => url.pathname === "/";
+const contactValues = {
+  name: "Jan Testowy",
+  email: "jan.testowy@example.com",
+  phone: "+48 000 000 000",
+  topic: "Nowa strona internetowa",
+  message: "Wiadomość testowa.",
+};
+
+const fillContactForm = async (page) => {
+  await page.getByLabel("Imię i nazwisko").fill(contactValues.name);
+  await page.getByLabel("Adres e-mail").fill(contactValues.email);
+  await page.getByLabel("Telefon kontaktowy").fill(contactValues.phone);
+  await page
+    .getByLabel("Temat zapytania")
+    .selectOption({ label: contactValues.topic });
+  await page.getByLabel("Treść wiadomości").fill(contactValues.message);
+};
+
+const expectContactValues = async (page) => {
+  for (const [id, value] of Object.entries(contactValues)) {
+    await expect(page.locator(`#${id}`)).toHaveValue(value);
+  }
+};
+
+test("valid contact submission posts once and confirms after success", async ({
+  page,
+}) => {
+  const requests = [];
+  let releaseResponse;
+  const responseReleased = new Promise((resolve) => {
+    releaseResponse = resolve;
+  });
+  await page.route(isSubmission, async (route) => {
+    if (route.request().method() !== "POST") return route.fallback();
+    requests.push(route.request());
+    await responseReleased;
+    await route.fulfill({ status: 200, contentType: "text/html", body: "" });
+  });
+  await page.goto("/contact.html");
+
+  const form = page.locator("[data-validate-form]");
+  const success = page.locator("[data-form-success]");
+  await expect(form).toHaveAttribute("name", "kontakt-kp-code");
+  await expect(form).toHaveAttribute("method", "POST");
+  await expect(form).toHaveAttribute("data-netlify", "true");
+  await fillContactForm(page);
+  await page.getByRole("button", { name: "Wyślij zgłoszenie" }).click();
+
+  const pending = page.getByRole("button", { name: "Wysyłanie…" });
+  await expect(pending).toHaveAttribute("aria-disabled", "true");
+  await expect(form).toHaveAttribute("aria-busy", "true");
+  await expect(success).toBeHidden();
+  await pending.click({ force: true });
+  await page.getByLabel("Adres e-mail").press("Enter");
+  await expect.poll(() => requests.length).toBe(1);
+
+  const [request] = requests;
+  expect(request.method()).toBe("POST");
+  expect(request.headers()["content-type"]).toBe(
+    "application/x-www-form-urlencoded",
+  );
+  expect(
+    Object.fromEntries(new URLSearchParams(request.postData() ?? "")),
+  ).toEqual({ "form-name": "kontakt-kp-code", ...contactValues });
+
+  releaseResponse();
+  await expect(success).toBeVisible();
+  await expect(success).toBeFocused();
+  await expect(success).toHaveText(
+    "Dziękujemy. Wiadomość została wysłana do KP_Code Digital Studio.",
+  );
+  await expect(page.locator("[data-form-failure]")).toBeHidden();
+  await expect(form).toHaveAttribute("aria-busy", "false");
+  await expect(
+    page.getByRole("button", { name: "Wyślij zgłoszenie" }),
+  ).toHaveAttribute("aria-disabled", "false");
+  for (const id of Object.keys(contactValues)) {
+    await expect(page.locator(`#${id}`)).toHaveValue("");
+  }
+  expect(requests).toHaveLength(1);
+});
+
+test("failed contact submissions keep values and announce the error", async ({
+  page,
+}) => {
+  let attempts = 0;
+  await page.route(isSubmission, async (route) => {
+    if (route.request().method() !== "POST") return route.fallback();
+    attempts += 1;
+    if (attempts === 1) {
+      await route.abort("failed");
+    } else {
+      await route.fulfill({ status: 500, contentType: "text/html", body: "" });
+    }
+  });
+  await page.goto("/contact.html");
+
+  const submit = page.getByRole("button", { name: "Wyślij zgłoszenie" });
+  const success = page.locator("[data-form-success]");
+  const failure = page.locator("[data-form-failure]");
+  await fillContactForm(page);
+
+  // Network failure.
+  await submit.click();
+  await expect(failure).toBeVisible();
+  await expect(failure).toBeFocused();
+  await expect(failure).toHaveAttribute("role", "alert");
+  await expect(failure).toContainText("Nie udało się wysłać wiadomości.");
+  await expect(success).toBeHidden();
+  await expect(submit).toHaveAttribute("aria-disabled", "false");
+  await expectContactValues(page);
+
+  // HTTP 500 on retry.
+  await submit.click();
+  await expect.poll(() => attempts).toBe(2);
+  await expect(failure).toBeVisible();
+  await expect(failure).toBeFocused();
+  await expect(success).toBeHidden();
+  await expect(submit).toHaveAttribute("aria-disabled", "false");
+  await expectContactValues(page);
+});

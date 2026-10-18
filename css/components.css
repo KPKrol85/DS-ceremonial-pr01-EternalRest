@@ -878,6 +878,30 @@ html[data-theme] .theme-toggle--icon {
   color: var(--color-success);
 }
 
+.form__failure {
+  padding: var(--space-md);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--color-error) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-error) 45%, transparent);
+  color: var(--color-error);
+}
+
+.form__failure a {
+  color: inherit;
+}
+
+/* Keeps a focused submission message clear of the floating back-to-top control. */
+.form__success,
+.form__failure {
+  scroll-margin-bottom: calc(var(--back-to-top-size) + 2 * var(--back-to-top-inset));
+}
+
+/* Submit button while main.js waits for the submission response. */
+.form [aria-disabled="true"] {
+  cursor: progress;
+  opacity: 0.7;
+}
+
 .contact-form {
   display: grid;
   align-content: start;

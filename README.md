@@ -6,7 +6,7 @@
 
 Eternal Rest to polskojęzyczny, statyczny projekt demonstracyjny witryny wielostronicowej prezentującej koncepcję usług domu pogrzebowego, pakiety cenowe, informacje o firmie i poradnik dla rodzin. Projekt KP_Code Digital Studio składa się ze stron HTML ze wspólnymi stylami i interakcjami w JavaScript.
 
-Formularz kontaktowy jest demonstracją interfejsu: skrypt sprawdza wypełnienie pól i poprawność formatu adresu e-mail, wyświetla komunikat i resetuje formularz. Nie wysyła zgłoszenia ani nie zapisuje danych na serwerze. Formularz jest w znacznikach nieaktywny (`inert`) i `main.js` aktywuje go dopiero po podpięciu obsługi wysyłki, dlatego bez JavaScriptu lub gdy moduł się nie wczyta, nie da się go wypełnić ani wysłać, a wpisane dane nie mogą trafić do adresu URL; zamiast niego widoczny jest komunikat z odnośnikami e-mail i telefonu. Nie należy wpisywać do niego rzeczywistych danych. Mapa dojazdu jest ilustracją SVG; stopka prowadzi do regulaminu, polityki prywatności i polityki cookies, natomiast odnośniki społecznościowe pozostają placeholderami.
+Formularz kontaktowy przyjmuje rzeczywiste zapytania kierowane do KP_Code Digital Studio, autora projektu, a nie do fikcyjnego domu pogrzebowego. Jest zarejestrowany w Netlify Forms jako `kontakt-kp-code` (`method="POST"`, `data-netlify="true"` i ukryte pole `form-name` w statycznym HTML, zachowane w `dist/contact.html`). `main.js` sprawdza wypełnienie pól i poprawność formatu adresu e-mail, a następnie wysyła formularz przez `fetch` metodą POST na `/` jako `application/x-www-form-urlencoded`, z limitem czasu 15 s. Podczas wysyłki przycisk ma `aria-disabled="true"`, a kolejne zatwierdzenia są ignorowane. Komunikat sukcesu i reset pól następują tylko po odpowiedzi HTTP 2xx; błąd sieci, przekroczenie czasu lub inny status wyświetla komunikat błędu z `role="alert"` i zachowuje wpisane wartości. Lokalny Vite Preview nie obsługuje Netlify Forms, więc wysyłka działa dopiero we wdrożeniu na Netlify; odbiorców powiadomień konfiguruje się w panelu Netlify, nie w kodzie. Formularz jest w znacznikach nieaktywny (`inert`) i `main.js` aktywuje go dopiero po podpięciu obsługi wysyłki, dlatego bez JavaScriptu lub gdy moduł się nie wczyta, nie da się go wypełnić ani wysłać, a wpisane dane nie mogą trafić do adresu URL; zamiast niego widoczny jest komunikat z odnośnikami e-mail i telefonu. Mapa dojazdu jest ilustracją SVG; stopka prowadzi do regulaminu, polityki prywatności i polityki cookies, natomiast odnośniki społecznościowe pozostają placeholderami.
 
 ### Wersja online
 
@@ -18,8 +18,8 @@ Publiczna wersja demonstracyjna projektu: [ds-ceremonial-pr01-eternalrest.netlif
 - Rozwijane menu mobilne oraz przycisk powrotu na górę strony.
 - Filtrowanie pakietów według rodzaju ceremonii i rozwijanie ich szczegółów.
 - Akordeony FAQ na stronie głównej i w poradniku.
-- Wybór preferowanej formy kontaktu i lokalna walidacja niepustych pól formularza oraz formatu adresu e-mail.
-- Regulamin (17 sekcji), polityka prywatności (14 sekcji) i polityka cookies (9 sekcji) z natywnymi spisami treści i odnośnikami powrotu do spisu, działającymi bez JavaScriptu. Polityka prywatności opisuje rzeczywiste działanie korespondencji e-mail, zapisu motywu i formularza demonstracyjnego, a polityka cookies – zapis motywu w `localStorage` jako jedyną technologię przechowywania danych, bez plików cookies ustawianych przez aplikację.
+- Formularz kontaktowy z walidacją niepustych pól i formatu adresu e-mail oraz wysyłką zapytań do KP_Code Digital Studio przez Netlify Forms.
+- Regulamin (17 sekcji), polityka prywatności (14 sekcji) i polityka cookies (9 sekcji) z natywnymi spisami treści i odnośnikami powrotu do spisu, działającymi bez JavaScriptu. Polityka prywatności opisuje rzeczywiste działanie korespondencji e-mail, zapisu motywu i formularza kontaktowego obsługiwanego przez Netlify Forms, a polityka cookies – zapis motywu w `localStorage` jako jedyną technologię przechowywania danych, bez plików cookies ustawianych przez aplikację.
 
 ### Stack technologiczny
 
@@ -47,7 +47,7 @@ Wspólne elementy stron mają jedno źródło w katalogu `partials/`: `site-head
 ├── about.html                 # Informacje o firmie
 ├── services.html              # Usługi
 ├── pricing.html               # Pakiety i filtr
-├── contact.html               # Kontakt i formularz demonstracyjny
+├── contact.html               # Kontakt i formularz Netlify Forms
 ├── guide.html                 # Poradnik i FAQ
 ├── terms.html                 # Regulamin projektu demonstracyjnego
 ├── privacy.html               # Polityka prywatności projektu demonstracyjnego
@@ -109,7 +109,7 @@ Polecenia są zdefiniowane w [package.json](package.json).
 | `npm run dev` | Uruchamia Vite z `--host`, udostępniając serwer także w sieci lokalnej. |
 | `npm run build` | Buduje wszystkie strony HTML z katalogu głównego przez `vite build`. |
 | `npm run preview` | Uruchamia `vite preview`; wymaga wcześniejszego buildu. |
-| `npm run test:smoke` | Buduje stronę od nowa i uruchamia cztery testy Playwright w Chromium na lokalnym Vite Preview. |
+| `npm run test:smoke` | Buduje stronę od nowa i uruchamia sześć testów Playwright w Chromium na lokalnym Vite Preview. |
 | `npm run lint` | Uruchamia ESLint wyłącznie dla `js/**/*.js`. |
 | `npm run check:references` | Sprawdza odwołania do identyfikatorów, duplikaty `id` i zgodność ścieżki modułu aplikacji z inicjalizatorem `partials/disclosure-init.html` w zbudowanych stronach `dist/`; wymaga wcześniejszego buildu i niczego nie zapisuje. |
 | `npm run format` | Uruchamia `prettier --write .` i nadpisuje niesformatowane pliki w zakresie formatowania. |
@@ -130,11 +130,11 @@ Konwersja obrazów jest osobnym etapem i nie jest wywoływana przez build. Obecn
 
 Konfiguracja ESLint korzysta z `eslint:recommended`, środowiska przeglądarkowego i ostrzeżeń dla nieużywanych zmiennych. Zakres lintowania nie obejmuje HTML, CSS ani skryptów w `scripts/`. Repozytorium nie zawiera automatycznych testów jednostkowych.
 
-`npm run test:smoke` najpierw wykonuje build produkcyjny, a następnie uruchamia dokładnie cztery niezależne testy z `tests/smoke.spec.js`: menu mobilne (otwieranie, Escape i przywrócenie fokusu), rozwijanie i zwijanie FAQ w poradniku, filtrowanie cen z komunikatem liczby wyników oraz preferencje kontaktu i walidację pustego formularza z fokusem na pierwszym błędnym polu. Testy sprawdzają widoczność i powiązane stany ARIA; nie wpisują danych osobowych ani nie wysyłają zgłoszeń.
+`npm run test:smoke` najpierw wykonuje build produkcyjny, a następnie uruchamia dokładnie sześć niezależnych testów z `tests/smoke.spec.js`: menu mobilne (otwieranie, Escape i przywrócenie fokusu), rozwijanie i zwijanie FAQ w poradniku, filtrowanie cen z komunikatem liczby wyników, walidację pustego formularza z fokusem na pierwszym błędnym polu, udaną wysyłkę formularza (atrybuty Netlify, jedno żądanie POST z treścią URL-encoded mimo ponownego zatwierdzenia w trakcie wysyłki, komunikat sukcesu z fokusem i reset pól) oraz nieudaną wysyłkę po błędzie sieci i statusie HTTP 500 (komunikat błędu z fokusem i zachowane wartości). Testy sprawdzają widoczność i powiązane stany ARIA. Testy wysyłki wpisują wyłącznie fikcyjne dane testowe, a żądania przechwytuje `page.route`, więc nie trafiają do Netlify.
 
 `playwright.config.js` ogranicza wykonanie do Chromium z jednym workerem i bez ponowień. Playwright uruchamia i zatrzymuje Vite Preview pod `http://127.0.0.1:8182`; zajęty port powoduje błąd, zamiast użycia istniejącego serwera lub innego portu. Nieudany build lub test zwraca kod różny od zera. Testy działają na lokalnym `dist/` zarówno na komputerze dewelopera, jak i w GitHub Actions; nie sprawdzają publicznego Netlify.
 
-Workflow `Quality Checks` (`.github/workflows/quality.yml`) uruchamia się po pushu do `main` i ręcznie. W istniejącym jobie, z uprawnieniami tylko do odczytu, Node.js 22 i cache npm, wykonuje kolejno `npm ci`, `npm run lint`, `npm run build` i `npm run check:references`, następnie instaluje Chromium z wymaganymi zależnościami systemowymi przez `npx playwright install --with-deps chromium` i uruchamia cztery testy smoke przez `npx playwright test`. Testy korzystają z już utworzonego buildu, bez ponownego budowania; błąd testu kończy job niepowodzeniem. Wdrożenie produkcyjne do Netlify pozostaje ręczne.
+Workflow `Quality Checks` (`.github/workflows/quality.yml`) uruchamia się po pushu do `main` i ręcznie. W istniejącym jobie, z uprawnieniami tylko do odczytu, Node.js 22 i cache npm, wykonuje kolejno `npm ci`, `npm run lint`, `npm run build` i `npm run check:references`, następnie instaluje Chromium z wymaganymi zależnościami systemowymi przez `npx playwright install --with-deps chromium` i uruchamia sześć testów smoke przez `npx playwright test`. Testy korzystają z już utworzonego buildu, bez ponownego budowania; błąd testu kończy job niepowodzeniem. Wdrożenie produkcyjne do Netlify pozostaje ręczne.
 
 `npm run check:references` sprawdza odwołania do identyfikatorów w stronach HTML z katalogu głównego `dist/`, czyli już po wstawieniu fragmentów z `partials/` przez Vite. Dlatego wymaga wcześniejszego `npm run build` i sam go nie uruchamia. Na każdej stronie wykrywa zduplikowane `id` oraz odwołania bez celu w `aria-controls`, `aria-describedby` i `aria-labelledby` (każdy identyfikator z listy rozdzielonej spacjami osobno), w `label[for]`, w odnośnikach `href="#id"` na tej samej stronie i w odnośnikach do fragmentów innych stron projektu, np. `services.html#id`, sprawdzanych na stronie docelowej. Ten sam `id` na różnych stronach nie jest duplikatem. Pomijane są adresy zewnętrzne, `mailto:`, `tel:` i placeholdery `href="#"`. Każdy błąd podaje stronę, wiersz, atrybut oraz brakujący lub zduplikowany identyfikator, a polecenie kończy się wtedy kodem różnym od zera; przy powodzeniu podaje liczbę sprawdzonych stron i odwołań. Brak `dist/` również kończy się błędem z poleceniem wykonania buildu. Skrypt korzysta wyłącznie z wbudowanych modułów Node.js, niczego nie zapisuje i nie jest częścią `npm run build`. Sprawdza tylko istnienie celów odwołań, a nie semantykę ARIA ani działanie interakcji w przeglądarce.
 
@@ -150,7 +150,7 @@ Oba polecenia pomijają pliki wskazane w `.gitignore` i `.prettierignore`. `.pre
 - Menu mobilne z aktualizacją `aria-expanded` i `aria-hidden`, przenoszeniem i przywracaniem fokusu, pętlą klawisza Tab, zamykaniem przez Escape oraz blokadą przewijania. Zamknięte menu i niewidoczny przycisk powrotu na górę nie przyjmują fokusu.
 - Bieżąca strona oznaczona `aria-current="page"` w nawigacji głównej, a na stronach prawnych także w odnośnikach do dokumentów prawnych w stopce.
 - Akordeony i szczegóły pakietów synchronizujące `aria-expanded` z widocznością paneli.
-- Pola formularza z etykietami i powiązanymi komunikatami przez `aria-describedby`; błędy oznaczane przez `aria-invalid`, lokalny komunikat zakończenia z `role="status"` i przeniesieniem fokusu.
+- Pola formularza z etykietami i powiązanymi komunikatami przez `aria-describedby`; błędy oznaczane przez `aria-invalid`; po wysyłce komunikat sukcesu z `role="status"` lub błędu z `role="alert"` z przeniesieniem fokusu, a podczas wysyłki `aria-busy` na formularzu i `aria-disabled` na przycisku, który pozostaje fokusowalny.
 - Obsługa `prefers-reduced-motion` wyłączająca czasy przejść CSS i płynne przewijanie.
 
 Są to mechanizmy obecne w kodzie, bez deklaracji zgodności z WCAG.
@@ -165,7 +165,7 @@ Vite kopiuje zawartość `public/` do katalogu głównego `dist/`, zachowując p
 
 ### Dane i trwałość stanu
 
-Treści i ceny są zapisane w HTML. Preferencja motywu trafia do `localStorage` pod kluczem `eternalRestTheme` jako obiekt z wersją `1` i trybem `auto`, `light` lub `dark`. Zapis powstaje dopiero po użyciu przełącznika motywu lub przycisku „Tryb systemowy” i nie ma terminu wygaśnięcia. Filtr cen, rozwinięte panele i formularz nie mają trwałego zapisu; implementacja nie korzysta z backendu ani bazy danych. Aplikacja nie ustawia plików cookies i nie korzysta z `sessionStorage`, IndexedDB, Cache Storage, Service Workera ani narzędzi analitycznych lub marketingowych, dlatego nie zawiera banera cookies ani mechanizmu zarządzania zgodą.
+Treści i ceny są zapisane w HTML. Preferencja motywu trafia do `localStorage` pod kluczem `eternalRestTheme` jako obiekt z wersją `1` i trybem `auto`, `light` lub `dark`. Zapis powstaje dopiero po użyciu przełącznika motywu lub przycisku „Tryb systemowy” i nie ma terminu wygaśnięcia. Filtr cen, rozwinięte panele i formularz nie mają trwałego zapisu w przeglądarce; implementacja nie ma własnego backendu ani bazy danych, a wysłane zgłoszenia formularza przechowuje usługa Netlify Forms. Aplikacja nie ustawia plików cookies i nie korzysta z `sessionStorage`, IndexedDB, Cache Storage, Service Workera ani narzędzi analitycznych lub marketingowych, dlatego nie zawiera banera cookies ani mechanizmu zarządzania zgodą.
 
 ### Licencja
 
@@ -177,7 +177,7 @@ Projekt podlega [Własnościowej Licencji Projektu KP_CODE](LICENSE.md), wersja 
 
 Eternal Rest is a Polish-language static multi-page demonstration project presenting a funeral-home service concept, pricing packages, company information and guidance for families. This KP_Code Digital Studio project consists of HTML pages with shared styles and JavaScript interactions.
 
-The contact form is an interface demonstration: its script checks for non-empty fields and a valid e-mail address format, displays a message and resets the form. It does not send an enquiry or store data on a server. The form is `inert` in the markup and `main.js` activates it only after attaching its submit handler, so without JavaScript, or if the module fails to load, it cannot be filled in or submitted and entered data cannot reach the URL; a notice with e-mail and phone links is shown instead. Do not enter real data. The location map is an SVG illustration; the footer links to the Terms, Privacy Policy and Cookies Policy pages, while social links remain placeholders.
+The contact form accepts real enquiries addressed to KP_Code Digital Studio, the project author, not to the fictional funeral home. It is registered with Netlify Forms as `kontakt-kp-code` (`method="POST"`, `data-netlify="true"` and a hidden `form-name` field in static HTML, preserved in `dist/contact.html`). `main.js` checks for non-empty fields and a valid e-mail address format, then submits the form with `fetch` as a POST to `/` encoded as `application/x-www-form-urlencoded`, with a 15-second timeout. While the request is pending, the button has `aria-disabled="true"` and further submissions are ignored. The success message and field reset happen only after an HTTP 2xx response; a network error, timeout or any other status shows an error message with `role="alert"` and keeps the entered values. Local Vite Preview does not process Netlify Forms, so submissions work only on a Netlify deployment; notification recipients are configured in the Netlify UI, not in code. The form is `inert` in the markup and `main.js` activates it only after attaching its submit handler, so without JavaScript, or if the module fails to load, it cannot be filled in or submitted and entered data cannot reach the URL; a notice with e-mail and phone links is shown instead. The location map is an SVG illustration; the footer links to the Terms, Privacy Policy and Cookies Policy pages, while social links remain placeholders.
 
 ### Live Version
 
@@ -189,8 +189,8 @@ Public project demo: [ds-ceremonial-pr01-eternalrest.netlify.app](https://ds-cer
 - Expandable mobile navigation and a back-to-top button.
 - Package filtering by ceremony type and expandable package details.
 - FAQ accordions on the home and guide pages.
-- Local validation for non-empty form fields and the e-mail address format.
-- Terms (17 sections), Privacy Policy (14 sections) and Cookies Policy (9 sections) with native section indexes and return links that work without JavaScript. The Privacy Policy describes the actual behavior of e-mail correspondence, theme storage and the demonstration form, while the Cookies Policy documents theme storage in `localStorage` as the only storage technology, with no application-set cookies.
+- Contact form with validation of non-empty fields and the e-mail address format, submitting enquiries to KP_Code Digital Studio through Netlify Forms.
+- Terms (17 sections), Privacy Policy (14 sections) and Cookies Policy (9 sections) with native section indexes and return links that work without JavaScript. The Privacy Policy describes the actual behavior of e-mail correspondence, theme storage and the Netlify Forms contact form, while the Cookies Policy documents theme storage in `localStorage` as the only storage technology, with no application-set cookies.
 
 ### Tech Stack
 
@@ -218,7 +218,7 @@ Shared page chrome has a single source in `partials/`: `site-header.html` (skip 
 ├── about.html                 # Company information
 ├── services.html              # Services
 ├── pricing.html               # Packages and filter
-├── contact.html               # Contact and demonstration form
+├── contact.html               # Contact and Netlify Forms form
 ├── guide.html                 # Guide and FAQ
 ├── terms.html                 # Demonstration project Terms
 ├── privacy.html               # Demonstration project Privacy Policy
@@ -280,7 +280,7 @@ Commands are defined in [package.json](package.json).
 | `npm run dev` | Starts Vite with `--host`, also exposing the server to the local network. |
 | `npm run build` | Builds all root-level HTML pages through `vite build`. |
 | `npm run preview` | Starts `vite preview`; requires a prior build. |
-| `npm run test:smoke` | Creates a fresh production build and runs four Playwright tests in Chromium against local Vite Preview. |
+| `npm run test:smoke` | Creates a fresh production build and runs six Playwright tests in Chromium against local Vite Preview. |
 | `npm run lint` | Runs ESLint only on `js/**/*.js`. |
 | `npm run check:references` | Checks ID references, duplicate IDs and the application module path against the `partials/disclosure-init.html` initializer in the built `dist/` pages; requires a prior build and writes nothing. |
 | `npm run format` | Runs `prettier --write .` and overwrites unformatted files within the formatting scope. |
@@ -301,11 +301,11 @@ Image conversion is a separate step and is not invoked by the build. Current gra
 
 ESLint is configured with `eslint:recommended`, a browser environment and warnings for unused variables. Linting does not cover HTML, CSS or the scripts in `scripts/`. The repository contains no automated unit tests.
 
-`npm run test:smoke` first creates a production build, then runs exactly four independent tests from `tests/smoke.spec.js`: mobile navigation (opening, Escape and focus restoration), expanding and collapsing a guide FAQ answer, pricing filtering with result-count announcements, and contact preferences plus empty-form validation with focus on the first invalid field. Tests assert visibility and related ARIA states; they enter no personal information and send no enquiries.
+`npm run test:smoke` first creates a production build, then runs exactly six independent tests from `tests/smoke.spec.js`: mobile navigation (opening, Escape and focus restoration), expanding and collapsing a guide FAQ answer, pricing filtering with result-count announcements, empty-form validation with focus on the first invalid field, a successful form submission (Netlify attributes, a single URL-encoded POST despite a repeated submit while pending, a focused success message and field reset) and failed submissions after a network error and an HTTP 500 status (a focused error message and preserved values). Tests assert visibility and related ARIA states. Submission tests enter only fictional test data, and `page.route` intercepts the requests so they never reach Netlify.
 
 `playwright.config.js` uses Chromium only, one worker and no retries. Playwright starts and stops Vite Preview at `http://127.0.0.1:8182`; an occupied port fails instead of reusing an existing server or switching ports. A failed build or test returns a non-zero exit code. Browser tests run against local `dist/` both on a developer's machine and in GitHub Actions; they do not test public Netlify.
 
-The `Quality Checks` workflow (`.github/workflows/quality.yml`) runs on pushes to `main` and manual dispatch. Its existing job, with read-only permissions, Node.js 22 and npm caching, runs `npm ci`, `npm run lint`, `npm run build` and `npm run check:references` in order, then installs Chromium and its required system dependencies with `npx playwright install --with-deps chromium` and runs the four smoke tests with `npx playwright test`. Tests reuse the existing production build without rebuilding; a failed test fails the job. Production deployment to Netlify remains manual.
+The `Quality Checks` workflow (`.github/workflows/quality.yml`) runs on pushes to `main` and manual dispatch. Its existing job, with read-only permissions, Node.js 22 and npm caching, runs `npm ci`, `npm run lint`, `npm run build` and `npm run check:references` in order, then installs Chromium and its required system dependencies with `npx playwright install --with-deps chromium` and runs the six smoke tests with `npx playwright test`. Tests reuse the existing production build without rebuilding; a failed test fails the job. Production deployment to Netlify remains manual.
 
 `npm run check:references` checks ID references in the root-level HTML pages of `dist/`, after Vite has inserted the `partials/` content. It therefore requires a prior `npm run build` and does not run one itself. On every page it reports duplicate `id` values and references without a target in `aria-controls`, `aria-describedby` and `aria-labelledby` (each ID of a whitespace-separated list separately), in `label[for]`, in same-page `href="#id"` links and in fragment links to other project pages, such as `services.html#id`, which are checked on the target page. The same `id` on different pages is not a duplicate. External URLs, `mailto:`, `tel:` and `href="#"` placeholders are skipped. Each error names the page, line, attribute and the missing or duplicated ID, and the command then exits with a non-zero code; on success it reports how many pages and references it checked. A missing `dist/` also fails, with an instruction to build first. The script uses only built-in Node.js modules, writes nothing and is not part of `npm run build`. It checks only that reference targets exist, not ARIA semantics or interactive behavior in a browser.
 
@@ -321,7 +321,7 @@ Both commands skip files matched by `.gitignore` and `.prettierignore`. `.pretti
 - Mobile navigation with synchronized `aria-expanded` and `aria-hidden`, focus transfer and restoration, Tab looping, Escape dismissal and scroll locking. The closed menu and the hidden back-to-top control cannot receive focus.
 - The current page is marked with `aria-current="page"` in the main navigation and, on the legal pages, also in the footer links to the legal documents.
 - Accordions and package details synchronizing `aria-expanded` with panel visibility.
-- Form fields with labels and messages connected through `aria-describedby`; errors marked with `aria-invalid`, plus a local completion message using `role="status"` and focus transfer.
+- Form fields with labels and messages connected through `aria-describedby`; errors marked with `aria-invalid`; after submission, a success message with `role="status"` or an error message with `role="alert"` receives focus, while a pending request sets `aria-busy` on the form and `aria-disabled` on the button, which stays focusable.
 - `prefers-reduced-motion` handling that disables CSS transition durations and smooth scrolling.
 
 These are mechanisms present in the code, without a claim of WCAG compliance.
@@ -336,7 +336,7 @@ Vite copies `public/` into the root of `dist/`, preserving subdirectories; manif
 
 ### Data and State Persistence
 
-Content and prices are stored in HTML. The theme preference is saved in `localStorage` under `eternalRestTheme` as an object with version `1` and mode `auto`, `light` or `dark`. The entry is created only when the theme toggle or the system-mode button is used and has no expiry. The pricing filter, expanded panels and form have no persistent storage; the implementation uses no backend or database. The application sets no cookies and uses no `sessionStorage`, IndexedDB, Cache Storage, Service Worker, analytics or marketing tools, so it includes no cookie banner or consent manager.
+Content and prices are stored in HTML. The theme preference is saved in `localStorage` under `eternalRestTheme` as an object with version `1` and mode `auto`, `light` or `dark`. The entry is created only when the theme toggle or the system-mode button is used and has no expiry. The pricing filter, expanded panels and form have no persistent browser storage; the implementation has no backend or database of its own, and submitted form entries are stored by Netlify Forms. The application sets no cookies and uses no `sessionStorage`, IndexedDB, Cache Storage, Service Worker, analytics or marketing tools, so it includes no cookie banner or consent manager.
 
 ### License
 

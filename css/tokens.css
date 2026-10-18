@@ -11,7 +11,7 @@
   --color-accent-text: light-dark(#8c5f33, #c58a52);
   --color-accent-soft: light-dark(#d7b38a, #8f6a44);
   --color-border: light-dark(#e1d3c4, #2f2924);
-  --color-success: light-dark(#3c6f55, #6cb08a);
+  --color-success: light-dark(#2f5c45, #6cb08a);
   --color-error: light-dark(#9b3a3a, #d68a8a);
 
   --font-sans: "Manrope", "Segoe UI", system-ui, -apple-system, sans-serif;
