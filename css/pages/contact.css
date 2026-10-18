@@ -19,8 +19,8 @@
 }
 
 /* Office panel: an open block — a label-sized title, the address in the display serif,
-   an illustrative schematic, ruled contact rows and the call action. Stacked below the
-   form, a hairline separates it. */
+   an illustrative schematic, ruled contact rows, the call action and an attribution note.
+   Stacked below the form, a hairline separates it. */
 .contact-office {
   display: grid;
   align-content: start;
@@ -115,8 +115,20 @@
   margin-top: var(--space-lg);
 }
 
+/* Attribution below the call action: small, muted and set on two intentional lines,
+   matching the footer notice. */
+.contact-office__note {
+  margin-top: var(--space-md);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+}
+
+.contact-office__note-line {
+  display: block;
+}
+
 /* Tablet and desktop: a wider form column beside the office panel, both aligned to the top.
-   The masthead rule above now opens both columns, so the panel drops its own. */
+   Side by side, both columns open directly under the masthead, so the panel drops its rule. */
 @media (min-width: 760px) {
   .contact-layout {
     grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);

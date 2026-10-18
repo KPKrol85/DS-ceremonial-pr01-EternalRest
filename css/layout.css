@@ -47,8 +47,8 @@ h1.section__title {
   font-size: var(--font-size-lg);
 }
 
-/* Opening of inner marketing pages: an eyebrow led by a short hairline, the page title,
-   the lead and an optional ruled row of facts already present on the page. */
+/* Opening of inner marketing pages: an eyebrow led by a short hairline, the page title
+   and the lead. */
 .page-masthead {
   margin-bottom: var(--space-xl);
 }
@@ -74,36 +74,6 @@ h1.section__title {
 .page-masthead__lead {
   max-width: 62ch;
   text-wrap: pretty;
-}
-
-.page-masthead__facts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-xs) var(--space-xl);
-  margin-top: var(--space-lg);
-  padding-block: var(--space-sm);
-  border-block: 1px solid var(--color-border);
-  font-size: var(--font-size-sm);
-}
-
-.page-masthead__fact {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0 var(--space-sm);
-  min-width: 0;
-}
-
-.page-masthead__label {
-  color: var(--color-text-muted);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-label);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.page-masthead__value {
-  overflow-wrap: anywhere;
 }
 
 /* Close of marketing pages: an open band under a hairline restating availability, with the

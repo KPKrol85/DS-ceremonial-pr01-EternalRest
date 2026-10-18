@@ -27,6 +27,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Changed
 
+- Removed the duplicated telephone and office-address facts row from the contact page masthead and added a small, muted two-line “Dane kontaktowe autora projektu / KP_Code Digital Studio.” attribution below the office panel's call button, matching the footer notice; the now-unused `.page-masthead__facts` rules were removed from the shared layout styles. The form, office details, contact links and call action are unchanged.
 - Replaced the homepage FAQ content with four informational questions about commissioning a similar site, the project's demonstrational nature, adapting it to another industry and the contact form not sending messages; the section is now headed “Warto wiedzieć” (eyebrow “Informacje”), the answer about the form links to `kontakt@kp-code.pl`, and the closing guide button became a discreet “Kontakt z autorem projektu” mailto link. The accordion markup, `data-accordion` behavior, unique panel IDs, ARIA state synchronization and no-JavaScript readability are unchanged.
 
 - Added one `noindex, follow` robots meta directive to each of the nine pages and removed the sitemap declaration from `robots.txt`, preserving crawler access, the demonstration sitemap, public access and social metadata; documented the policy in Polish and English.
