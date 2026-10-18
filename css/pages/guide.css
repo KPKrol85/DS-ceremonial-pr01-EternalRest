@@ -1,0 +1,7 @@
+/* Demonstration note under the FAQ: small and muted, on the editorial accordion's column. */
+.guide-faq-note {
+  max-width: 44rem;
+  margin-top: var(--space-lg);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+}
