@@ -780,6 +780,39 @@ html[data-theme] .theme-toggle--icon {
   display: none;
 }
 
+/* Editorial variant: a narrow, quiet column on the start edge; questions sit between hairlines
+   instead of a filled box. */
+.accordion--editorial {
+  max-width: 44rem;
+  border-width: 1px 0;
+  border-radius: 0;
+  /* Unclipped, so the focus outline around each question stays fully visible. */
+  overflow: visible;
+}
+
+.accordion--editorial .accordion__button {
+  padding-inline: 0;
+  background: transparent;
+}
+
+/* Questions stay recognisable as controls: firm label weight, chevron and an underline on hover. */
+.accordion--editorial .accordion__label {
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+  transition: text-decoration-color var(--transition-fast);
+}
+
+.accordion--editorial .accordion__button:hover .accordion__label {
+  text-decoration-color: var(--color-accent);
+}
+
+.accordion--editorial .accordion__panel {
+  max-width: 36rem;
+  padding-inline: 0;
+}
+
 /* Price list: packages are open entries between hairline rules instead of raised cards,
    closed by a final rule; packages stay independently sized. */
 .pricing {
