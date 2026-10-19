@@ -1,3 +1,34 @@
+/* Masthead with a photograph of a conversation at a table: stacked beneath the text on narrow
+   screens; from tablet up it shares the tracks and gutter of the layout below, so the
+   photograph stands over the office panel and the text over the form. */
+.contact-hero {
+  display: grid;
+  gap: var(--space-xl);
+}
+
+/* The spotlight component (css/components.css) adds the light over the photograph; faces
+   take it more readily than the guide's paper, so it stays gentler here. */
+.contact-hero__media {
+  --spotlight-strength: 0.7;
+
+  overflow: hidden;
+  /* A landscape crop keeps the stacked photograph short of the form. */
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-sm);
+  /* Also the stand-in before the photograph loads. */
+  background: var(--color-surface-alt);
+}
+
+.contact-hero__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Every crop is wider than the near-square photograph, so only the height is trimmed:
+     mostly from the dark foreground of the table, keeping both heads, the open-handed
+     gesture and the cup between them in view. */
+  object-position: 50% 36%;
+}
+
 /* Contact: the form leads; the office panel keeps its own height in a narrower column
    instead of stretching to the form beside it. */
 .contact-layout {
@@ -117,6 +148,18 @@
 /* Tablet and desktop: a wider form column beside the office panel, both aligned to the top.
    Side by side, both columns open directly under the masthead, so the panel drops its rule. */
 @media (min-width: 760px) {
+  /* The text settles on the photograph's lower edge, as in the guide masthead. */
+  .contact-hero {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    column-gap: var(--space-xl);
+    align-items: end;
+  }
+
+  /* The narrow column and the three-line title make a square crop the shortest whole one. */
+  .contact-hero__media {
+    aspect-ratio: 1;
+  }
+
   .contact-layout {
     grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
     column-gap: var(--space-xl);
@@ -130,7 +173,12 @@
 }
 
 @media (min-width: 1024px) {
+  .contact-hero,
   .contact-layout {
     column-gap: var(--space-3xl);
+  }
+
+  .contact-hero__media {
+    aspect-ratio: 4 / 3;
   }
 }

@@ -509,6 +509,44 @@ html[data-theme] .theme-toggle--icon {
   margin-top: var(--space-lg);
 }
 
+/* Spotlight on a masthead photograph (guide and contact pages): a warm, diffused light that
+   drifts with the pointer; the page styles the frame around it. It is drawn only for a fine
+   hovering pointer with motion allowed; js/main.js moves it and fades it in while the pointer
+   is over the photograph, so without JavaScript the photograph stays still. */
+.spotlight {
+  position: relative;
+  isolation: isolate;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .spotlight::after {
+    /* Lamplight belongs to the photograph, which looks the same in every theme. */
+    --spotlight-light: 255 214 160;
+
+    content: "";
+    position: absolute;
+    inset: 0;
+    /* Soft light keeps the photograph's texture; the stepped falloff leaves no visible rim. */
+    background: radial-gradient(
+      circle 14rem at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
+      rgb(var(--spotlight-light) / 0.6),
+      rgb(var(--spotlight-light) / 0.36) 30%,
+      rgb(var(--spotlight-light) / 0.13) 60%,
+      rgb(var(--spotlight-light) / 0.03) 82%,
+      transparent
+    );
+    mix-blend-mode: soft-light;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-slow);
+  }
+
+  /* A page may soften the light for its photograph with --spotlight-strength. */
+  .spotlight.is-lit::after {
+    opacity: var(--spotlight-strength, 1);
+  }
+}
+
 .card {
   background: var(--color-surface);
   border-radius: var(--radius-md);

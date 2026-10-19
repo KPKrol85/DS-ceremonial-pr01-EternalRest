@@ -214,49 +214,59 @@
     }
   }
 
-  // Guide hero: a soft light follows a mouse over the photograph. The query matches the one
-  // that draws the light in css/pages/guide.css, so touch input and reduced motion are skipped.
-  const spotlight = document.querySelector("[data-spotlight]");
-  if (spotlight) {
+  // Hero photographs (guide and contact pages): a soft light follows a mouse over each one.
+  // The query matches the one that draws the light in css/components.css, so touch input and
+  // reduced motion are skipped.
+  const spotlights = document.querySelectorAll("[data-spotlight]");
+  if (spotlights.length) {
     const spotlightQuery = window.matchMedia(
       "(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)"
     );
-    let pointerX = 0;
-    let pointerY = 0;
-    let spotlightFrame = 0;
 
     const isSpotlightPointer = (event) =>
       event.pointerType === "mouse" && spotlightQuery.matches;
 
-    // One measurement and one write per frame, however often the pointer moves.
-    const moveSpotlight = () => {
-      spotlightFrame = 0;
-      const rect = spotlight.getBoundingClientRect();
-      spotlight.style.setProperty("--spotlight-x", `${pointerX - rect.left}px`);
-      spotlight.style.setProperty("--spotlight-y", `${pointerY - rect.top}px`);
+    // Each photograph keeps its own pointer position and pending frame.
+    const initSpotlight = (spotlight) => {
+      let pointerX = 0;
+      let pointerY = 0;
+      let spotlightFrame = 0;
+
+      // One measurement and one write per frame, however often the pointer moves.
+      const moveSpotlight = () => {
+        spotlightFrame = 0;
+        const { left, top } = spotlight.getBoundingClientRect();
+        spotlight.style.setProperty("--spotlight-x", `${pointerX - left}px`);
+        spotlight.style.setProperty("--spotlight-y", `${pointerY - top}px`);
+      };
+
+      spotlight.addEventListener("pointerenter", (event) => {
+        if (!isSpotlightPointer(event)) return;
+        pointerX = event.clientX;
+        pointerY = event.clientY;
+        // Placed before the fade-in, so the light appears under the pointer.
+        moveSpotlight();
+        spotlight.classList.add("is-lit");
+      });
+
+      spotlight.addEventListener("pointermove", (event) => {
+        if (!isSpotlightPointer(event)) return;
+        pointerX = event.clientX;
+        pointerY = event.clientY;
+        if (!spotlightFrame) {
+          spotlightFrame = requestAnimationFrame(moveSpotlight);
+        }
+      });
+
+      // The light fades where it is; a frame still pending would only move it after leaving.
+      spotlight.addEventListener("pointerleave", () => {
+        cancelAnimationFrame(spotlightFrame);
+        spotlightFrame = 0;
+        spotlight.classList.remove("is-lit");
+      });
     };
 
-    spotlight.addEventListener("pointerenter", (event) => {
-      if (!isSpotlightPointer(event)) return;
-      pointerX = event.clientX;
-      pointerY = event.clientY;
-      // Placed before the fade-in, so the light appears under the pointer.
-      moveSpotlight();
-      spotlight.classList.add("is-lit");
-    });
-
-    spotlight.addEventListener("pointermove", (event) => {
-      if (!isSpotlightPointer(event)) return;
-      pointerX = event.clientX;
-      pointerY = event.clientY;
-      if (!spotlightFrame) {
-        spotlightFrame = requestAnimationFrame(moveSpotlight);
-      }
-    });
-
-    spotlight.addEventListener("pointerleave", () => {
-      spotlight.classList.remove("is-lit");
-    });
+    spotlights.forEach(initSpotlight);
   }
 
   const getDisclosurePanel = (trigger) => {

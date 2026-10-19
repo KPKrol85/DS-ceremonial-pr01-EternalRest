@@ -5,9 +5,8 @@
   gap: var(--space-xl);
 }
 
+/* The spotlight component (css/components.css) adds the light over the photograph. */
 .guide-hero__media {
-  position: relative;
-  isolation: isolate;
   overflow: hidden;
   /* A landscape crop keeps the stacked photograph short of the FAQ. */
   aspect-ratio: 4 / 3;
@@ -23,37 +22,6 @@
   /* Every crop is wider than the portrait photograph, so only the height is trimmed: mostly
      from the top, keeping the open notebook whole and the window light in view. */
   object-position: 50% 72%;
-}
-
-/* Spotlight: a warm, diffused light drifting over the paper. It is drawn only for a fine
-   hovering pointer with motion allowed; js/main.js moves it and fades it in while the
-   pointer is over the photograph, so without JavaScript the photograph stays still. */
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .guide-hero__media::after {
-    /* Lamplight belongs to the photograph, which looks the same in every theme. */
-    --guide-hero-light: 255 214 160;
-
-    content: "";
-    position: absolute;
-    inset: 0;
-    /* Soft light keeps the paper's texture; the stepped falloff leaves no visible rim. */
-    background: radial-gradient(
-      circle 14rem at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
-      rgb(var(--guide-hero-light) / 0.6),
-      rgb(var(--guide-hero-light) / 0.36) 30%,
-      rgb(var(--guide-hero-light) / 0.13) 60%,
-      rgb(var(--guide-hero-light) / 0.03) 82%,
-      transparent
-    );
-    mix-blend-mode: soft-light;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity var(--transition-slow);
-  }
-
-  .guide-hero__media.is-lit::after {
-    opacity: 1;
-  }
 }
 
 /* Tablet and up: the text settles on the photograph's lower edge. The crop widens as the
