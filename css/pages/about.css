@@ -1,0 +1,56 @@
+/* Masthead with a photograph of the team going through documents at a table: stacked beneath
+   the text on narrow screens, an asymmetric pair from tablet up with the photograph as the
+   quieter, narrower column. */
+.about-hero {
+  display: grid;
+  gap: var(--space-xl);
+}
+
+/* The spotlight component (css/components.css) adds the light over the photograph; faces
+   take it more readily than paper, so it stays gentler here, as on the contact page. */
+.about-hero__media {
+  --spotlight-strength: 0.7;
+
+  overflow: hidden;
+  /* A landscape crop keeps the stacked photograph short of the cards below. */
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-sm);
+  /* Also the stand-in before the photograph loads. */
+  background: var(--color-surface-alt);
+}
+
+.about-hero__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Every crop is wider than the portrait photograph, so only the height is trimmed: the
+     wall above and the table's near edge give way, keeping all three faces, the hands on
+     the folder and the notebook beneath it in view. */
+  object-position: 50% 40%;
+}
+
+/* Tablet and up: the text settles on the photograph's lower edge, as in the guide and
+   contact mastheads. Beside the three-line title, a square crop gives the narrow column
+   room for the whole group without towering over the text. */
+@media (min-width: 760px) {
+  .about-hero {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    align-items: end;
+    column-gap: var(--space-2xl);
+  }
+
+  .about-hero__media {
+    aspect-ratio: 1;
+  }
+}
+
+/* Once the title fits on two lines, the landscape crop returns to keep the pair in balance. */
+@media (min-width: 1024px) {
+  .about-hero {
+    column-gap: var(--space-3xl);
+  }
+
+  .about-hero__media {
+    aspect-ratio: 4 / 3;
+  }
+}

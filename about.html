@@ -57,14 +57,32 @@
     <main id="main">
       <section class="section">
         <div class="container">
-          <header class="page-masthead">
-            <p class="section__eyebrow page-masthead__eyebrow">O nas</p>
-            <h1 class="section__title page-masthead__title">Zespół, który wspiera w ciszy i z taktem</h1>
-            <p class="section__lead page-masthead__lead">
-              Eternal Rest to dom pogrzebowy w Tarnowie, w którym tradycja spotyka się z nowoczesną
-              organizacją. Od ponad 35 lat pomagamy rodzinom, zapewniając spokojną obecność i
-              profesjonalne wsparcie.
-            </p>
+          <header class="page-masthead about-hero">
+            <div class="about-hero__intro">
+              <p class="section__eyebrow page-masthead__eyebrow">O nas</p>
+              <h1 class="section__title page-masthead__title">Zespół, który wspiera w ciszy i z taktem</h1>
+              <p class="section__lead page-masthead__lead">
+                Eternal Rest to dom pogrzebowy w Tarnowie, w którym tradycja spotyka się z nowoczesną
+                organizacją. Od ponad 35 lat pomagamy rodzinom, zapewniając spokojną obecność i
+                profesjonalne wsparcie.
+              </p>
+            </div>
+            <div class="about-hero__media spotlight" data-spotlight>
+              <picture>
+                <source
+                  srcset="assets/images/hero-about.avif"
+                  type="image/avif"
+                />
+                <img
+                  class="about-hero__image"
+                  src="assets/images/hero-about.webp"
+                  width="688"
+                  height="960"
+                  alt=""
+                  fetchpriority="high"
+                />
+              </picture>
+            </div>
           </header>
           <div class="grid grid--two">
             <article class="card card--editorial" data-reveal>
