@@ -53,3 +53,44 @@
     aspect-ratio: 3 / 2;
   }
 }
+
+/* Pricing controls share one chevron: the disclosure buttons keep the shared accent stroke
+   (css/components.css), slightly smaller and further from the label, and the filter draws
+   the same shape in place of the native arrow. */
+.pricing__card > .button {
+  gap: var(--space-sm);
+}
+
+.pricing__card > .button::after,
+.pricing-filter::after {
+  width: 0.4375em;
+  height: 0.4375em;
+}
+
+/* Without appearance support the native arrow stays and no chevron is added. The chevron
+   shares the select's grid cell and lets pointer input through to it. */
+@supports (appearance: none) {
+  .pricing-filter .form__select {
+    grid-area: 2 / 1;
+    appearance: none;
+    /* Keeps the selected option clear of the chevron. */
+    padding-right: 2.5rem;
+    /* Without the native metrics the inherited 1.6 would make the filter taller; 1.5 keeps
+       its previous height, level with the disclosure buttons. */
+    line-height: 1.5;
+  }
+
+  .pricing-filter::after {
+    content: "";
+    grid-area: 2 / 1;
+    justify-self: end;
+    align-self: center;
+    /* The rotated stroke overhangs its box by about 2px, so the chevron's tip sits as far
+       from the border as the option text does on the left. */
+    margin-right: calc(0.85rem + 3px);
+    border-right: 2px solid var(--color-accent);
+    border-bottom: 2px solid var(--color-accent);
+    transform: translateY(-25%) rotate(45deg);
+    pointer-events: none;
+  }
+}
