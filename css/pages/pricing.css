@@ -1,0 +1,55 @@
+/* Masthead with a still life of a closed book beneath a hanging tag: stacked beneath the text
+   on narrow screens, an asymmetric pair from tablet up with the photograph as the quieter,
+   narrower column. */
+.pricing-hero {
+  display: grid;
+  gap: var(--space-xl);
+}
+
+/* The spotlight component (css/components.css) adds the light over the photograph; it stays
+   gentler here, as on the about and contact pages. */
+.pricing-hero__media {
+  --spotlight-strength: 0.7;
+
+  overflow: hidden;
+  /* The landscape photograph is already short when stacked, so it is shown whole. */
+  aspect-ratio: 3 / 2;
+  border-radius: var(--radius-sm);
+  /* Also the stand-in before the photograph loads. */
+  background: var(--color-surface-alt);
+}
+
+.pricing-hero__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Narrower crops trim only the width, mostly from the empty wall on the right, keeping the
+     hanging tag with its ribbon, the book and the branch in view. */
+  object-position: 30% 50%;
+}
+
+/* Tablet and up: the text settles on the photograph's lower edge, as in the other mastheads.
+   The narrow column starts out shorter than the text beside it, so a 4:3 crop gives it more
+   height without losing the tag. */
+@media (min-width: 760px) {
+  .pricing-hero {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    align-items: end;
+    column-gap: var(--space-2xl);
+  }
+
+  .pricing-hero__media {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+/* Desktop: the column is wide enough to show the whole photograph again. */
+@media (min-width: 1024px) {
+  .pricing-hero {
+    column-gap: var(--space-3xl);
+  }
+
+  .pricing-hero__media {
+    aspect-ratio: 3 / 2;
+  }
+}
