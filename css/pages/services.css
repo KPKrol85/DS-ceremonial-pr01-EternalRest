@@ -1,3 +1,55 @@
+/* Masthead with a still life of a leather folder, a card and a pen beside a lily: stacked
+   beneath the text on narrow screens, an asymmetric pair from tablet up with the photograph
+   as the quieter, narrower column. */
+.services-hero {
+  display: grid;
+  gap: var(--space-xl);
+}
+
+/* The spotlight component (css/components.css) adds the light over the photograph; it stays
+   gentler here, as on the about, contact and pricing pages. */
+.services-hero__media {
+  --spotlight-strength: 0.7;
+
+  overflow: hidden;
+  /* The photograph's own proportions at every width: its subjects run from the window light
+     on the left to the vase on the right edge, and its flowers reach the top, so any other
+     crop would cut one of them. Stacked, it is the same 4:3 box as the about and contact
+     photographs. */
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-sm);
+  /* Also the stand-in before the photograph loads. */
+  background: var(--color-surface-alt);
+}
+
+.services-hero__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* The box matches the photograph, so nothing is trimmed; the centre keeps any sub-pixel
+     rounding even on both sides. */
+  object-position: 50% 50%;
+}
+
+/* Tablet and up: the text settles on the photograph's lower edge, as in the other mastheads.
+   Beside the two-line title the whole photograph is about as tall as the text, so the crop
+   stays the same and the pair matches the pricing masthead's height. */
+@media (min-width: 760px) {
+  .services-hero {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    align-items: end;
+    column-gap: var(--space-2xl);
+  }
+}
+
+/* Desktop: a wider gap, as in the other mastheads; the whole photograph is then as tall as
+   the about and contact photographs. */
+@media (min-width: 1024px) {
+  .services-hero {
+    column-gap: var(--space-3xl);
+  }
+}
+
 /* Services index: a numbered, hairline-ruled catalogue closed by a final rule. */
 .services-list {
   --services-anchor-offset: 6rem;
