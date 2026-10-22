@@ -14,21 +14,21 @@
 
 ## Current priorities
 
-1. `PH1-01` — Disclose the demonstration status consistently on every page.
-2. `PH1-02` — Replace the raster-wrapped logo with a lightweight emblem.
-3. `PH2-01` — Apply the stored theme before first paint.
+1. `PH1-02` — Replace the raster-wrapped logo with a lightweight emblem.
+2. `PH2-01` — Apply the stored theme before first paint.
 
 ## Phase 1 — Shared chrome and public content
 
 **Goal:** Make every page disclose the demonstration status consistently and stop loading a 254 KB raster-wrapped logo in the shared header and footers.
 
-- [ ] **PH1-01 — Disclose the demonstration status consistently on every page**
-  - [ ] confirm with the project owner one disclosure pattern and which contact facts are the author's real details or illustrative content; today the telephone and e-mail are labelled as the author's, the office address is described as example data only in the `contact.html` description metadata, and the 24/7 availability is marked as an example only in `partials/footer-legal.html`
-  - [ ] align `partials/footer-marketing.html` (brand paragraph, contact heading, office address, availability line) with that decision, following the labelling of `partials/footer-legal.html`
-  - [ ] apply the same labelling to the 24/7 statements beside the author's telephone number: the header call action in `partials/site-header.html`, the shared closing on `index.html`, `about.html`, `services.html`, `pricing.html` and `guide.html`, and the office details on `contact.html`
-  - [ ] show the demonstration status on `about.html`, `services.html` and `pricing.html`, which carry no notice today, including where the `about.html` lead and description metadata present the fictional company as a Tarnów funeral home with more than 35 years of history
-  - [ ] keep new copy in Polish, keep each page's description identical across its meta, Open Graph and Twitter/X tags, and preserve the existing `mailto:` and `tel:` links
-  - **Completion condition:** a review of the nine built pages shows the demonstration status on each page and one consistent label for every contact fact, and `npm run build` and `npm run check:references` pass.
+- [x] **PH1-01 — Disclose the demonstration status consistently on every page**
+  - [x] confirm with the project owner one disclosure pattern and which contact facts are the author's real details or illustrative content; approved: one discreet disclosure in the shared marketing footer beside the existing legal-footer disclosure, with no further notices in mastheads or service sections; the telephone, `kontakt@kp-code.pl` and the Netlify form reach KP_Code Digital Studio, while the office address and the 24/7 availability are illustrative
+  - [x] align `partials/footer-marketing.html` (brand paragraph, contact heading, office address, availability line, attribution note) with that decision, and the contact heading and note of `partials/footer-legal.html` with it
+  - [x] relabel the contact statements beside the author's telephone number: the header call action in `partials/site-header.html`, the shared closing and its form links on `index.html`, `about.html`, `services.html`, `pricing.html` and `guide.html`, and the masthead title and office details on `contact.html`
+  - [x] let the shared footer carry the demonstration status on `about.html`, `services.html` and `pricing.html`, keeping their in-world narrative, and correct the `index.html` and `about.html` description metadata that presents the fictional company as a real Tarnów funeral home
+  - [x] keep new copy in Polish, keep each page's description identical across its meta, Open Graph and Twitter/X tags, and preserve the existing `mailto:` and `tel:` links
+  - **Completion condition:** a review of the nine built pages shows the demonstration status in the marketing or legal footer of each page and one consistent label for every contact fact, and `npm run build` and `npm run check:references` pass.
+  - **Verified:** 2026-10-22 — built-page review of all nine pages, `npm run build` and `npm run check:references` passed; header, closing, footer and office panel checked in headless Chromium at 320–1440 px in light and dark themes.
   - **Priority:** High
   - **Source:** `daily-AUDIT.md` — P1-02
 

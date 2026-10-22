@@ -1058,7 +1058,7 @@ html[data-theme] .theme-toggle--icon {
   gap: var(--space-xs);
 }
 
-/* Keeps the postal code and town together on a line of their own. */
+/* Sets the street and the postal code with town on lines of their own, below their label. */
 .footer__address-line {
   display: block;
 }

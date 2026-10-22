@@ -76,8 +76,8 @@ h1.section__title {
   text-wrap: pretty;
 }
 
-/* Close of marketing pages: an open band under a hairline restating availability, with the
-   phone and, where the page has one, its contextual action. */
+/* Close of marketing pages: an open band under a hairline inviting contact with the project
+   author, with the phone and, where the page has one, a link to the contact form. */
 .page-closing {
   padding-bottom: var(--space-3xl);
 }
