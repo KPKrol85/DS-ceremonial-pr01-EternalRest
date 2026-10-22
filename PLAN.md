@@ -14,8 +14,7 @@
 
 ## Current priorities
 
-1. `PH1-02` — Replace the raster-wrapped logo with a lightweight emblem.
-2. `PH2-01` — Apply the stored theme before first paint.
+1. `PH2-01` — Apply the stored theme before first paint.
 
 ## Phase 1 — Shared chrome and public content
 
@@ -32,12 +31,13 @@
   - **Priority:** High
   - **Source:** `daily-AUDIT.md` — P1-02
 
-- [ ] **PH1-02 — Replace the raster-wrapped logo with a lightweight emblem**
-  - [ ] produce the emblem as a true vector SVG, or as a raster export sized for its `3.25rem` display on high-density screens, without the six embedded PNG images and the C2PA metadata block of the current 254,420-byte `assets/logos/logo.svg`; the unreferenced 512 × 512 `assets/logos/logo.png` is the PNG version of the same logo
-  - [ ] keep the emblem `<img>` in `partials/site-header.html`, `partials/footer-marketing.html` and `partials/footer-legal.html` pointing at the new asset, with `width` and `height` matching its intrinsic size
-  - [ ] keep the light, dark and system theme recoloring of `.brand__emblem` in `css/components.css` and recalibrate its `0.1`/`0.11` inset trim to the new artwork
+- [x] **PH1-02 — Replace the raster-wrapped logo with a lightweight emblem**
+  - [x] produce the emblem as a true vector SVG, or as a raster export sized for its `3.25rem` display on high-density screens, without the six embedded PNG images and the C2PA metadata block of the former 254,420-byte `assets/logos/logo.svg`; the unreferenced 512 × 512 `assets/logos/logo.png` is the PNG version of the same logo; done: a 1,575-byte vector SVG at the same path, with three filled paths traced from the original arch, two-part flame and curved baseline
+  - [x] keep the emblem `<img>` in `partials/site-header.html`, `partials/footer-marketing.html` and `partials/footer-legal.html` pointing at the new asset, with `width` and `height` matching its intrinsic size; unchanged, as the SVG keeps the 512 × 512 size and viewBox
+  - [x] keep the light, dark and system theme recoloring of `.brand__emblem` in `css/components.css` and recalibrate its `0.1`/`0.11` inset trim to the new artwork; checked and kept, as the visible bounds match the original within 0.25 viewBox units
   - [ ] optional: regenerate `public/favicons/favicon.svg` (92,765 bytes, one embedded raster image) from the new vector, if one is produced
   - **Completion condition:** the shipped emblem contains no embedded raster data or metadata block, the header and both footers show it at the current size and alignment in light, dark and system themes at mobile and desktop widths, and `npm run build` passes.
+  - **Verified:** 2026-10-22 — the SVG holds only `<path>` geometry, with no `<image>`, Base64 or metadata; against the original it scored 99.0% IoU at 1536 px and a 0.9% mean alpha difference in area-averaged 52 px renders. In headless Chromium, the header, marketing footer and legal footer at 320, 390 and 1440 px, in light, dark and system (light and dark) themes, matched the original emblem with identical layout boxes and filters. `npm run build` and `npm run check:references` passed, and all nine built pages embed the emblem in the header and footer.
   - **Priority:** High
   - **Source:** `daily-AUDIT.md` — P1-01
 
