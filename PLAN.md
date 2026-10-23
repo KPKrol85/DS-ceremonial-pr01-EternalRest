@@ -56,11 +56,11 @@
   - **Priority:** Medium
   - **Source:** `daily-AUDIT.md` — P2-02
 
-- [ ] **PH2-02 — Remove the inactive scroll-reveal mechanism**
-  - [ ] remove the 29 `data-reveal` attributes from `index.html`, `about.html`, `services.html`, `guide.html` and `contact.html`
-  - [ ] remove the reveal `IntersectionObserver` from `js/main.js`, keeping the `prefers-reduced-motion` query that the back-to-top scroll still uses
-  - [ ] remove the unused `.reveal` rules from `css/utilities.css`
-  - [ ] record the removal in `docs/CHANGELOG.md` under its entry policy, since the changelog lists scroll-triggered reveals as an added feature
+- [x] **PH2-02 — Remove the inactive scroll-reveal mechanism**
+  - [x] remove the 29 `data-reveal` attributes from `index.html`, `about.html`, `services.html`, `guide.html` and `contact.html`
+  - [x] remove the reveal `IntersectionObserver` from `js/main.js`, keeping the `prefers-reduced-motion` query that the back-to-top scroll still uses
+  - [x] remove the unused `.reveal` rules from `css/utilities.css`
+  - [x] record the removal in `docs/CHANGELOG.md` under its entry policy, since the changelog lists scroll-triggered reveals as an added feature
   - **Completion condition:** no `data-reveal` attribute, reveal observer or `.reveal` rule remains, the five pages render unchanged, and `npm run lint`, `npm run build` and `npm run test:smoke` pass.
   - **Scope boundary:** a visible reveal animation would be a new design change requiring separate approval, with content kept visible without JavaScript and under reduced motion.
   - **Priority:** Low

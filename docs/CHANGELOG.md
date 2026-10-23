@@ -27,6 +27,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Changed
 
+- Removed the inactive scroll-reveal mechanism: 29 `data-reveal` attributes, the reveal `IntersectionObserver` in `js/main.js` and the unused `.reveal` utility rules. Rendering is unchanged, and back-to-top keeps its `.is-visible` state and reduced-motion scrolling.
 - Applied stored light/dark preferences before first paint via the existing inline head initializer, preserving system fallback and read-only initialization. Added a Playwright regression test with the application module blocked.
 - Identified the real KP_Code Digital Studio office address (`ul. Marynarki Wojennej 12/31, 33-100 Tarnów`) in the marketing footer, contact page, metadata and Terms, while keeping the fictional 24/7 availability distinct.
 - Replaced the 254 KB raster-wrapped brand SVG with a 1,575-byte vector emblem. Preserved its dimensions, alignment and light/dark/system theme rendering in the header and footers.

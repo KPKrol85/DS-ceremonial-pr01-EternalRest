@@ -195,26 +195,7 @@
     });
   }
 
-  const revealItems = document.querySelectorAll("[data-reveal]");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  if (revealItems.length) {
-    if (reduceMotion.matches) {
-      revealItems.forEach((item) => item.classList.add("is-visible"));
-    } else {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("is-visible");
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.2 }
-      );
-      revealItems.forEach((item) => observer.observe(item));
-    }
-  }
 
   // Hero photographs (guide and contact pages): a soft light follows a mouse over each one.
   // The query matches the one that draws the light in css/components.css, so touch input and

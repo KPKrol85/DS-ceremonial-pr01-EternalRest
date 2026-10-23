@@ -22,17 +22,6 @@
   margin-bottom: var(--space-lg);
 }
 
-.reveal {
-  opacity: 0;
-  transform: translateY(18px);
-  transition: opacity var(--transition-med), transform var(--transition-med);
-}
-
-.reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 .is-hidden {
   display: none !important;
 }
