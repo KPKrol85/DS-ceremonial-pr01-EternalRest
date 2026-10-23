@@ -82,7 +82,7 @@
 
 ## Optional future improvements
 
-- [ ] **O-01 — Add a Netlify Forms honeypot to the contact form**
+- [x] **O-01 — Add a Netlify Forms honeypot to the contact form**
   - **Value:** a markup-only honeypot field would reduce automated submissions reaching the author without adding scripts or third-party services.
   - **Scope boundary:** non-blocking, as no spam problem is evidenced; the exact request-body assertion in `tests/smoke.spec.js` would need the new field, and delivery can be confirmed only on a Netlify deployment.
   - **Source:** `daily-AUDIT.md` — extra quality improvements

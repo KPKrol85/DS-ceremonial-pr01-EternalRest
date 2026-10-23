@@ -172,6 +172,11 @@ test("valid contact submission posts once and confirms after success", async ({
   await expect(form).toHaveAttribute("name", "kontakt-kp-code");
   await expect(form).toHaveAttribute("method", "POST");
   await expect(form).toHaveAttribute("data-netlify", "true");
+  await expect(form).toHaveAttribute("data-netlify-honeypot", "bot-field");
+  const honeypot = form.locator('input[name="bot-field"]');
+  await expect(honeypot).toHaveCount(1);
+  await expect(honeypot).toBeHidden();
+  await expect(honeypot).toHaveValue("");
   await fillContactForm(page);
   await page.getByRole("button", { name: "Wyślij zgłoszenie" }).click();
 
@@ -190,7 +195,11 @@ test("valid contact submission posts once and confirms after success", async ({
   );
   expect(
     Object.fromEntries(new URLSearchParams(request.postData() ?? "")),
-  ).toEqual({ "form-name": "kontakt-kp-code", ...contactValues });
+  ).toEqual({
+    "form-name": "kontakt-kp-code",
+    "bot-field": "",
+    ...contactValues,
+  });
 
   releaseResponse();
   await expect(success).toBeVisible();

@@ -101,11 +101,15 @@
                 name="kontakt-kp-code"
                 method="POST"
                 data-netlify="true"
+                data-netlify-honeypot="bot-field"
                 data-validate-form
                 novalidate
                 inert
               >
                 <input type="hidden" name="form-name" value="kontakt-kp-code" />
+                <p hidden>
+                  <label>Nie wypełniaj tego pola: <input name="bot-field" autocomplete="off" /></label>
+                </p>
                 <p class="form__hint">Pola oznaczone gwiazdką (*) są wymagane.</p>
                 <div class="form__field">
                   <label for="name">Imię i nazwisko <span class="form__required" aria-hidden="true">*</span></label>

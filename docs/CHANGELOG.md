@@ -43,6 +43,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Added
 
+- Added a Netlify Forms honeypot (`data-netlify-honeypot="bot-field"`) to `kontakt-kp-code` as a `hidden` markup-only field, sent empty in the URL-encoded POST body; the mocked Playwright submission test asserts the configuration and payload.
 - Added an optimized AVIF/WebP still-life photograph to the services masthead with responsive, uncropped presentation and the shared `.spotlight` component.
 - Added an optimized AVIF/WebP still-life photograph to the pricing masthead with responsive cropping and the shared `.spotlight` component.
 - Added an optimized AVIF/WebP team photograph to the about masthead with responsive framing and the shared `.spotlight` component.
