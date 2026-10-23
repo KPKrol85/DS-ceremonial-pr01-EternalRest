@@ -26,6 +26,37 @@ test("mobile navigation closes with Escape and restores focus", async ({
   await expect(button).toBeFocused();
 });
 
+// The head initializer of partials/disclosure-init.html, not the application module.
+const APP_MODULE = /\/(?:js\/main|assets\/main-[\w-]+)\.js$/;
+const DARK_BACKGROUND = "rgb(20, 18, 16)";
+
+test("stored dark theme applies before the application module runs", async ({
+  browser,
+}) => {
+  const context = await browser.newContext({ colorScheme: "light" });
+  await context.addInitScript(() => {
+    localStorage.setItem(
+      "eternalRestTheme",
+      JSON.stringify({ version: 1, mode: "dark" }),
+    );
+  });
+  const page = await context.newPage();
+  // With the module aborted, every observed state predates it, as after a failed load.
+  await page.route(APP_MODULE, (route) => route.abort("failed"));
+  await page.goto("/");
+
+  const root = page.locator("html");
+  await expect(root).toHaveAttribute("data-theme", "dark");
+  await expect(root).toHaveCSS("color-scheme", "dark");
+  await expect(page.locator("body")).toHaveCSS(
+    "background-color",
+    DARK_BACKGROUND,
+  );
+  // The disclosure fallback still reacts to the failed module load.
+  await expect(root).toHaveClass("no-js");
+  await context.close();
+});
+
 test("FAQ expands and collapses the same answer", async ({ page }) => {
   await page.goto("/guide.html");
 

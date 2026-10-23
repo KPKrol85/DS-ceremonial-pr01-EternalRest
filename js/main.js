@@ -53,6 +53,8 @@
     }
   };
 
+  // partials/disclosure-init.html already applied the stored light or dark mode to
+  // html[data-theme] before the first paint; this repeats it to set the control state.
   let themeState = getStoredTheme();
   applyTheme(themeState.mode);
 

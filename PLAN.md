@@ -14,7 +14,7 @@
 
 ## Current priorities
 
-1. `PH2-01` — Apply the stored theme before first paint.
+1. `PH3-01` — Correct stale README and comment statements.
 
 ## Phase 1 — Shared chrome and public content
 
@@ -27,7 +27,7 @@
   - [x] let the shared footer carry the demonstration status on `about.html`, `services.html` and `pricing.html`, keeping their in-world narrative, and correct the `index.html` and `about.html` description metadata that presents the fictional company as a real Tarnów funeral home
   - [x] keep new copy in Polish, keep each page's description identical across its meta, Open Graph and Twitter/X tags, and preserve the existing `mailto:` and `tel:` links
   - **Completion condition:** a review of the nine built pages shows the demonstration status in the marketing or legal footer of each page and one consistent label for every contact fact, and `npm run build` and `npm run check:references` pass.
-  - **Verified:** 2026-10-22 — built-page review of all nine pages, `npm run build` and `npm run check:references` passed; header, closing, footer and office panel checked in headless Chromium at 320–1440 px in light and dark themes.
+  - **Verified:** 2026-10-22 — All nine pages verified in Chromium at 320–1440 px in light and dark themes. `npm run build` and `npm run check:references` passed.
   - **Priority:** High
   - **Source:** `daily-AUDIT.md` — P1-02
 
@@ -37,7 +37,7 @@
   - [x] keep the light, dark and system theme recoloring of `.brand__emblem` in `css/components.css` and recalibrate its `0.1`/`0.11` inset trim to the new artwork; checked and kept, as the visible bounds match the original within 0.25 viewBox units
   - [ ] optional: regenerate `public/favicons/favicon.svg` (92,765 bytes, one embedded raster image) from the new vector, if one is produced
   - **Completion condition:** the shipped emblem contains no embedded raster data or metadata block, the header and both footers show it at the current size and alignment in light, dark and system themes at mobile and desktop widths, and `npm run build` passes.
-  - **Verified:** 2026-10-22 — the SVG holds only `<path>` geometry, with no `<image>`, Base64 or metadata; against the original it scored 99.0% IoU at 1536 px and a 0.9% mean alpha difference in area-averaged 52 px renders. In headless Chromium, the header, marketing footer and legal footer at 320, 390 and 1440 px, in light, dark and system (light and dark) themes, matched the original emblem with identical layout boxes and filters. `npm run build` and `npm run check:references` passed, and all nine built pages embed the emblem in the header and footer.
+  - **Verified:** 2026-10-22 — Vector SVG verified without embedded raster data; visual consistency confirmed in Chromium at 320, 390 and 1440 px across light, dark and system themes. `npm run build` and `npm run check:references` passed.
   - **Priority:** High
   - **Source:** `daily-AUDIT.md` — P1-01
 
@@ -45,13 +45,13 @@
 
 **Goal:** Make the theme and motion behavior around `js/main.js` match its contracts: the stored theme applies from the first paint, and no inactive reveal hooks remain.
 
-- [ ] **PH2-01 — Apply the stored theme before first paint**
-  - [ ] record the current behavior in Chromium, with a stored theme opposite to the system scheme and a delayed `js/main.js`, as the verification baseline
-  - [ ] apply the stored `eternalRestTheme` preference from an inline `<head>` script, in or beside `partials/disclosure-init.html`, that runs before the stylesheet
-  - [ ] reuse the storage contract of `js/main.js` (key, version check, system fallback for missing, unreadable or other-version entries, `try`/`catch` around storage access), so the behavior described in `cookies.html` stays accurate
-  - [ ] keep `npm run check:references` valid: it expects exactly one inline script in `partials/disclosure-init.html` and looks for that script on each built page
-  - [ ] add one focused smoke test showing that a stored theme is applied without `js/main.js`, for example with the module request blocked
-  - [ ] update the README architecture and data-persistence sections in both languages, including the note that a Content Security Policy must allow the inline head scripts
+- [x] **PH2-01 — Apply the stored theme before first paint**
+  - [x] record the current behavior in Chromium, with a stored theme opposite to the system scheme and a delayed `js/main.js`, as the verification baseline
+  - [x] apply the stored `eternalRestTheme` preference from an inline `<head>` script, in or beside `partials/disclosure-init.html`, that runs before the stylesheet
+  - [x] reuse the storage contract of `js/main.js` (key, version check, system fallback for missing, unreadable or other-version entries, `try`/`catch` around storage access), so the behavior described in `cookies.html` stays accurate
+  - [x] keep `npm run check:references` valid: it expects exactly one inline script in `partials/disclosure-init.html` and looks for that script on each built page
+  - [x] add one focused smoke test showing that a stored theme is applied without `js/main.js`, for example with the module request blocked
+  - [x] update the README architecture and data-persistence sections in both languages, including the note that a Content Security Policy must allow the inline head scripts
   - **Completion condition:** a page with a stored theme renders in that theme from the first paint, and `npm run lint`, `npm run build`, `npm run check:references` and `npm run test:smoke` pass.
   - **Priority:** Medium
   - **Source:** `daily-AUDIT.md` — P2-02

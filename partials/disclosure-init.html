@@ -1,4 +1,11 @@
 <script>
+  // Pre-module initialization, run before the stylesheet on every page.
+  //
+  // Stored theme (PH2-01). The saved eternalRestTheme preference is applied to
+  // html[data-theme] here, so the first paint already uses it instead of the system
+  // scheme that main.js would later replace. Reading only; main.js keeps the theme
+  // controls, the system mode and the one write after a user-initiated change.
+  //
   // Disclosure fallback (IMP-UX-05). Until main.js runs, .js-pending keeps the header
   // menu closed and the FAQ answers and package details collapsed, so a normal load
   // shows no open state and no layout shift. If the main.js module fails to load or
@@ -7,6 +14,25 @@
   // the fallback shows until main.js runs.
   (() => {
     const root = document.documentElement;
+
+    const themeKey = "eternalRestTheme";
+    const themeVersion = 1;
+    try {
+      const raw = localStorage.getItem(themeKey);
+      const stored = raw ? JSON.parse(raw) : null;
+      // Only an explicit light or dark mode of the current version sets the attribute;
+      // "auto", a missing, unreadable or other-version entry leaves the system scheme.
+      if (
+        stored &&
+        stored.version === themeVersion &&
+        (stored.mode === "light" || stored.mode === "dark")
+      ) {
+        root.setAttribute("data-theme", stored.mode);
+      }
+    } catch {
+      // Blocked or unreadable storage keeps the system scheme.
+    }
+
     // js/main.js in development and assets/main-[hash].js in the Vite build.
     const appModule = /\/(?:js\/main|assets\/main-[\w-]+)\.js$/;
     const isAppModule = (url) => {
