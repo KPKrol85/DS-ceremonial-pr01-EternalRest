@@ -6,7 +6,7 @@
 
 Eternal Rest to polskojęzyczny, statyczny projekt demonstracyjny witryny wielostronicowej prezentującej koncepcję usług domu pogrzebowego, pakiety cenowe, informacje o firmie i poradnik dla rodzin. Projekt KP_Code Digital Studio składa się ze stron HTML ze wspólnymi stylami i interakcjami w JavaScript.
 
-Formularz kontaktowy przyjmuje rzeczywiste zapytania kierowane do KP_Code Digital Studio, autora projektu, a nie do fikcyjnego domu pogrzebowego. Jest zarejestrowany w Netlify Forms jako `kontakt-kp-code` (`method="POST"`, `data-netlify="true"` i ukryte pole `form-name` w statycznym HTML, zachowane w `dist/contact.html`). `main.js` sprawdza wypełnienie pól i poprawność formatu adresu e-mail, a następnie wysyła formularz przez `fetch` metodą POST na `/` jako `application/x-www-form-urlencoded`, z limitem czasu 15 s. Podczas wysyłki przycisk ma `aria-disabled="true"`, a kolejne zatwierdzenia są ignorowane. Komunikat sukcesu i reset pól następują tylko po odpowiedzi HTTP 2xx; błąd sieci, przekroczenie czasu lub inny status wyświetla komunikat błędu z `role="alert"` i zachowuje wpisane wartości. Lokalny Vite Preview nie obsługuje Netlify Forms, więc wysyłka działa dopiero we wdrożeniu na Netlify; odbiorców powiadomień konfiguruje się w panelu Netlify, nie w kodzie. Formularz jest w znacznikach nieaktywny (`inert`) i `main.js` aktywuje go dopiero po podpięciu obsługi wysyłki, dlatego bez JavaScriptu lub gdy moduł się nie wczyta, nie da się go wypełnić ani wysłać, a wpisane dane nie mogą trafić do adresu URL; zamiast niego widoczny jest komunikat z odnośnikami e-mail i telefonu. Mapa dojazdu jest ilustracją SVG; stopka prowadzi do regulaminu, polityki prywatności i polityki cookies, natomiast odnośniki społecznościowe pozostają placeholderami.
+Formularz kontaktowy przyjmuje rzeczywiste zapytania kierowane do KP_Code Digital Studio, autora projektu, a nie do fikcyjnego domu pogrzebowego. Jest zarejestrowany w Netlify Forms jako `kontakt-kp-code` (`method="POST"`, `data-netlify="true"` i ukryte pole `form-name` w statycznym HTML, zachowane w `dist/contact.html`). `main.js` sprawdza wypełnienie pól i poprawność formatu adresu e-mail, a następnie wysyła formularz przez `fetch` metodą POST na `/` jako `application/x-www-form-urlencoded`, z limitem czasu 15 s. Podczas wysyłki przycisk ma `aria-disabled="true"`, a kolejne zatwierdzenia są ignorowane. Komunikat sukcesu i reset pól następują tylko po odpowiedzi HTTP 2xx; błąd sieci, przekroczenie czasu lub inny status wyświetla komunikat błędu z `role="alert"` i zachowuje wpisane wartości. Lokalny Vite Preview nie obsługuje Netlify Forms, więc wysyłka działa dopiero we wdrożeniu na Netlify; odbiorców powiadomień konfiguruje się w panelu Netlify, nie w kodzie. Formularz jest w znacznikach nieaktywny (`inert`) i `main.js` aktywuje go dopiero po podpięciu obsługi wysyłki, dlatego bez JavaScriptu lub gdy moduł się nie wczyta, nie da się go wypełnić ani wysłać, a wpisane dane nie mogą trafić do adresu URL; zamiast niego widoczny jest komunikat z odnośnikami e-mail i telefonu. Mapa dojazdu jest ilustracją SVG; stopka prowadzi do regulaminu, polityki prywatności i polityki cookies, a odnośniki społecznościowe w stopce `partials/footer-marketing.html` prowadzą do profili autora projektu w serwisach GitHub, Facebook, Instagram oraz X i otwierają się w nowej karcie.
 
 ### Wersja online
 
@@ -59,11 +59,14 @@ Wspólne elementy stron mają jedno źródło w katalogu `partials/`: `site-head
 │   ├── back-to-top.html
 │   └── disclosure-init.html
 ├── assets/
+│   ├── fonts/
 │   ├── icons/
-│   ├── illustrations/
+│   ├── images/
+│   ├── logos/
 │   └── src-images/
 ├── css/
 │   ├── main.css
+│   ├── fonts.css
 │   ├── tokens.css
 │   ├── base.css
 │   ├── layout.css
@@ -72,7 +75,11 @@ Wspólne elementy stron mają jedno źródło w katalogu `partials/`: `site-head
 │   └── pages/
 │       ├── home.css
 │       ├── services.css
-│       └── legal.css
+│       ├── guide.css
+│       ├── legal.css
+│       ├── contact.css
+│       ├── about.css
+│       └── pricing.css
 ├── js/main.js
 ├── scripts/
 │   ├── check-references.js
@@ -124,7 +131,7 @@ Vite generuje `dist/` ze wszystkimi stronami HTML z katalogu głównego oraz prz
 
 `dist/` jest wykluczony z Git i nie należy edytować go ręcznie. Podgląd produkcyjny serwuje ten katalog. Repozytorium nie zawiera konfiguracji hostingu ani automatycznego wdrażania.
 
-Konwersja obrazów jest osobnym etapem i nie jest wywoływana przez build. Obecne zasoby graficzne są zapisane jako SVG bezpośrednio w HTML; repozytorium nie zawiera zdjęć do konwersji. Skrypt zapisuje pliki w płaskim katalogu wynikowym, dlatego nazwy źródłowych zdjęć powinny być unikalne również między podkatalogami. Nowe obrazy trzeba wskazać w HTML lub CSS, aby zostały uwzględnione w przetwarzaniu zasobów przez Vite.
+Konwersja obrazów jest osobnym etapem i nie jest wywoływana przez build. Źródłami zdjęć hero jest sześć plików PNG w `assets/src-images/`. `npm run images:convert` tworzy z nich pliki AVIF i WebP w `assets/images/`, które są zapisane w repozytorium i używane przez sześć stron: `index.html`, `about.html`, `services.html`, `pricing.html`, `guide.html` i `contact.html` (element `<picture>` z AVIF i zapasowym WebP). Ponieważ build nie odtwarza tych plików, po zmianie źródłowego PNG konwersję trzeba uruchomić ponownie. Skrypt zapisuje pliki w płaskim katalogu wynikowym, dlatego nazwy źródłowych zdjęć powinny być unikalne również między podkatalogami. Nowe obrazy trzeba wskazać w HTML lub CSS, aby zostały uwzględnione w przetwarzaniu zasobów przez Vite.
 
 ### Testy i walidacja
 
@@ -177,7 +184,7 @@ Projekt podlega [Własnościowej Licencji Projektu KP_CODE](LICENSE.md), wersja 
 
 Eternal Rest is a Polish-language static multi-page demonstration project presenting a funeral-home service concept, pricing packages, company information and guidance for families. This KP_Code Digital Studio project consists of HTML pages with shared styles and JavaScript interactions.
 
-The contact form accepts real enquiries addressed to KP_Code Digital Studio, the project author, not to the fictional funeral home. It is registered with Netlify Forms as `kontakt-kp-code` (`method="POST"`, `data-netlify="true"` and a hidden `form-name` field in static HTML, preserved in `dist/contact.html`). `main.js` checks for non-empty fields and a valid e-mail address format, then submits the form with `fetch` as a POST to `/` encoded as `application/x-www-form-urlencoded`, with a 15-second timeout. While the request is pending, the button has `aria-disabled="true"` and further submissions are ignored. The success message and field reset happen only after an HTTP 2xx response; a network error, timeout or any other status shows an error message with `role="alert"` and keeps the entered values. Local Vite Preview does not process Netlify Forms, so submissions work only on a Netlify deployment; notification recipients are configured in the Netlify UI, not in code. The form is `inert` in the markup and `main.js` activates it only after attaching its submit handler, so without JavaScript, or if the module fails to load, it cannot be filled in or submitted and entered data cannot reach the URL; a notice with e-mail and phone links is shown instead. The location map is an SVG illustration; the footer links to the Terms, Privacy Policy and Cookies Policy pages, while social links remain placeholders.
+The contact form accepts real enquiries addressed to KP_Code Digital Studio, the project author, not to the fictional funeral home. It is registered with Netlify Forms as `kontakt-kp-code` (`method="POST"`, `data-netlify="true"` and a hidden `form-name` field in static HTML, preserved in `dist/contact.html`). `main.js` checks for non-empty fields and a valid e-mail address format, then submits the form with `fetch` as a POST to `/` encoded as `application/x-www-form-urlencoded`, with a 15-second timeout. While the request is pending, the button has `aria-disabled="true"` and further submissions are ignored. The success message and field reset happen only after an HTTP 2xx response; a network error, timeout or any other status shows an error message with `role="alert"` and keeps the entered values. Local Vite Preview does not process Netlify Forms, so submissions work only on a Netlify deployment; notification recipients are configured in the Netlify UI, not in code. The form is `inert` in the markup and `main.js` activates it only after attaching its submit handler, so without JavaScript, or if the module fails to load, it cannot be filled in or submitted and entered data cannot reach the URL; a notice with e-mail and phone links is shown instead. The location map is an SVG illustration; the footer links to the Terms, Privacy Policy and Cookies Policy pages, and the social links in the `partials/footer-marketing.html` footer point to the project author's GitHub, Facebook, Instagram and X profiles and open in a new tab.
 
 ### Live Version
 
@@ -230,11 +237,14 @@ Shared page chrome has a single source in `partials/`: `site-header.html` (skip 
 │   ├── back-to-top.html
 │   └── disclosure-init.html
 ├── assets/
+│   ├── fonts/
 │   ├── icons/
-│   ├── illustrations/
+│   ├── images/
+│   ├── logos/
 │   └── src-images/
 ├── css/
 │   ├── main.css
+│   ├── fonts.css
 │   ├── tokens.css
 │   ├── base.css
 │   ├── layout.css
@@ -243,7 +253,11 @@ Shared page chrome has a single source in `partials/`: `site-header.html` (skip 
 │   └── pages/
 │       ├── home.css
 │       ├── services.css
-│       └── legal.css
+│       ├── guide.css
+│       ├── legal.css
+│       ├── contact.css
+│       ├── about.css
+│       └── pricing.css
 ├── js/main.js
 ├── scripts/
 │   ├── check-references.js
@@ -295,7 +309,7 @@ Vite generates `dist/` containing all root-level HTML pages and processed assets
 
 `dist/` is excluded from Git and should not be edited manually. Production preview serves this directory. The repository contains no hosting or automated deployment configuration.
 
-Image conversion is a separate step and is not invoked by the build. Current graphics are SVG embedded directly in HTML; the repository contains no photographs to convert. The script writes to a flat output directory, so source image basenames should be unique across subdirectories. New images must be referenced in HTML or CSS to enter Vite's asset processing workflow.
+Image conversion is a separate step and is not invoked by the build. The hero photographs come from six PNG sources in `assets/src-images/`. `npm run images:convert` turns them into AVIF and WebP files in `assets/images/`, which are committed to the repository and used by six pages: `index.html`, `about.html`, `services.html`, `pricing.html`, `guide.html` and `contact.html` (a `<picture>` element with AVIF and a WebP fallback). Because the build does not regenerate these files, the conversion must be run again after a source PNG changes. The script writes to a flat output directory, so source image basenames should be unique across subdirectories. New images must be referenced in HTML or CSS to enter Vite's asset processing workflow.
 
 ### Testing and Validation
 

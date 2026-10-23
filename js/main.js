@@ -197,7 +197,8 @@
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-  // Hero photographs (guide and contact pages): a soft light follows a mouse over each one.
+  // Hero photographs (about, services, pricing, guide and contact pages): a soft light follows
+  // a mouse over each one.
   // The query matches the one that draws the light in css/components.css, so touch input and
   // reduced motion are skipped.
   const spotlights = document.querySelectorAll("[data-spotlight]");

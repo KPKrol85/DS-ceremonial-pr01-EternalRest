@@ -70,12 +70,12 @@
 
 **Goal:** Bring the README and code comments in line with the current images, footer links and project structure.
 
-- [ ] **PH3-01 — Correct stale README and comment statements**
-  - [ ] replace the statement that all graphics are inline SVG and that there are no photographs to convert with the current workflow: six PNG sources in `assets/src-images/`, converted by `npm run images:convert` into the committed AVIF and WebP hero images in `assets/images/` that six pages use
-  - [ ] correct the statement that the social links remain placeholders; `partials/footer-marketing.html` links to the owner's profiles
-  - [ ] correct both structure trees: drop the non-existent `assets/illustrations/` and add `assets/fonts/`, `assets/images/`, `assets/logos/`, `css/fonts.css` and the page stylesheets `css/pages/about.css`, `contact.css`, `guide.css` and `pricing.css`
-  - [ ] update the spotlight comment in `js/main.js`, which names only the guide and contact pages although five pages use `data-spotlight`
-  - [ ] keep the Polish and English sections equivalent
+- [x] **PH3-01 — Correct stale README and comment statements**
+  - [x] replace the statement that all graphics are inline SVG and that there are no photographs to convert with the current workflow: six PNG sources in `assets/src-images/`, converted by `npm run images:convert` into the committed AVIF and WebP hero images in `assets/images/` that six pages use
+  - [x] correct the statement that the social links remain placeholders; `partials/footer-marketing.html` links to the owner's profiles
+  - [x] correct both structure trees: drop the non-existent `assets/illustrations/` and add `assets/fonts/`, `assets/images/`, `assets/logos/`, `css/fonts.css` and the page stylesheets `css/pages/about.css`, `contact.css`, `guide.css` and `pricing.css`
+  - [x] update the spotlight comment in `js/main.js`, which names only the guide and contact pages although five pages use `data-spotlight`
+  - [x] keep the Polish and English sections equivalent
   - **Completion condition:** the README statements about images, social links and project structure, and the spotlight comment, match the repository in both languages.
   - **Priority:** Medium
   - **Source:** `daily-AUDIT.md` — P2-03
