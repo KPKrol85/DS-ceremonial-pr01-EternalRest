@@ -92,7 +92,7 @@
   - **Scope boundary:** non-blocking; the current `push`-to-`main` and manual triggers in `.github/workflows/quality.yml` are a valid single-maintainer choice.
   - **Source:** `daily-AUDIT.md` — extra quality improvements
 
-- [ ] **O-03 — Evaluate a native no-JavaScript submission path for the contact form**
+- [x] **O-03 — Evaluate a native no-JavaScript submission path for the contact form**
   - **Value:** with `method="POST"` in place, the data-in-URL risk behind the `inert` baseline (`IMP-QUALITY-04`) no longer applies, so a validated native submission could replace the e-mail and telephone fallback.
   - **Scope boundary:** non-blocking; the current behavior is intentional and safe. A change needs its own validation design, updates to `README.md`, `terms.html` and `privacy.html`, which describe the inactive no-JavaScript form, and verification on a Netlify deployment.
   - **Source:** `daily-AUDIT.md` — extra quality improvements

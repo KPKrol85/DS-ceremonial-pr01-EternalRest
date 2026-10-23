@@ -422,9 +422,9 @@
         sendForm();
       }
     });
-    // The form is inert in the markup so it cannot be submitted natively without this
-    // handler; it is activated only once the handler is attached.
-    form.inert = false;
+    // Without this handler the form submits natively, with browser constraint validation;
+    // that validation is turned off only once the handler is attached to replace it.
+    form.noValidate = true;
     const fallback = document.querySelector("[data-form-fallback]");
     if (fallback) {
       fallback.hidden = true;

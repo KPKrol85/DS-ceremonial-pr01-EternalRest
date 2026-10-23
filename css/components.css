@@ -979,7 +979,7 @@ html[data-theme] .theme-toggle--icon {
   gap: var(--space-md);
 }
 
-/* Shown while the inert form is unavailable; main.js hides it once the form is active. */
+/* Shown while the form submits natively; main.js hides it once it handles submission. */
 .contact-form__notice {
   padding: var(--space-md);
   border-radius: var(--radius-sm);

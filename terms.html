@@ -564,9 +564,8 @@
                 Wyłączenie JavaScriptu ogranicza działanie interaktywnych
                 elementów Serwisu. Podstawowe publiczne treści oraz odnośniki do
                 sekcji Regulaminu pozostają dostępne bez JavaScriptu.
-                Formularz wymaga prawidłowo działającego
-                JavaScriptu; gdy JavaScript jest wyłączony lub nie działa,
-                Formularz pozostaje nieaktywny. Wyłączenie pamięci przeglądarki może
+                Formularz działa również bez JavaScriptu, w uproszczonej formie
+                opisanej w punkcie 9. Wyłączenie pamięci przeglądarki może
                 uniemożliwić zapamiętanie preferencji motywu i ograniczyć
                 obsługę jego zmiany.
               </p>
@@ -733,12 +732,18 @@
                 Operatora.
               </p>
               <p>
-                Formularz wymaga prawidłowo działającego JavaScriptu. Bez
-                JavaScriptu lub gdy skrypt Serwisu się nie wczyta, Formularz
-                pozostaje nieaktywny i nie można go wypełnić ani wysłać, więc
-                dane pól nie trafiają do adresu URL ani żądania do serwera. W
-                takim przypadku Serwis wyświetla komunikat z odnośnikami do
-                adresu e-mail i numeru telefonu Operatora.
+                Bez JavaScriptu lub gdy skrypt Serwisu się nie wczyta, Formularz
+                wysyła bezpośrednio przeglądarka. Przed wysłaniem sprawdza ona,
+                czy wymagane pola zostały wypełnione, a adres e-mail ma
+                poprawny format, i wyświetla własne komunikaty. Sprawdzenie to
+                nie jest identyczne z opisanym wyżej, w szczególności może
+                przyjąć pole zawierające wyłącznie spacje. Wartości pól trafiają
+                do usługi Netlify Forms w treści żądania, a nie w adresie URL.
+                Serwis nie wyświetla wtedy własnych komunikatów o wysłaniu ani
+                błędzie; po wysłaniu usługa Netlify może wyświetlić własną
+                stronę potwierdzenia. Nad Formularzem widoczny jest komunikat z
+                tą informacją oraz odnośnikami do adresu e-mail i numeru
+                telefonu Operatora.
               </p>
               <p>
                 Użytkownik powinien podawać w Formularzu wyłącznie dane

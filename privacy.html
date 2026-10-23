@@ -306,10 +306,10 @@
                 Digital Studio, autora Projektu – w sprawach stron internetowych
                 i Projektu. Wiadomości nie trafiają do domu pogrzebowego, a ich
                 wysłanie nie stanowi zamówienia usług pogrzebowych ani
-                ceremonialnych. Przy prawidłowo działającym JavaScripcie dane
-                wysłanego Formularza są przesyłane do usługi Netlify Forms
-                dostawcy hostingu, za której pośrednictwem otrzymuje je
-                Administrator. Sposób działania Formularza, w tym jego
+                ceremonialnych. Dane wysłanego Formularza są przesyłane do
+                usługi Netlify Forms dostawcy hostingu, za której pośrednictwem
+                otrzymuje je Administrator, również wtedy, gdy Formularz wysyła
+                przeglądarka bez JavaScriptu. Sposób działania Formularza, w tym jego
                 zachowanie bez JavaScriptu, opisano w punkcie 3.
               </p>
               <p>
@@ -435,13 +435,14 @@
                 Serwisu nie zapisuje wartości Formularza w pamięci przeglądarki.
               </p>
               <p>
-                Formularz staje się aktywny dopiero wtedy, gdy JavaScript
-                Serwisu przejmie obsługę jego zatwierdzenia. Bez JavaScriptu lub
-                gdy skrypt Serwisu się nie wczyta, pola Formularza pozostają
-                nieaktywne: nie można ich wypełnić ani wysłać Formularza, więc
-                wprowadzone dane nie trafiają do adresu URL, historii
-                przeglądarki ani żądania do serwera. Zamiast tego wyświetlany
-                jest komunikat z odnośnikami do adresu e-mail i numeru telefonu
+                Bez JavaScriptu lub gdy skrypt Serwisu się nie wczyta, Formularz
+                wysyła bezpośrednio przeglądarka. Po sprawdzeniu wymaganych pól
+                i formatu adresu e-mail przesyła ona te same dane połączeniem
+                HTTPS do usługi Netlify Forms w treści żądania POST, więc
+                wprowadzone dane nie trafiają do adresu URL. Po wysłaniu usługa
+                Netlify może wyświetlić własną stronę potwierdzenia. Nad
+                Formularzem wyświetlany jest wtedy komunikat z tą informacją
+                oraz odnośnikami do adresu e-mail i numeru telefonu
                 Administratora.
               </p>
               <p>
@@ -900,8 +901,9 @@
                 <li>
                   dane wysłane przez Formularz są przechowywane w usłudze
                   Netlify Forms; okres ich przechowywania określa punkt 4. Kod
-                  Serwisu nie zapisuje wartości Formularza w przeglądarce, a po
-                  przyjęciu zgłoszenia pola są czyszczone.
+                  Serwisu nie zapisuje wartości Formularza w przeglądarce, a
+                  przy działającym JavaScripcie po przyjęciu zgłoszenia pola są
+                  czyszczone.
                 </li>
               </ul>
               <p>

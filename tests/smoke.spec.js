@@ -257,3 +257,139 @@ test("failed contact submissions keep values and announce the error", async ({
   await expect(submit).toHaveAttribute("aria-disabled", "false");
   await expectContactValues(page);
 });
+
+// Without main.js the browser posts the form natively to the page that holds it.
+const isNativeSubmission = (url) => url.pathname === "/contact.html";
+
+test("invalid contact e-mail keeps the custom error instead of native validation", async ({
+  page,
+}) => {
+  const requests = [];
+  await page.route(
+    (url) => isSubmission(url) || isNativeSubmission(url),
+    async (route) => {
+      if (route.request().method() !== "POST") return route.fallback();
+      requests.push(route.request());
+      await route.fulfill({ status: 200, contentType: "text/html", body: "" });
+    },
+  );
+  await page.goto("/contact.html");
+
+  const form = page.locator("[data-validate-form]");
+  const email = page.getByLabel("Adres e-mail");
+  // main.js replaces native validation and the fallback notice once its handler is attached.
+  await expect(form).toHaveAttribute("novalidate", "");
+  await expect(page.locator("[data-form-fallback]")).toBeHidden();
+  await fillContactForm(page);
+  await email.fill("jan.testowy");
+  await page.getByRole("button", { name: "Wyślij zgłoszenie" }).click();
+
+  await expect(email).toHaveAttribute("aria-invalid", "true");
+  await expect(page.locator("#error-email")).toHaveText(
+    "Podaj poprawny adres e-mail.",
+  );
+  await expect(email).toBeFocused();
+  for (const id of ["name", "phone", "topic", "message"]) {
+    await expect(page.locator(`#${id}`)).not.toHaveAttribute("aria-invalid");
+  }
+  await expect(page).toHaveURL("/contact.html");
+  expect(requests).toHaveLength(0);
+});
+
+const routeNativeSubmissions = async (page) => {
+  const requests = [];
+  await page.route(isNativeSubmission, async (route) => {
+    if (route.request().method() !== "POST") return route.fallback();
+    requests.push(route.request());
+    await route.fulfill({
+      status: 200,
+      contentType: "text/html",
+      body: "<p>Potwierdzenie testowe</p>",
+    });
+  });
+  return requests;
+};
+
+const expectNativeContactSubmission = async (page, requests) => {
+  const form = page.locator("[data-validate-form]");
+  const fallback = page.locator("[data-form-fallback]");
+  const submit = page.getByRole("button", { name: "Wyślij zgłoszenie" });
+  const email = page.getByLabel("Adres e-mail");
+  await expect(fallback).toBeVisible();
+  await expect(fallback).toContainText(
+    "Formularz zostanie wysłany bezpośrednio przez przeglądarkę",
+  );
+  await expect(
+    fallback.getByRole("link", { name: "kontakt@kp-code.pl" }),
+  ).toHaveAttribute("href", "mailto:kontakt@kp-code.pl");
+  await expect(
+    fallback.getByRole("link", { name: "+48 533 537 091" }),
+  ).toHaveAttribute("href", "tel:+48533537091");
+  await expect(form).toHaveAttribute("method", "POST");
+  await expect(form).not.toHaveAttribute("novalidate");
+  await expect(form).not.toHaveAttribute("inert");
+
+  // Required fields block the submission, and the browser focuses the first one.
+  await submit.click();
+  await expect(page.getByLabel("Imię i nazwisko")).toBeFocused();
+  for (const id of Object.keys(contactValues)) {
+    await expect(page.locator(`#${id}:invalid`)).toHaveCount(1);
+  }
+
+  // So does an e-mail address in the wrong format.
+  await fillContactForm(page);
+  await email.fill("jan.testowy");
+  await submit.click();
+  await expect(email).toBeFocused();
+  await expect(page.locator("#email:invalid")).toHaveCount(1);
+  for (const id of ["name", "phone", "topic", "message"]) {
+    await expect(page.locator(`#${id}:valid`)).toHaveCount(1);
+  }
+  expect(requests).toHaveLength(0);
+
+  await email.fill(contactValues.email);
+  await submit.click();
+  await expect(page.getByText("Potwierdzenie testowe")).toBeVisible();
+  // The values travel in the POST body only, never in the URL.
+  await expect(page).toHaveURL("/contact.html");
+  expect(requests).toHaveLength(1);
+
+  const [request] = requests;
+  expect(request.method()).toBe("POST");
+  expect(new URL(request.url()).search).toBe("");
+  expect(request.headers()["content-type"]).toBe(
+    "application/x-www-form-urlencoded",
+  );
+  expect(
+    Object.fromEntries(new URLSearchParams(request.postData() ?? "")),
+  ).toEqual({
+    "form-name": "kontakt-kp-code",
+    "bot-field": "",
+    ...contactValues,
+  });
+};
+
+test("contact form validates and posts natively without JavaScript", async ({
+  browser,
+}) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  const requests = await routeNativeSubmissions(page);
+  await page.goto("/contact.html");
+
+  await expect(page.locator("html")).toHaveClass("no-js");
+  await expectNativeContactSubmission(page, requests);
+  await context.close();
+});
+
+test("contact form submits natively when the application module fails", async ({
+  page,
+}) => {
+  await page.route(APP_MODULE, (route) => route.abort("failed"));
+  const requests = await routeNativeSubmissions(page);
+  await page.goto("/contact.html");
+
+  // The disclosure fallback has reacted to the failed module load.
+  await expect(page.locator("html")).toHaveClass("no-js");
+  await expectNativeContactSubmission(page, requests);
+});
