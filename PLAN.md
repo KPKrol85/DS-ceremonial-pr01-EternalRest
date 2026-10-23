@@ -87,7 +87,7 @@
   - **Scope boundary:** non-blocking, as no spam problem is evidenced; the exact request-body assertion in `tests/smoke.spec.js` would need the new field, and delivery can be confirmed only on a Netlify deployment.
   - **Source:** `daily-AUDIT.md` — extra quality improvements
 
-- [ ] **O-02 — Run `Quality Checks` before changes reach `main`**
+- [x] **O-02 — Run `Quality Checks` before changes reach `main`**
   - **Value:** lint, build, reference and smoke-test failures would surface on a feature branch or pull request instead of after landing on `main`.
   - **Scope boundary:** non-blocking; the current `push`-to-`main` and manual triggers in `.github/workflows/quality.yml` are a valid single-maintainer choice.
   - **Source:** `daily-AUDIT.md` — extra quality improvements
