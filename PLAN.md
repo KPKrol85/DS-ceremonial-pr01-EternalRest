@@ -14,8 +14,7 @@
 
 ## Current priorities
 
-1. `PH2-01` — Complete the README project-structure trees.
-2. `PH3-01` — Run the project's own quality checks with dependencies installed.
+1. `PH3-01` — Run the project's own quality checks with dependencies installed.
 
 ## Phase 1 — Mobile navigation accessibility
 
@@ -36,10 +35,10 @@
 
 **Goal:** Make the README project-structure section a complete map of the tracked repository.
 
-- [ ] **PH2-01 — Complete the README project-structure trees**
-  - [ ] add the tracked top-level entries missing from both trees: `public/` (favicons, `site.webmanifest`, `robots.txt`, `sitemap.xml`, `images/og.jpg`), `tests/`, `playwright.config.js`, `.github/workflows/`, `docs/` and `THIRD-PARTY-NOTICES.md`
-  - [ ] keep the existing comment style and equivalent content in the Polish (`Struktura projektu`) and English (`Project Structure`) sections
-  - [ ] decide whether the agent instruction files (`AGENTS.md`, `CLAUDE.md`) and `AUDIT.md` are listed or intentionally omitted, and apply the same choice to both trees
+- [x] **PH2-01 — Complete the README project-structure trees**
+  - [x] add the tracked top-level entries missing from both trees: `public/` (favicons, `site.webmanifest`, `robots.txt`, `sitemap.xml`, `images/og.jpg`), `tests/`, `playwright.config.js`, `.github/workflows/`, `docs/` and `THIRD-PARTY-NOTICES.md`
+  - [x] keep the existing comment style and equivalent content in the Polish (`Struktura projektu`) and English (`Project Structure`) sections
+  - [x] decide whether the agent instruction files (`AGENTS.md`, `CLAUDE.md`) and `AUDIT.md` are listed or intentionally omitted, and apply the same choice to both trees
   - **Completion condition:** every tracked top-level file or directory from `git ls-files`, apart from intentionally omitted entries, appears in both trees, and `npm run format:check` passes.
   - **Changelog:** no — internal documentation correction.
   - **Priority:** Low

@@ -64,6 +64,15 @@ Wspólne elementy stron mają jedno źródło w katalogu `partials/`: `site-head
 │   ├── images/
 │   ├── logos/
 │   └── src-images/
+├── public/                    # Pliki statyczne kopiowane bez przetwarzania
+│   ├── favicons/              # Ikony witryny (wybrane pliki) i manifest
+│   │   ├── apple-touch-icon.png
+│   │   ├── favicon.ico
+│   │   ├── favicon.svg
+│   │   └── site.webmanifest
+│   ├── images/og.jpg          # Obraz podglądu przy udostępnianiu
+│   ├── robots.txt
+│   └── sitemap.xml
 ├── css/
 │   ├── main.css
 │   ├── fonts.css
@@ -84,12 +93,29 @@ Wspólne elementy stron mają jedno źródło w katalogu `partials/`: `site-head
 ├── scripts/
 │   ├── check-references.js
 │   └── convert-images.js
+├── tests/
+│   └── smoke.spec.js          # Testy smoke Playwright
+├── .github/
+│   └── workflows/
+│       └── quality.yml        # Kontrole jakości w GitHub Actions
+├── docs/
+│   ├── CHANGELOG.md           # Historia zmian
+│   └── archive/               # Archiwalne audyty, usprawnienia i plany
 ├── .eslintrc.cjs
+├── .gitattributes             # Reguły Git dotyczące plików i końców linii
+├── .gitignore                 # Pliki pomijane przez Git
+├── .prettierignore            # Pliki pomijane przez Prettiera
 ├── package.json
 ├── package-lock.json
+├── playwright.config.js       # Konfiguracja testów przeglądarkowych
 ├── postcss.config.cjs
 ├── vite.config.js
+├── AGENTS.md                  # Instrukcje dla agentów pracujących nad projektem
+├── CLAUDE.md                  # Instrukcje dla Claude
+├── AUDIT.md                   # Audyt techniczny
+├── PLAN.md                    # Plan rozwoju
 ├── LICENSE.md
+├── THIRD-PARTY-NOTICES.md      # Informacje o zasobach i licencjach stron trzecich
 └── README.md
 ```
 
@@ -242,6 +268,15 @@ Shared page chrome has a single source in `partials/`: `site-header.html` (skip 
 │   ├── images/
 │   ├── logos/
 │   └── src-images/
+├── public/                    # Static files copied without processing
+│   ├── favicons/              # Site icons (selected files) and manifest
+│   │   ├── apple-touch-icon.png
+│   │   ├── favicon.ico
+│   │   ├── favicon.svg
+│   │   └── site.webmanifest
+│   ├── images/og.jpg          # Social sharing preview image
+│   ├── robots.txt
+│   └── sitemap.xml
 ├── css/
 │   ├── main.css
 │   ├── fonts.css
@@ -262,12 +297,29 @@ Shared page chrome has a single source in `partials/`: `site-header.html` (skip 
 ├── scripts/
 │   ├── check-references.js
 │   └── convert-images.js
+├── tests/
+│   └── smoke.spec.js          # Playwright smoke tests
+├── .github/
+│   └── workflows/
+│       └── quality.yml        # Quality checks in GitHub Actions
+├── docs/
+│   ├── CHANGELOG.md           # Change history
+│   └── archive/               # Archived audits, improvements and plans
 ├── .eslintrc.cjs
+├── .gitattributes             # Git file and line-ending rules
+├── .gitignore                 # Files ignored by Git
+├── .prettierignore            # Files ignored by Prettier
 ├── package.json
 ├── package-lock.json
+├── playwright.config.js       # Browser test configuration
 ├── postcss.config.cjs
 ├── vite.config.js
+├── AGENTS.md                  # Instructions for agents working on the project
+├── CLAUDE.md                  # Instructions for Claude
+├── AUDIT.md                   # Technical audit
+├── PLAN.md                    # Development plan
 ├── LICENSE.md
+├── THIRD-PARTY-NOTICES.md      # Third-party asset and license notices
 └── README.md
 ```
 
