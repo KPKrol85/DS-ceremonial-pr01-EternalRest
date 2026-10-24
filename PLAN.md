@@ -1,20 +1,23 @@
 # Eternal Rest — Development Plan
 
-**Last reviewed:** 2026-10-21
+**Last reviewed:** 2026-10-24
 **Project type:** Polish-language static multi-page demonstration website for a fictional funeral-home brand (Vite MPA with build-time HTML partials, CSS custom properties and a vanilla ES module), with a Netlify Forms contact form that sends enquiries to the project author
-**Plan status:** Active
+**Plan status:** Completed — archived on 2026-10-24
+**Archive path:** `docs/archive/plans/PLAN-2026-10-24.md`
+
+## Completion summary
+
+- All required tasks in Phases 1–3 and all four optional improvements (O-01–O-04) are completed and checked.
+- The optional favicon regeneration under PH1-02 remains unchecked; it was not required for completion of the logo replacement.
+- Netlify Forms delivery on the deployed site, including native no-JavaScript submission, was not verified during these tasks. Local browser tests covered the submission contracts, not production delivery.
 
 ## Planning principles
 
-- The plan reflects the repository as reviewed on 2026-10-21. Open items are based on `daily-AUDIT.md` of the same date and on current documentation, each re-checked against the source. Completed improvement cycles are archived in `docs/archive/improvements/` and are not repeated here.
+- This plan originated from the repository review and `daily-AUDIT.md` dated 2026-10-21. Tasks were checked against current sources during implementation. Earlier completed improvement cycles are archived in `docs/archive/improvements/` and are not repeated here.
 - A main item is checked only when its required subtasks are done and its completion condition has been verified. Optional subtasks never block completion.
 - Edit canonical sources only: the root `*.html` pages, `partials/`, `css/`, `js/`, `assets/`, `public/`, `scripts/` and `tests/`. `dist/` is generated and never edited, and `assets/images/` is regenerated from `assets/src-images/` with `npm run images:convert`.
 - Public content stays in Polish, and the Polish and English README sections change together.
 - Significant completed changes are recorded in `docs/CHANGELOG.md` under its entry policy.
-
-## Current priorities
-
-1. `PH3-01` — Correct stale README and comment statements.
 
 ## Phase 1 — Shared chrome and public content
 
@@ -80,7 +83,7 @@
   - **Priority:** Medium
   - **Source:** `daily-AUDIT.md` — P2-03
 
-## Optional future improvements
+## Optional improvements — completed
 
 - [x] **O-01 — Add a Netlify Forms honeypot to the contact form**
   - **Value:** a markup-only honeypot field would reduce automated submissions reaching the author without adding scripts or third-party services.
