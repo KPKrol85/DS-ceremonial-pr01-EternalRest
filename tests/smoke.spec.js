@@ -1,28 +1,132 @@
 import { test, expect } from "@playwright/test";
 
-test("mobile navigation closes with Escape and restores focus", async ({
+test("mobile navigation isolates page content and restores it on every close path", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
 
-  const button = page.getByRole("button", { name: "Otwórz menu" });
+  const button = page.locator("[data-menu-button]");
   const panel = page.locator("[data-menu-panel]");
   const navigation = page.getByRole("navigation", { name: "Główna" });
-  await expect(button).toHaveAttribute("aria-expanded", "false");
-  await expect(panel).toHaveAttribute("aria-hidden", "true");
-  await expect(panel).toBeHidden();
+  const outsideContent = page.locator(
+    ".skip-link, .site-header__brand, main, footer, [data-back-to-top]",
+  );
+  await expect(outsideContent).toHaveCount(5);
 
+  // Role locators do not account for inert; inspect Chromium's native AX tree.
+  const accessibility = await page.context().newCDPSession(page);
+  await accessibility.send("Accessibility.enable");
+  const expectBackgroundExposed = async (exposed) => {
+    await expect
+      .poll(async () => {
+        const { nodes } = await accessibility.send(
+          "Accessibility.getFullAXTree",
+        );
+        return [
+          ["main"],
+          ["contentinfo"],
+          ["link", "Przejdź do treści"],
+          ["link", "Eternal Rest DOM POGRZEBOWY"],
+        ].map(([role, name]) =>
+          nodes.some(
+            (node) =>
+              !node.ignored &&
+              node.role?.value === role &&
+              (!name || node.name?.value === name),
+          ),
+        );
+      })
+      .toEqual([exposed, exposed, exposed, exposed]);
+  };
+
+  const expectRestoredContent = async () => {
+    for (const element of await outsideContent.all()) {
+      await expect(element).not.toHaveAttribute("inert");
+    }
+    await expectBackgroundExposed(true);
+  };
+
+  const expectClosedMenu = async () => {
+    await expect(button).toHaveAccessibleName("Otwórz menu");
+    await expect(button).toHaveAttribute("aria-expanded", "false");
+    await expect(panel).toHaveAttribute("aria-hidden", "true");
+    await expect(panel).toBeHidden();
+    await expectRestoredContent();
+  };
+
+  await expectClosedMenu();
+  for (const closePath of [
+    "button",
+    "Escape",
+    "outside click",
+    "desktop resize",
+  ]) {
+    await test.step(`Close via ${closePath}`, async () => {
+      await button.click();
+      await expect(button).toHaveAccessibleName("Zamknij menu");
+      await expect(button).toHaveAttribute("aria-expanded", "true");
+      await expect(panel).toHaveAttribute("aria-hidden", "false");
+      await expect(navigation).toBeVisible();
+      const firstLink = navigation.getByRole("link").first();
+      await expect(firstLink).toBeFocused();
+      for (const element of await outsideContent.all()) {
+        await expect(element).toHaveJSProperty("inert", true);
+      }
+      await expectBackgroundExposed(false);
+      // Neither active menu control may inherit inert from an ancestor.
+      for (const element of [button, panel]) {
+        expect(
+          await element.evaluate((node) => node.closest("[inert]")),
+        ).toBeNull();
+      }
+
+      // The menu button participates in both directions of the existing Tab cycle.
+      await page.keyboard.press("Shift+Tab");
+      await expect(button).toBeFocused();
+      await page.keyboard.press("Shift+Tab");
+      await expect(
+        panel.getByRole("button", { name: "Tryb systemowy" }),
+      ).toBeFocused();
+      await page.keyboard.press("Tab");
+      await expect(button).toBeFocused();
+      await page.keyboard.press("Tab");
+      await expect(firstLink).toBeFocused();
+
+      if (closePath === "desktop resize") {
+        await page.setViewportSize({ width: 1152, height: 844 });
+        await expect(button).toHaveAttribute("aria-label", "Otwórz menu");
+        await expect(button).toHaveAttribute("aria-expanded", "false");
+        await expect(button).toBeHidden();
+        await expect(panel).toHaveAttribute("aria-hidden", "false");
+        await expect(navigation).toBeVisible();
+        await expect(firstLink).toBeFocused();
+        await expectRestoredContent();
+        await page.setViewportSize({ width: 390, height: 844 });
+      } else {
+        if (closePath === "button") {
+          await button.click();
+        } else if (closePath === "Escape") {
+          await page.keyboard.press("Escape");
+        } else {
+          // The overlay fills the viewport; dispatch an outside click to test its handler.
+          await page.locator("[data-site-header]").dispatchEvent("click");
+        }
+        await expect(button).toBeFocused();
+      }
+      await expectClosedMenu();
+    });
+  }
+
+  // A new interaction after resizing must preserve an existing inert attribute exactly.
+  const footer = page.locator("footer");
+  await footer.evaluate((element) => element.setAttribute("inert", "original"));
   await button.click();
-  await expect(button).toHaveAttribute("aria-expanded", "true");
-  await expect(panel).toHaveAttribute("aria-hidden", "false");
-  await expect(navigation).toBeVisible();
-  await expect(navigation.getByRole("link").first()).toBeFocused();
-
+  await expect(button).toHaveAccessibleName("Zamknij menu");
   await page.keyboard.press("Escape");
-  await expect(button).toHaveAttribute("aria-expanded", "false");
-  await expect(panel).toHaveAttribute("aria-hidden", "true");
-  await expect(panel).toBeHidden();
+  await expect(footer).toHaveAttribute("inert", "original");
+  await footer.evaluate((element) => element.removeAttribute("inert"));
+  await expectClosedMenu();
   await expect(button).toBeFocused();
 });
 

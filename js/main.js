@@ -112,15 +112,50 @@
   let lastFocused = null;
   // Matches the one-row desktop header in css/components.css.
   const desktopQuery = window.matchMedia("(min-width: 1152px)");
+  const menuBackgroundState = new Map();
+
+  const setMenuExpanded = (expanded) => {
+    menuButton.setAttribute("aria-expanded", String(expanded));
+    menuButton.setAttribute(
+      "aria-label",
+      expanded ? "Zamknij menu" : "Otwórz menu",
+    );
+  };
+
+  const isolateMenuBackground = () => {
+    // Target only content outside the button and panel, never their ancestors.
+    document
+      .querySelectorAll(
+        ".skip-link, .site-header__brand, main, footer, [data-back-to-top]",
+      )
+      .forEach((element) => {
+        if (!menuBackgroundState.has(element)) {
+          menuBackgroundState.set(element, element.getAttribute("inert"));
+          element.inert = true;
+        }
+      });
+  };
+
+  const restoreMenuBackground = () => {
+    menuBackgroundState.forEach((inert, element) => {
+      if (inert === null) {
+        element.removeAttribute("inert");
+      } else {
+        element.setAttribute("inert", inert);
+      }
+    });
+    menuBackgroundState.clear();
+  };
 
   const closeMenu = () => {
     if (!menuPanel || !menuButton) return;
     menuPanel.classList.remove("is-open");
-    menuButton.setAttribute("aria-expanded", "false");
+    setMenuExpanded(false);
     document.body.classList.remove("is-menu-open");
     if (!desktopQuery.matches) {
       menuPanel.setAttribute("aria-hidden", "true");
     }
+    restoreMenuBackground();
     if (lastFocused) lastFocused.focus();
   };
 
@@ -128,9 +163,10 @@
     if (!menuPanel || !menuButton) return;
     lastFocused = document.activeElement;
     menuPanel.classList.add("is-open");
-    menuButton.setAttribute("aria-expanded", "true");
+    setMenuExpanded(true);
     document.body.classList.add("is-menu-open");
     menuPanel.setAttribute("aria-hidden", "false");
+    isolateMenuBackground();
     const focusables = menuPanel.querySelectorAll(
       "a, button, input, select, textarea, [tabindex]:not([tabindex='-1'])",
     );
@@ -143,7 +179,8 @@
         menuPanel.classList.remove("is-open");
         menuPanel.setAttribute("aria-hidden", "false");
         document.body.classList.remove("is-menu-open");
-        menuButton.setAttribute("aria-expanded", "false");
+        setMenuExpanded(false);
+        restoreMenuBackground();
       } else if (!menuPanel.classList.contains("is-open")) {
         menuPanel.setAttribute("aria-hidden", "true");
       }
