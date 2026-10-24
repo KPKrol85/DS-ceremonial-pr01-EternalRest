@@ -86,10 +86,24 @@
       <section class="hero">
         <div class="hero__stage">
           <picture class="hero__media">
-            <source srcset="assets/images/hero.avif" type="image/avif" />
+            <source
+              srcset="
+                assets/images/hero-768.avif   768w,
+                assets/images/hero-1152.avif 1152w,
+                assets/images/hero.avif      1536w
+              "
+              sizes="(min-width: 1024px) max(100vw, 72rem), (min-width: 760px) 66rem, max(100vw, clamp(33rem, 172.5vw, 48rem))"
+              type="image/avif"
+            />
             <img
               class="hero__image"
               src="assets/images/hero.webp"
+              srcset="
+                assets/images/hero-768.webp   768w,
+                assets/images/hero-1152.webp 1152w,
+                assets/images/hero.webp      1536w
+              "
+              sizes="(min-width: 1024px) max(100vw, 72rem), (min-width: 760px) 66rem, max(100vw, clamp(33rem, 172.5vw, 48rem))"
               width="1536"
               height="1024"
               alt=""

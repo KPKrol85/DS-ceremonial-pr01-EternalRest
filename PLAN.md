@@ -14,7 +14,6 @@
 
 ## Current priorities
 
-
 ## Phase 1 — Mobile navigation accessibility
 
 **Goal:** Make the open mobile menu announce an accurate control name and keep covered page content out of assistive-technology navigation.
@@ -69,8 +68,10 @@
 
 ## Optional future improvements
 
-- [ ] **O-01 — Offer width-appropriate hero image candidates**
-  - **Value:** smaller files for narrow viewports on the largest heroes (`hero`, `hero-services`, `hero-pricing`) by extending `scripts/convert-images.js` and the hero `<picture>` sources with `srcset`/`sizes`; the benefit has not been measured.
+- [x] **O-01 — Offer width-appropriate hero image candidates**
+  - **Status:** COMPLETED — implemented and verified.
+  - **Result:** Added 768/1152 px variants for `hero` and 480/960 px variants for `hero-services` and `hero-pricing`, in AVIF and WebP, with layout-aware `srcset`/`sizes` and unchanged full-size assets, fallbacks and image contracts.
+  - **Verification:** Two `npm run images:convert -- --responsive-only` runs produced 12 byte-identical variants with correct dimensions and aspect ratios, 29.4–85.5% smaller than their full-size counterparts; existing assets remained unchanged. Build and reference checks and 54 focused Chromium scenarios passed across dev/preview, responsive breakpoints, DPR 1–3 and WebP fallback; visual comparisons confirmed preserved layout, cropping and appearance within each environment. LCP and loading time were not measured.
   - **Scope boundary:** non-blocking; current image sizes are moderate and no loading problem was measured.
   - **Source:** `AUDIT.md` — extra quality improvements
 
