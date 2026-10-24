@@ -14,7 +14,6 @@
 
 ## Current priorities
 
-1. `PH3-01` — Run the project's own quality checks with dependencies installed.
 
 ## Phase 1 — Mobile navigation accessibility
 
@@ -48,11 +47,11 @@
 
 **Goal:** Close the verification gaps recorded in the final audit before the project is treated as final.
 
-- [ ] **PH3-01 — Run the project's own quality checks with dependencies installed**
-  - [ ] install dependencies from the lockfile with `npm ci` on Node.js 22.x
-  - [ ] run `npm run lint`, `npm run format:check`, `npm run build`, `npm run check:references` against the real `dist/` and `npm run test:smoke`
-  - [ ] confirm that hashed asset names in the built pages still satisfy the `appModule` path contract checked by `scripts/check-references.js`
-  - [ ] record any failure as a separate plan item instead of fixing it within this task
+- [x] **PH3-01 — Run the project's own quality checks with dependencies installed**
+  - [x] install dependencies from the lockfile with `npm ci` on Node.js 22.x
+  - [x] run `npm run lint`, `npm run format:check`, `npm run build`, `npm run check:references` against the real `dist/` and `npm run test:smoke`
+  - [x] confirm that hashed asset names in the built pages still satisfy the `appModule` path contract checked by `scripts/check-references.js`
+  - [x] record any failure as a separate plan item instead of fixing it within this task
   - **Completion condition:** all five commands pass on the current head, locally or in the `Quality Checks` workflow.
   - **Depends on:** `PH1-01`, `PH2-01`
   - **Priority:** Medium
