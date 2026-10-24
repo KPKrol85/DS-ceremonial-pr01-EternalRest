@@ -111,17 +111,17 @@ npx playwright install chromium
 
 Polecenia są zdefiniowane w [package.json](package.json).
 
-| Polecenie | Działanie |
-| --- | --- |
-| `npm run dev` | Uruchamia Vite z `--host`, udostępniając serwer także w sieci lokalnej. |
-| `npm run build` | Buduje wszystkie strony HTML z katalogu głównego przez `vite build`. |
-| `npm run preview` | Uruchamia `vite preview`; wymaga wcześniejszego buildu. |
-| `npm run test:smoke` | Buduje stronę od nowa i uruchamia dziesięć testów Playwright w Chromium na lokalnym Vite Preview. |
-| `npm run lint` | Uruchamia ESLint wyłącznie dla `js/**/*.js`. |
+| Polecenie                  | Działanie                                                                                                                                                                                                                        |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run dev`              | Uruchamia Vite z `--host`, udostępniając serwer także w sieci lokalnej.                                                                                                                                                          |
+| `npm run build`            | Buduje wszystkie strony HTML z katalogu głównego przez `vite build`.                                                                                                                                                             |
+| `npm run preview`          | Uruchamia `vite preview`; wymaga wcześniejszego buildu.                                                                                                                                                                          |
+| `npm run test:smoke`       | Buduje stronę od nowa i uruchamia dziesięć testów Playwright w Chromium na lokalnym Vite Preview.                                                                                                                                |
+| `npm run lint`             | Uruchamia ESLint wyłącznie dla `js/**/*.js`.                                                                                                                                                                                     |
 | `npm run check:references` | Sprawdza odwołania do identyfikatorów, duplikaty `id` i zgodność ścieżki modułu aplikacji z inicjalizatorem `partials/disclosure-init.html` w zbudowanych stronach `dist/`; wymaga wcześniejszego buildu i niczego nie zapisuje. |
-| `npm run format` | Uruchamia `prettier --write .` i nadpisuje niesformatowane pliki w zakresie formatowania. |
-| `npm run format:check` | Uruchamia `prettier --check .`; zgłasza różnice w formatowaniu bez zmieniania plików. |
-| `npm run images:convert` | Konwertuje PNG/JPG/JPEG z `assets/src-images/` do WebP i AVIF w generowanym `assets/images/`. |
+| `npm run format`           | Uruchamia `prettier --write .` i nadpisuje niesformatowane pliki w zakresie formatowania.                                                                                                                                        |
+| `npm run format:check`     | Uruchamia `prettier --check .`; zgłasza różnice w formatowaniu bez zmieniania plików.                                                                                                                                            |
+| `npm run images:convert`   | Konwertuje PNG/JPG/JPEG z `assets/src-images/` do WebP i AVIF w generowanym `assets/images/`.                                                                                                                                    |
 
 Strony otwieraj przez serwer Vite, korzystając z adresu podanego w terminalu. Bezpośrednie otwieranie plików z dysku nie zapewnia obsługi skryptu modułowego.
 
@@ -147,7 +147,7 @@ Workflow `Quality Checks` (`.github/workflows/quality.yml`) uruchamia się po pu
 
 To samo polecenie pilnuje kontraktu ścieżki modułu z `partials/disclosure-init.html`: inicjalizator usuwa `js-pending` tylko po błędzie ładowania lub parsowania skryptu, którego ścieżka pasuje do jego wyrażenia `appModule`. Skrypt odczytuje to wyrażenie bezpośrednio z pliku partiala jako literał (bez wykonywania kodu), więc nie utrzymuje jego drugiej kopii; gdy nie da się go znaleźć lub skompilować, kończy się błędem. Strony z inicjalizatorem rozpoznaje w zbudowanym HTML, a pozostałe wymienia jako pominięte. Na każdej takiej stronie wymaga dokładnie jednego `<script type="module" src>`, rozwiązuje jego `src` względem strony do ścieżki URL i porównuje ją z wyrażeniem. Przy powodzeniu wypisuje stronę i dopasowaną ścieżkę; błąd podaje stronę, wiersz, `src`, rozwiązaną ścieżkę i wyrażenie, a polecenie kończy się kodem różnym od zera. Wykrywa to np. zmianę nazewnictwa plików przez Vite, która po nieudanym załadowaniu modułu pozostawiłaby menu nagłówka zamknięte, a odpowiedzi FAQ i szczegóły pakietów ukryte. Sprawdzenie nie symuluje awarii modułu w przeglądarce.
 
-`npm run format:check` porównuje pliki z wynikiem Prettiera 3 w ustawieniach domyślnych (repozytorium nie zawiera konfiguracji Prettiera) i niczego nie zapisuje; kończy się błędem, gdy którykolwiek plik w zakresie wymaga formatowania. Jego zapisującym odpowiednikiem jest `npm run format`. Sprawdzenie dotyczy wyłącznie zapisu kodu i nie zastępuje lintowania ESLint ani testów działania strony w przeglądarce. Repozytorium nie przeszło formatowania bazowego, dlatego sprawdzenie zgłasza obecnie istniejące rozbieżności. Prettier domyślnie oczekuje końców linii LF, więc w kopii roboczej z końcami CRLF (np. w Windows z `core.autocrlf=true`) zgłasza każdy plik w zakresie.
+`npm run format:check` porównuje pliki z wynikiem Prettiera 3 w ustawieniach domyślnych (repozytorium nie zawiera konfiguracji Prettiera) i niczego nie zapisuje; kończy się błędem, gdy którykolwiek plik w zakresie wymaga formatowania. Jego zapisującym odpowiednikiem jest `npm run format`. Sprawdzenie dotyczy wyłącznie zapisu kodu i nie zastępuje lintowania ESLint ani testów działania strony w przeglądarce. Wszystkie pliki w zakresie przeszły formatowanie bazowe, więc w czystej kopii roboczej sprawdzenie kończy się powodzeniem. Prettier domyślnie oczekuje końców linii LF; `.gitattributes` (`* text=auto eol=lf`) zapewnia LF w każdej kopii roboczej, także w Windows z `core.autocrlf=true`, a plik zapisany z końcami CRLF, np. przez edytor, zostanie zgłoszony.
 
 Oba polecenia pomijają pliki wskazane w `.gitignore` i `.prettierignore`. `.prettierignore` wyłącza generowany `dist/`, `node_modules/`, `package-lock.json`, `LICENSE.md`, strony prawne `terms.html`, `privacy.html` i `cookies.html` oraz archiwum raportów `docs/archive/`, aby formatowanie nie zmieniało tych plików. Wykluczone pliki nie są też sprawdzane; wspólny nagłówek i stopki, także te używane przez strony prawne, znajdują się jednak w `partials/` i podlegają sprawdzeniu. `.prettierignore` działa wyłącznie dla Prettiera i nie chroni plików przed innymi narzędziami ani ręczną edycją.
 
@@ -289,17 +289,17 @@ npx playwright install chromium
 
 Commands are defined in [package.json](package.json).
 
-| Command | Behavior |
-| --- | --- |
-| `npm run dev` | Starts Vite with `--host`, also exposing the server to the local network. |
-| `npm run build` | Builds all root-level HTML pages through `vite build`. |
-| `npm run preview` | Starts `vite preview`; requires a prior build. |
-| `npm run test:smoke` | Creates a fresh production build and runs ten Playwright tests in Chromium against local Vite Preview. |
-| `npm run lint` | Runs ESLint only on `js/**/*.js`. |
+| Command                    | Behavior                                                                                                                                                                                           |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run dev`              | Starts Vite with `--host`, also exposing the server to the local network.                                                                                                                          |
+| `npm run build`            | Builds all root-level HTML pages through `vite build`.                                                                                                                                             |
+| `npm run preview`          | Starts `vite preview`; requires a prior build.                                                                                                                                                     |
+| `npm run test:smoke`       | Creates a fresh production build and runs ten Playwright tests in Chromium against local Vite Preview.                                                                                             |
+| `npm run lint`             | Runs ESLint only on `js/**/*.js`.                                                                                                                                                                  |
 | `npm run check:references` | Checks ID references, duplicate IDs and the application module path against the `partials/disclosure-init.html` initializer in the built `dist/` pages; requires a prior build and writes nothing. |
-| `npm run format` | Runs `prettier --write .` and overwrites unformatted files within the formatting scope. |
-| `npm run format:check` | Runs `prettier --check .`; reports formatting differences without changing files. |
-| `npm run images:convert` | Converts PNG/JPG/JPEG from `assets/src-images/` into WebP and AVIF in the generated `assets/images/` directory. |
+| `npm run format`           | Runs `prettier --write .` and overwrites unformatted files within the formatting scope.                                                                                                            |
+| `npm run format:check`     | Runs `prettier --check .`; reports formatting differences without changing files.                                                                                                                  |
+| `npm run images:convert`   | Converts PNG/JPG/JPEG from `assets/src-images/` into WebP and AVIF in the generated `assets/images/` directory.                                                                                    |
 
 Open pages through the Vite server using the address printed in the terminal. Opening files directly from disk does not provide the required module-script support.
 
@@ -325,7 +325,7 @@ The `Quality Checks` workflow (`.github/workflows/quality.yml`) runs on pushes t
 
 The same command guards the module-path contract of `partials/disclosure-init.html`: the initializer removes `js-pending` only after a load or parse error from a script whose path matches its `appModule` expression. The script reads that expression directly from the partial as a literal (without executing any code), so it keeps no second copy; if it cannot be found or compiled, the check fails. Pages with the initializer are identified in the built HTML, and the others are listed as skipped. Each such page must contain exactly one `<script type="module" src>`, whose `src` is resolved against the page to a URL pathname and tested against the expression. On success it prints each page and its matched path; an error names the page, line, `src`, resolved path and expression, and the command exits with a non-zero code. This catches, for example, a Vite output-naming change that would leave the header menu closed and FAQ answers and package details hidden after a failed module load. The check does not simulate a module failure in a browser.
 
-`npm run format:check` compares files with Prettier 3 output using default options (the repository contains no Prettier configuration) and writes nothing; it fails when any in-scope file needs formatting. `npm run format` is its writing counterpart. The check covers code layout only and does not replace ESLint linting or runtime testing of the site in a browser. The repository has not received a baseline format, so the check currently reports existing differences. Prettier expects LF line endings by default, so in a working copy with CRLF endings (for example on Windows with `core.autocrlf=true`) it reports every in-scope file.
+`npm run format:check` compares files with Prettier 3 output using default options (the repository contains no Prettier configuration) and writes nothing; it fails when any in-scope file needs formatting. `npm run format` is its writing counterpart. The check covers code layout only and does not replace ESLint linting or runtime testing of the site in a browser. All in-scope files have received a baseline format, so the check passes in a clean working copy. Prettier expects LF line endings by default; `.gitattributes` (`* text=auto eol=lf`) keeps LF in every working copy, including on Windows with `core.autocrlf=true`, and a file saved with CRLF endings, for example by an editor, is reported.
 
 Both commands skip files matched by `.gitignore` and `.prettierignore`. `.prettierignore` excludes the generated `dist/`, `node_modules/`, `package-lock.json`, `LICENSE.md`, the legal pages `terms.html`, `privacy.html` and `cookies.html`, and the report archive in `docs/archive/`, so formatting does not change these files. Excluded files are not checked either; the shared header and footers, including those used by the legal pages, live in `partials/` and are checked. `.prettierignore` applies only to Prettier and does not protect files from other tools or manual edits.
 

@@ -26,7 +26,7 @@ const run = async () => {
       await sharp(inputPath).toFormat("webp").toFile(`${outputBase}.webp`);
       await sharp(inputPath).toFormat("avif").toFile(`${outputBase}.avif`);
       console.log(`Przetworzono: ${file}`);
-    })
+    }),
   );
 };
 

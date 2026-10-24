@@ -27,6 +27,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Changed
 
+- Established a passing Prettier baseline: formatted the 13 in-scope files with the existing default Prettier 3 setup and unchanged `.prettierignore` exclusions, so `npm run format:check` passes on a clean LF checkout. Bundled JS/CSS and rendered pages are unchanged.
 - Enabled native no-JavaScript submission of `kontakt-kp-code`: removed `inert`, kept browser constraint validation until `js/main.js` sets `novalidate` after attaching its handler, and updated the fallback notice, README and legal copy. Added Playwright tests for disabled JavaScript, a failed module load and the preserved custom e-mail error.
 - Removed the inactive scroll-reveal mechanism: 29 `data-reveal` attributes, the reveal `IntersectionObserver` in `js/main.js` and the unused `.reveal` utility rules. Rendering is unchanged, and back-to-top keeps its `.is-visible` state and reduced-motion scrolling.
 - Applied stored light/dark preferences before first paint via the existing inline head initializer, preserving system fallback and read-only initialization. Added a Playwright regression test with the application module blocked.

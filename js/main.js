@@ -27,7 +27,7 @@
     try {
       localStorage.setItem(
         THEME_KEY,
-        JSON.stringify({ version: THEME_VERSION, mode })
+        JSON.stringify({ version: THEME_VERSION, mode }),
       );
     } catch (error) {
       // Keep theme switching available when storage writes fail.
@@ -44,7 +44,7 @@
       const isDark = mode === "dark" || (mode === "auto" && mediaQuery.matches);
       themeToggle.setAttribute(
         "aria-label",
-        isDark ? "Włącz jasny motyw" : "Włącz ciemny motyw"
+        isDark ? "Włącz jasny motyw" : "Włącz ciemny motyw",
       );
       themeToggle.dataset.theme = isDark ? "dark" : "light";
     }
@@ -132,7 +132,7 @@
     document.body.classList.add("is-menu-open");
     menuPanel.setAttribute("aria-hidden", "false");
     const focusables = menuPanel.querySelectorAll(
-      "a, button, input, select, textarea, [tabindex]:not([tabindex='-1'])"
+      "a, button, input, select, textarea, [tabindex]:not([tabindex='-1'])",
     );
     if (focusables.length) focusables[0].focus();
   };
@@ -169,7 +169,7 @@
         const focusables = [
           menuButton,
           ...menuPanel.querySelectorAll(
-            "a, button, input, select, textarea, [tabindex]:not([tabindex='-1'])"
+            "a, button, input, select, textarea, [tabindex]:not([tabindex='-1'])",
           ),
         ];
         const first = focusables[0];
@@ -204,7 +204,7 @@
   const spotlights = document.querySelectorAll("[data-spotlight]");
   if (spotlights.length) {
     const spotlightQuery = window.matchMedia(
-      "(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)"
+      "(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)",
     );
 
     const isSpotlightPointer = (event) =>
@@ -299,7 +299,7 @@
       });
       if (pricingStatus) {
         const visibleCount = Array.from(cards).filter(
-          (card) => !card.classList.contains("is-hidden")
+          (card) => !card.classList.contains("is-hidden"),
         ).length;
         pricingStatus.textContent = `Wyświetlane pakiety: ${visibleCount} z ${cards.length}`;
       }
@@ -437,7 +437,10 @@
       backToTop.classList.toggle("is-visible", window.scrollY > 500);
     });
     backToTop.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: reduceMotion.matches ? "auto" : "smooth" });
+      window.scrollTo({
+        top: 0,
+        behavior: reduceMotion.matches ? "auto" : "smooth",
+      });
     });
   }
 })();

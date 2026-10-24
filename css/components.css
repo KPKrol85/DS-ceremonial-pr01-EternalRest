@@ -789,7 +789,11 @@ html[data-theme] .theme-toggle--icon {
 
 .accordion__button:hover,
 .accordion__button:focus-visible {
-  background: color-mix(in srgb, var(--color-accent-soft) 20%, var(--color-surface));
+  background: color-mix(
+    in srgb,
+    var(--color-accent-soft) 20%,
+    var(--color-surface)
+  );
 }
 
 .accordion__button::after,
@@ -964,7 +968,9 @@ html[data-theme] .theme-toggle--icon {
 /* Keeps a focused submission message clear of the floating back-to-top control. */
 .form__success,
 .form__failure {
-  scroll-margin-bottom: calc(var(--back-to-top-size) + 2 * var(--back-to-top-inset));
+  scroll-margin-bottom: calc(
+    var(--back-to-top-size) + 2 * var(--back-to-top-inset)
+  );
 }
 
 /* Submit button while main.js waits for the submission response. */
@@ -1306,7 +1312,10 @@ html[data-theme] .theme-toggle--icon {
   border-radius: var(--radius-pill);
   border: 1px solid transparent;
   font-weight: 600;
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast),
+    border-color var(--transition-fast);
 }
 
 .button:hover,
@@ -1337,7 +1346,11 @@ html[data-theme] .theme-toggle--icon {
 }
 
 .button--secondary:active {
-  background: color-mix(in srgb, var(--color-accent-soft) 35%, var(--color-surface-alt));
+  background: color-mix(
+    in srgb,
+    var(--color-accent-soft) 35%,
+    var(--color-surface-alt)
+  );
 }
 
 /* Disclosure panels are open in the markup and collapsed by main.js. On pages that

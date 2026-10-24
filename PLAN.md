@@ -97,7 +97,7 @@
   - **Scope boundary:** non-blocking; the current behavior is intentional and safe. A change needs its own validation design, updates to `README.md`, `terms.html` and `privacy.html`, which describe the inactive no-JavaScript form, and verification on a Netlify deployment.
   - **Source:** `daily-AUDIT.md` — extra quality improvements
 
-- [ ] **O-04 — Establish a passing Prettier baseline**
+- [x] **O-04 — Establish a passing Prettier baseline**
   - **Value:** `npm run format:check` would pass and could then gate the `Quality Checks` workflow.
   - **Scope boundary:** non-blocking; a formatting-only change kept apart from functional work, with the `.prettierignore` exclusions unchanged and the README statement about the missing baseline updated.
   - **Source:** `README.md` formatting notes; `npm run format:check` reported 14 files on 2026-10-21
