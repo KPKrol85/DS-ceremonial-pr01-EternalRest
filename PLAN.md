@@ -75,8 +75,10 @@
   - **Scope boundary:** non-blocking; current image sizes are moderate and no loading problem was measured.
   - **Source:** `AUDIT.md` — extra quality improvements
 
-- [ ] **O-02 — Extend smoke coverage to untested interactions**
-  - **Value:** automated protection for the theme toggle and system-mode buttons, the pricing details toggle and the desktop resize resynchronization of the menu, which are currently checked only manually.
+- [x] **O-02 — Extend smoke coverage to untested interactions**
+  - **Status:** COMPLETED — implemented and verified.
+  - **Result:** Added focused theme-control and independent pricing-details tests, and extended the existing menu test to verify reopening after a mobile–desktop–mobile resize at 1152 px, including focus, ARIA and background isolation. Updated both README languages for 12 smoke tests; application behavior and existing contracts are unchanged.
+  - **Verification:** All three focused Chromium scenarios passed; `npm run test:smoke` passed with a production build and all 12 tests. Verification used local Vite Preview, not the public deployment or other browsers.
   - **Scope boundary:** non-blocking; an automated accessibility scanner would add a development dependency and needs separate justification.
   - **Source:** `AUDIT.md` — extra quality improvements
 

@@ -123,6 +123,14 @@ test("mobile navigation isolates page content and restores it on every close pat
   await footer.evaluate((element) => element.setAttribute("inert", "original"));
   await button.click();
   await expect(button).toHaveAccessibleName("Zamknij menu");
+  await expect(button).toHaveAttribute("aria-expanded", "true");
+  await expect(panel).toHaveAttribute("aria-hidden", "false");
+  await expect(navigation).toBeVisible();
+  await expect(navigation.getByRole("link").first()).toBeFocused();
+  for (const element of await outsideContent.all()) {
+    await expect(element).toHaveJSProperty("inert", true);
+  }
+  await expectBackgroundExposed(false);
   await page.keyboard.press("Escape");
   await expect(footer).toHaveAttribute("inert", "original");
   await footer.evaluate((element) => element.removeAttribute("inert"));
@@ -159,6 +167,64 @@ test("stored dark theme applies before the application module runs", async ({
   // The disclosure fallback still reacts to the failed module load.
   await expect(root).toHaveClass("no-js");
   await context.close();
+});
+
+test("theme controls persist explicit modes and restore the system scheme", async ({
+  page,
+}) => {
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.goto("/");
+
+  const root = page.locator("html");
+  const toggle = page.locator("[data-theme-toggle]");
+  const auto = page.locator("[data-theme-auto]");
+  const storedTheme = () =>
+    page.evaluate(() => JSON.parse(localStorage.getItem("eternalRestTheme")));
+  const expectTheme = async (mode, scheme = mode) => {
+    if (mode === "auto") {
+      await expect(root).not.toHaveAttribute("data-theme");
+    } else {
+      await expect(root).toHaveAttribute("data-theme", mode);
+    }
+    await expect(root).toHaveCSS(
+      "color-scheme",
+      mode === "auto" ? "light dark" : mode,
+    );
+    await expect(page.locator("body")).toHaveCSS(
+      "background-color",
+      scheme === "dark" ? DARK_BACKGROUND : "rgb(246, 240, 232)",
+    );
+    await expect(toggle).toHaveAccessibleName(
+      scheme === "dark" ? "Włącz jasny motyw" : "Włącz ciemny motyw",
+    );
+    await expect(toggle).toHaveAttribute("data-theme", scheme);
+    await expect(auto).toHaveAttribute("aria-pressed", String(mode === "auto"));
+  };
+
+  await expectTheme("auto", "light");
+  await expect.poll(storedTheme).toBeNull();
+
+  await toggle.click();
+  await expectTheme("dark");
+  await expect.poll(storedTheme).toEqual({ version: 1, mode: "dark" });
+  await page.reload();
+  await expectTheme("dark");
+  await expect.poll(storedTheme).toEqual({ version: 1, mode: "dark" });
+
+  await toggle.click();
+  await expectTheme("light");
+  await expect.poll(storedTheme).toEqual({ version: 1, mode: "light" });
+  await page.emulateMedia({ colorScheme: "dark" });
+  await expectTheme("light");
+
+  await auto.click();
+  await expectTheme("auto", "dark");
+  await expect.poll(storedTheme).toEqual({ version: 1, mode: "auto" });
+  await page.emulateMedia({ colorScheme: "light" });
+  await expectTheme("auto", "light");
+  await page.emulateMedia({ colorScheme: "dark" });
+  await expectTheme("auto", "dark");
+  await expect.poll(storedTheme).toEqual({ version: 1, mode: "auto" });
 });
 
 test("FAQ expands and collapses the same answer", async ({ page }) => {
@@ -207,6 +273,47 @@ test("pricing filter shows the selected category and announces results", async (
   await expect(secular).toBeVisible();
   await expect(family).toBeVisible();
   await expect(status).toHaveText("Wyświetlane pakiety: 3 z 3");
+});
+
+test("pricing details expand and collapse independently", async ({ page }) => {
+  await page.goto("/pricing.html");
+
+  const buttons = page.locator("[data-details-toggle]");
+  await expect(buttons).toHaveCount(3);
+  const packages = [];
+  for (const button of await buttons.all()) {
+    const panelId = await button.getAttribute("aria-controls");
+    expect(panelId).toBeTruthy();
+    const panel = page.locator(`[id="${panelId}"]`);
+    await expect(panel).toHaveCount(1);
+    packages.push({ button, panel });
+  }
+
+  const expectExpandedPackages = async (expandedIndexes) => {
+    for (const [index, { button, panel }] of packages.entries()) {
+      const expanded = expandedIndexes.includes(index);
+      await expect(button).toHaveAttribute("aria-expanded", String(expanded));
+      await expect(button).toHaveAccessibleName(
+        expanded ? "Ukryj szczegóły" : "Pokaż szczegóły",
+      );
+      await expect(panel).toHaveJSProperty("hidden", !expanded);
+      if (expanded) {
+        await expect(panel).toBeVisible();
+      } else {
+        await expect(panel).toBeHidden();
+      }
+    }
+  };
+
+  await expectExpandedPackages([]);
+  await packages[0].button.click();
+  await expectExpandedPackages([0]);
+  await packages[1].button.click();
+  await expectExpandedPackages([0, 1]);
+  await packages[0].button.click();
+  await expectExpandedPackages([1]);
+  await packages[1].button.click();
+  await expectExpandedPackages([]);
 });
 
 test("empty contact submission focuses the first error", async ({ page }) => {
