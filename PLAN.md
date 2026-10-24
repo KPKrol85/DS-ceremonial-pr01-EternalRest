@@ -57,10 +57,10 @@
   - **Priority:** Medium
   - **Source:** `AUDIT.md` — verification limitations and readiness conclusion
 
-- [ ] **PH3-02 — Confirm Netlify Forms delivery on the deployed site**
-  - [ ] submit `kontakt-kp-code` on the deployment named in `package.json` (`homepage`) with JavaScript enabled and confirm that the submission reaches the Netlify form dashboard or notification
-  - [ ] repeat with JavaScript disabled to confirm the native submission path
-  - [ ] confirm that the `bot-field` honeypot is recognized by the deployed form
+- [x] **PH3-02 — Confirm Netlify Forms delivery on the deployed site**
+  - [x] submit `kontakt-kp-code` on the deployment named in `package.json` (`homepage`) with JavaScript enabled and confirm that the submission reaches the Netlify form dashboard or notification
+  - [x] repeat with JavaScript disabled to confirm the native submission path
+  - [x] confirm that the `bot-field` honeypot is recognized by the deployed form
   - **Completion condition:** both submission paths are delivered on the deployed site.
   - **Scope boundary:** requires access to the Netlify deployment and form dashboard; it cannot be verified from the repository alone.
   - **Depends on:** `PH3-01`
