@@ -27,6 +27,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Changed
 
+- Replaced the 92 KB raster-wrapped SVG favicon with a 1,613-byte vector icon using the brand emblem’s unchanged paths on the existing white square tile, which keeps it legible in light and dark browser interfaces. Other favicon formats, the web manifest and page references are unchanged.
 - Established a passing Prettier baseline: formatted the 13 in-scope files with the existing default Prettier 3 setup and unchanged `.prettierignore` exclusions, so `npm run format:check` passes on a clean LF checkout. Bundled JS/CSS and rendered pages are unchanged.
 - Enabled native no-JavaScript submission of `kontakt-kp-code`: removed `inert`, kept browser constraint validation until `js/main.js` sets `novalidate` after attaching its handler, and updated the fallback notice, README and legal copy. Added Playwright tests for disabled JavaScript, a failed module load and the preserved custom e-mail error.
 - Removed the inactive scroll-reveal mechanism: 29 `data-reveal` attributes, the reveal `IntersectionObserver` in `js/main.js` and the unused `.reveal` utility rules. Rendering is unchanged, and back-to-top keeps its `.is-visible` state and reduced-motion scrolling.
