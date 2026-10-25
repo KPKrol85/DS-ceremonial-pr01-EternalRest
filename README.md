@@ -101,7 +101,7 @@ Wspólne elementy stron mają jedno źródło w katalogu `partials/`: `site-head
 ├── docs/
 │   ├── CHANGELOG.md           # Historia zmian
 │   └── archive/               # Archiwalne audyty, usprawnienia i plany
-├── .eslintrc.cjs
+├── eslint.config.js
 ├── .gitattributes             # Reguły Git dotyczące plików i końców linii
 ├── .gitignore                 # Pliki pomijane przez Git
 ├── .prettierignore            # Pliki pomijane przez Prettiera
@@ -163,7 +163,7 @@ Dodatkowo skrypt generuje warianty szerokości 768 i 1152 px dla `hero` oraz 480
 
 ### Testy i walidacja
 
-Konfiguracja ESLint korzysta z `eslint:recommended`, środowiska przeglądarkowego i ostrzeżeń dla nieużywanych zmiennych. Zakres lintowania nie obejmuje HTML, CSS ani skryptów w `scripts/`. Repozytorium nie zawiera automatycznych testów jednostkowych.
+`npm run lint` używa ESLint 8.57.x i automatycznie wykrywanej konfiguracji Flat Config w `eslint.config.js`, bez ręcznego ustawiania zmiennych środowiskowych. Zachowuje reguły `eslint:recommended` przez `@eslint/js`, globale przeglądarkowe i ES2021 przez `globals`, `ecmaVersion: "latest"`, `sourceType: "module"` oraz `no-unused-vars` na poziomie ostrzeżenia. Zakres pozostaje ograniczony do `js/**/*.js`, z zachowaniem pomijania ukrytych plików i katalogów; nie obejmuje HTML, CSS ani skryptów w `scripts/`. Repozytorium nie zawiera automatycznych testów jednostkowych.
 
 `npm run test:smoke` najpierw wykonuje build produkcyjny, a następnie uruchamia dokładnie dwanaście niezależnych testów z `tests/smoke.spec.js`: menu mobilne (nazwa przycisku, zamykanie przyciskiem, Escape i kliknięciem poza panelem, fokus i izolacja tła oraz ponowne otwarcie po przejściu z widoku mobilnego do desktopowego i z powrotem przy progu 1152 px), zastosowanie zapisanego motywu przed modułem aplikacji (motyw ciemny w pamięci przy jasnym schemacie systemowym i zablokowanym żądaniu modułu), przełączanie jasnego i ciemnego motywu z wersjonowanym zapisem preferencji, zachowaniem wyboru po przeładowaniu i powrotem do trybu systemowego reagującego na zmianę preferencji systemu, rozwijanie i zwijanie FAQ w poradniku, filtrowanie cen z komunikatem liczby wyników, niezależne rozwijanie i zwijanie szczegółów pakietów (etykiety, `aria-expanded` i widoczność paneli wskazanych przez `aria-controls`), walidację pustego formularza z fokusem na pierwszym błędnym polu, udaną wysyłkę formularza (atrybuty Netlify, jedno żądanie POST z treścią URL-encoded mimo ponownego zatwierdzenia w trakcie wysyłki, komunikat sukcesu z fokusem i reset pól), nieudaną wysyłkę po błędzie sieci i statusie HTTP 500 (komunikat błędu z fokusem i zachowane wartości), własny komunikat błędnego adresu e-mail zamiast walidacji natywnej (`novalidate` po uruchomieniu `main.js`, ukryty komunikat zastępczy, brak żądania) oraz natywną wysyłkę przy wyłączonym JavaScripcie i przy zablokowanym żądaniu modułu (widoczny komunikat zastępczy, zablokowanie pustych pól i błędnego adresu e-mail, jedno żądanie POST na `/contact.html` z polami, `form-name` i pustym `bot-field` w treści, bez danych w adresie URL). Testy sprawdzają widoczność i powiązane stany ARIA. Testy wysyłki wpisują wyłącznie fikcyjne dane testowe, a żądania przechwytuje `page.route`, więc nie trafiają do Netlify.
 
@@ -307,7 +307,7 @@ Shared page chrome has a single source in `partials/`: `site-header.html` (skip 
 ├── docs/
 │   ├── CHANGELOG.md           # Change history
 │   └── archive/               # Archived audits, improvements and plans
-├── .eslintrc.cjs
+├── eslint.config.js
 ├── .gitattributes             # Git file and line-ending rules
 ├── .gitignore                 # Files ignored by Git
 ├── .prettierignore            # Files ignored by Prettier
@@ -369,7 +369,7 @@ The script also generates 768 and 1152 px variants for `hero`, and 480 and 960 p
 
 ### Testing and Validation
 
-ESLint is configured with `eslint:recommended`, a browser environment and warnings for unused variables. Linting does not cover HTML, CSS or the scripts in `scripts/`. The repository contains no automated unit tests.
+`npm run lint` uses ESLint 8.57.x and automatically discovers Flat Config in `eslint.config.js`, without manually setting environment variables. It preserves the `eslint:recommended` rules through `@eslint/js`, browser and ES2021 globals through `globals`, `ecmaVersion: "latest"`, `sourceType: "module"` and `no-unused-vars` at warning severity. The scope remains limited to `js/**/*.js`, preserving the exclusion of hidden files and directories; it does not cover HTML, CSS or the scripts in `scripts/`. The repository contains no automated unit tests.
 
 `npm run test:smoke` first creates a production build, then runs exactly twelve independent tests from `tests/smoke.spec.js`: mobile navigation (the button name, closing via the button, Escape and outside click, focus and background isolation, and reopening after a mobile-to-desktop-to-mobile resize at the 1152 px breakpoint), the stored theme applied before the application module (a stored dark theme under a light system scheme with the module request blocked), switching light and dark themes with versioned preference storage, persistence after reload and restoration of automatic mode that follows system preference changes, expanding and collapsing a guide FAQ answer, pricing filtering with result-count announcements, independently expanding and collapsing package details (labels, `aria-expanded` and visibility of panels referenced by `aria-controls`), empty-form validation with focus on the first invalid field, a successful form submission (Netlify attributes, a single URL-encoded POST despite a repeated submit while pending, a focused success message and field reset), failed submissions after a network error and an HTTP 500 status (a focused error message and preserved values), the custom invalid e-mail message instead of native validation (`novalidate` once `main.js` runs, a hidden fallback notice, no request) and native submission with JavaScript disabled and with the module request blocked (a visible fallback notice, blocked empty fields and invalid e-mail address, a single POST to `/contact.html` carrying the fields, `form-name` and an empty `bot-field` in its body, no data in the URL). Tests assert visibility and related ARIA states. Submission tests enter only fictional test data, and `page.route` intercepts the requests so they never reach Netlify.
 

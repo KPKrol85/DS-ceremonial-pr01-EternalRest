@@ -82,7 +82,9 @@
   - **Scope boundary:** non-blocking; an automated accessibility scanner would add a development dependency and needs separate justification.
   - **Source:** `AUDIT.md` — extra quality improvements
 
-- [ ] **O-03 — Migrate linting from the ESLint 8 legacy configuration**
-  - **Value:** keeps `npm run lint` runnable with supported ESLint releases by replacing `.eslintrc.cjs` with a flat configuration when dependencies are next updated.
-  - **Scope boundary:** non-blocking; the pinned `eslint` `^8.57.0` and the CI workflow remain internally consistent. A dependency update needs its own approval.
+- [x] **O-03 — Migrate linting from the ESLint 8 legacy configuration**
+  - **Status:** COMPLETED — implemented and verified.
+  - **Result:** Replaced `.eslintrc.cjs` with automatically detected Flat Config in `eslint.config.js`, preserving the lint scope, hidden-file exclusions, recommended rules, browser/ES2021 globals, latest module syntax and `no-unused-vars` warnings. Declared the already locked `@eslint/js` 8.57.1 and `globals` 13.24.0 as direct development dependencies; ESLint remains locked at 8.57.1 under `^8.57.0`, with the lint command and CI workflow unchanged.
+  - **Verification:** `npm ci`, `npm run lint`, `npm run format:check` and configuration/CLI comparisons passed on Windows: all 61 rules and 829 globals match the baseline, with 0 errors and 0 warnings on the same application file. `--debug`/`--print-config` confirmed Flat Config without an environment override or legacy file; stdin probes preserved warning/error exit codes 0/1. Linux and Playwright were not run.
+  - **Scope boundary:** non-blocking; migration to a newer ESLint major version requires separate approval.
   - **Source:** `AUDIT.md` — extra quality improvements
