@@ -47,6 +47,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Added
 
+- Added a branded, responsive `404.html` with shared page chrome, theme support and homepage/contact navigation. A page-local base URL keeps assets and links rooted when served at nested unknown paths, including a native skip link to `/404.html#main`. Verified the production build, reference/module-path checks and a focused Chromium smoke test with a simulated nested 404 response, including navigation without JavaScript; production HTTP 404 handling remains a post-deployment Netlify check.
 - Added a Netlify Forms honeypot (`data-netlify-honeypot="bot-field"`) to `kontakt-kp-code` as a `hidden` markup-only field, sent empty in the URL-encoded POST body; the mocked Playwright submission test asserts the configuration and payload.
 - Added an optimized AVIF/WebP still-life photograph to the services masthead with responsive, uncropped presentation and the shared `.spotlight` component.
 - Added an optimized AVIF/WebP still-life photograph to the pricing masthead with responsive cropping and the shared `.spotlight` component.

@@ -604,3 +604,122 @@ test("contact form submits natively when the application module fails", async ({
   await expect(page.locator("html")).toHaveClass("no-js");
   await expectNativeContactSubmission(page, requests);
 });
+
+test("404 page resolves assets and navigation at a nested unknown URL", async ({
+  page,
+  browser,
+}) => {
+  const document = await page.request.get("/404.html");
+  expect(document.status()).toBe(200);
+  const html = await document.text();
+  const missingPath = "/missing/nested/page/";
+  // Simulate the hosting response; Vite Preview is not a Netlify routing test.
+  const serveMissingPage = (route) =>
+    route.fulfill({ status: 404, contentType: "text/html", body: html });
+  await page.route(`**${missingPath}`, serveMissingPage);
+
+  const failedAssets = [];
+  const loadedTypes = new Set();
+  const assetTypes = new Set(["stylesheet", "script", "image", "font"]);
+  page.on("response", (response) => {
+    const type = response.request().resourceType();
+    if (!assetTypes.has(type)) return;
+    loadedTypes.add(type);
+    if (!response.ok()) failedAssets.push(response.url());
+  });
+  page.on("requestfailed", (request) => {
+    if (assetTypes.has(request.resourceType()))
+      failedAssets.push(request.url());
+  });
+  const errors = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.emulateMedia({ colorScheme: "light" });
+
+  for (const path of ["/404.html", missingPath]) {
+    const response = await page.goto(path);
+    expect(response.status()).toBe(path === missingPath ? 404 : 200);
+    await expect(page.locator("html")).toHaveAttribute("lang", "pl");
+    await expect(page).toHaveTitle(/404/);
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+      "content",
+      "noindex, follow",
+    );
+    await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+      "Nie znaleziono strony",
+    );
+    await expect(page.getByRole("main")).toContainText("404");
+    await expect(page.getByRole("banner")).toBeVisible();
+    await expect(page.getByRole("contentinfo")).toBeVisible();
+    // These assertions require both the stylesheet and shared module to load.
+    await expect(page.locator("html")).not.toHaveClass(/no-js|js-pending/);
+    await expect(page.locator("body")).toHaveCSS(
+      "background-color",
+      "rgb(246, 240, 232)",
+    );
+    await page.evaluate(() => document.fonts.ready);
+    expect(
+      await page
+        .locator("img")
+        .evaluateAll((images) =>
+          images.every((image) => image.complete && image.naturalWidth > 0),
+        ),
+    ).toBe(true);
+    // Check all shared header/footer links, including service fragments.
+    expect(
+      await page
+        .locator("a[href]")
+        .evaluateAll((links) =>
+          links
+            .filter((link) => link.origin === location.origin)
+            .every((link) => !link.pathname.startsWith("/missing/")),
+        ),
+    ).toBe(true);
+    await expect(
+      page
+        .getByRole("main")
+        .getByRole("link", { name: "Wróć na stronę główną" }),
+    ).toHaveJSProperty("href", new URL("/index.html", page.url()).href);
+  }
+
+  expect([...loadedTypes]).toEqual(
+    expect.arrayContaining(["stylesheet", "script", "font"]),
+  );
+  expect(failedAssets).toEqual([]);
+  expect(errors).toEqual([]);
+  await page.keyboard.press("Tab");
+  await expect(
+    page.getByRole("link", { name: "Przejdź do treści" }),
+  ).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/\/404\.html#main$/);
+  await expect(page.getByRole("main")).toBeFocused();
+  await page
+    .getByRole("main")
+    .getByRole("link", { name: "Wróć na stronę główną" })
+    .click();
+  await expect(page).toHaveURL(/\/index\.html$/);
+
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  try {
+    const fallback = await context.newPage();
+    await fallback.route(`**${missingPath}`, serveMissingPage);
+    expect(
+      (await fallback.goto(new URL(missingPath, page.url()).href)).status(),
+    ).toBe(404);
+    await expect(fallback.getByRole("heading", { level: 1 })).toHaveText(
+      "Nie znaleziono strony",
+    );
+    await fallback.keyboard.press("Tab");
+    await fallback.keyboard.press("Enter");
+    await expect(fallback).toHaveURL(/\/404\.html#main$/);
+    await expect(fallback.getByRole("main")).toBeFocused();
+    await fallback
+      .getByRole("main")
+      .getByRole("link", { name: "Wróć na stronę główną" })
+      .click();
+    await expect(fallback).toHaveURL(/\/index\.html$/);
+  } finally {
+    await context.close();
+  }
+});
