@@ -101,6 +101,8 @@ Wspólne elementy stron mają jedno źródło w katalogu `partials/`: `site-head
 ├── docs/
 │   ├── CHANGELOG.md           # Historia zmian
 │   └── archive/               # Archiwalne audyty, usprawnienia i plany
+│       ├── audits/
+│       │   └── AUDIT-2026-10-25.md # Końcowy audyt techniczny
 │       └── plans/
 │           └── PLAN-2026-10-25.md # Ukończony plan rozwoju
 ├── eslint.config.js
@@ -114,7 +116,6 @@ Wspólne elementy stron mają jedno źródło w katalogu `partials/`: `site-head
 ├── vite.config.js
 ├── AGENTS.md                  # Instrukcje dla agentów pracujących nad projektem
 ├── CLAUDE.md                  # Instrukcje dla Claude
-├── AUDIT.md                   # Audyt techniczny
 ├── LICENSE.md
 ├── THIRD-PARTY-NOTICES.md      # Informacje o zasobach i licencjach stron trzecich
 └── README.md
@@ -308,6 +309,8 @@ Shared page chrome has a single source in `partials/`: `site-header.html` (skip 
 ├── docs/
 │   ├── CHANGELOG.md           # Change history
 │   └── archive/               # Archived audits, improvements and plans
+│       ├── audits/
+│       │   └── AUDIT-2026-10-25.md # Final technical audit
 │       └── plans/
 │           └── PLAN-2026-10-25.md # Completed development plan
 ├── eslint.config.js
@@ -321,7 +324,6 @@ Shared page chrome has a single source in `partials/`: `site-header.html` (skip 
 ├── vite.config.js
 ├── AGENTS.md                  # Instructions for agents working on the project
 ├── CLAUDE.md                  # Instructions for Claude
-├── AUDIT.md                   # Technical audit
 ├── LICENSE.md
 ├── THIRD-PARTY-NOTICES.md      # Third-party asset and license notices
 └── README.md
