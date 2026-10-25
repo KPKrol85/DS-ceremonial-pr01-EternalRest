@@ -101,6 +101,8 @@ Wspólne elementy stron mają jedno źródło w katalogu `partials/`: `site-head
 ├── docs/
 │   ├── CHANGELOG.md           # Historia zmian
 │   └── archive/               # Archiwalne audyty, usprawnienia i plany
+│       └── plans/
+│           └── PLAN-2026-10-25.md # Ukończony plan rozwoju
 ├── eslint.config.js
 ├── .gitattributes             # Reguły Git dotyczące plików i końców linii
 ├── .gitignore                 # Pliki pomijane przez Git
@@ -113,7 +115,6 @@ Wspólne elementy stron mają jedno źródło w katalogu `partials/`: `site-head
 ├── AGENTS.md                  # Instrukcje dla agentów pracujących nad projektem
 ├── CLAUDE.md                  # Instrukcje dla Claude
 ├── AUDIT.md                   # Audyt techniczny
-├── PLAN.md                    # Plan rozwoju
 ├── LICENSE.md
 ├── THIRD-PARTY-NOTICES.md      # Informacje o zasobach i licencjach stron trzecich
 └── README.md
@@ -142,7 +143,7 @@ Polecenia są zdefiniowane w [package.json](package.json).
 | `npm run dev`              | Uruchamia Vite z `--host`, udostępniając serwer także w sieci lokalnej.                                                                                                                                                          |
 | `npm run build`            | Buduje wszystkie strony HTML z katalogu głównego przez `vite build`.                                                                                                                                                             |
 | `npm run preview`          | Uruchamia `vite preview`; wymaga wcześniejszego buildu.                                                                                                                                                                          |
-| `npm run test:smoke`       | Buduje stronę od nowa i uruchamia dziesięć testów Playwright w Chromium na lokalnym Vite Preview.                                                                                                                                |
+| `npm run test:smoke`       | Buduje stronę od nowa i uruchamia dwanaście testów Playwright w Chromium na lokalnym Vite Preview.                                                                                                                               |
 | `npm run lint`             | Uruchamia ESLint wyłącznie dla `js/**/*.js`.                                                                                                                                                                                     |
 | `npm run check:references` | Sprawdza odwołania do identyfikatorów, duplikaty `id` i zgodność ścieżki modułu aplikacji z inicjalizatorem `partials/disclosure-init.html` w zbudowanych stronach `dist/`; wymaga wcześniejszego buildu i niczego nie zapisuje. |
 | `npm run format`           | Uruchamia `prettier --write .` i nadpisuje niesformatowane pliki w zakresie formatowania.                                                                                                                                        |
@@ -307,6 +308,8 @@ Shared page chrome has a single source in `partials/`: `site-header.html` (skip 
 ├── docs/
 │   ├── CHANGELOG.md           # Change history
 │   └── archive/               # Archived audits, improvements and plans
+│       └── plans/
+│           └── PLAN-2026-10-25.md # Completed development plan
 ├── eslint.config.js
 ├── .gitattributes             # Git file and line-ending rules
 ├── .gitignore                 # Files ignored by Git
@@ -319,7 +322,6 @@ Shared page chrome has a single source in `partials/`: `site-header.html` (skip 
 ├── AGENTS.md                  # Instructions for agents working on the project
 ├── CLAUDE.md                  # Instructions for Claude
 ├── AUDIT.md                   # Technical audit
-├── PLAN.md                    # Development plan
 ├── LICENSE.md
 ├── THIRD-PARTY-NOTICES.md      # Third-party asset and license notices
 └── README.md
@@ -348,7 +350,7 @@ Commands are defined in [package.json](package.json).
 | `npm run dev`              | Starts Vite with `--host`, also exposing the server to the local network.                                                                                                                          |
 | `npm run build`            | Builds all root-level HTML pages through `vite build`.                                                                                                                                             |
 | `npm run preview`          | Starts `vite preview`; requires a prior build.                                                                                                                                                     |
-| `npm run test:smoke`       | Creates a fresh production build and runs ten Playwright tests in Chromium against local Vite Preview.                                                                                             |
+| `npm run test:smoke`       | Creates a fresh production build and runs twelve Playwright tests in Chromium against local Vite Preview.                                                                                          |
 | `npm run lint`             | Runs ESLint only on `js/**/*.js`.                                                                                                                                                                  |
 | `npm run check:references` | Checks ID references, duplicate IDs and the application module path against the `partials/disclosure-init.html` initializer in the built `dist/` pages; requires a prior build and writes nothing. |
 | `npm run format`           | Runs `prettier --write .` and overwrites unformatted files within the formatting scope.                                                                                                            |
