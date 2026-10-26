@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test("mobile navigation isolates page content and restores it on every close path", async ({
   page,
+  browserName,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
@@ -14,9 +15,13 @@ test("mobile navigation isolates page content and restores it on every close pat
   );
   await expect(outsideContent).toHaveCount(5);
 
-  // Role locators do not account for inert; inspect Chromium's native AX tree.
-  const accessibility = await page.context().newCDPSession(page);
-  await accessibility.send("Accessibility.enable");
+  // Native AX-tree inspection requires Chromium CDP. All engines run the DOM,
+  // inert and focus checks below; those do not replace native AX-tree coverage.
+  const accessibility =
+    browserName === "chromium"
+      ? await page.context().newCDPSession(page)
+      : null;
+  if (accessibility) await accessibility.send("Accessibility.enable");
   const expectBackgroundExposed = async (exposed) => {
     await expect
       .poll(async () => {
@@ -44,7 +49,7 @@ test("mobile navigation isolates page content and restores it on every close pat
     for (const element of await outsideContent.all()) {
       await expect(element).not.toHaveAttribute("inert");
     }
-    await expectBackgroundExposed(true);
+    if (accessibility) await expectBackgroundExposed(true);
   };
 
   const expectClosedMenu = async () => {
@@ -63,6 +68,8 @@ test("mobile navigation isolates page content and restores it on every close pat
     "desktop resize",
   ]) {
     await test.step(`Close via ${closePath}`, async () => {
+      // Make the focus-restoration origin explicit across pointer-focus defaults.
+      await button.focus();
       await button.click();
       await expect(button).toHaveAccessibleName("Zamknij menu");
       await expect(button).toHaveAttribute("aria-expanded", "true");
@@ -73,7 +80,19 @@ test("mobile navigation isolates page content and restores it on every close pat
       for (const element of await outsideContent.all()) {
         await expect(element).toHaveJSProperty("inert", true);
       }
-      await expectBackgroundExposed(false);
+      if (accessibility) await expectBackgroundExposed(false);
+      // Inert background links must reject focus, independently of the Tab trap.
+      for (const selector of [
+        ".skip-link",
+        ".site-header__brand",
+        "footer a",
+      ]) {
+        await page
+          .locator(selector)
+          .first()
+          .evaluate((element) => element.focus());
+        await expect(firstLink).toBeFocused();
+      }
       // Neither active menu control may inherit inert from an ancestor.
       for (const element of [button, panel]) {
         expect(
@@ -121,6 +140,7 @@ test("mobile navigation isolates page content and restores it on every close pat
   // A new interaction after resizing must preserve an existing inert attribute exactly.
   const footer = page.locator("footer");
   await footer.evaluate((element) => element.setAttribute("inert", "original"));
+  await button.focus();
   await button.click();
   await expect(button).toHaveAccessibleName("Zamknij menu");
   await expect(button).toHaveAttribute("aria-expanded", "true");
@@ -130,7 +150,7 @@ test("mobile navigation isolates page content and restores it on every close pat
   for (const element of await outsideContent.all()) {
     await expect(element).toHaveJSProperty("inert", true);
   }
-  await expectBackgroundExposed(false);
+  if (accessibility) await expectBackgroundExposed(false);
   await page.keyboard.press("Escape");
   await expect(footer).toHaveAttribute("inert", "original");
   await footer.evaluate((element) => element.removeAttribute("inert"));

@@ -110,6 +110,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Build and Tooling
 
+- Extended the existing Playwright smoke suite to Chromium, Firefox and WebKit, preserving Chromium CDP accessibility-tree checks and shared navigation, inert and focus assertions. Kept `test:smoke` Chromium-only, added `test:cross-browser` for Firefox/WebKit, and configured `Quality Checks` to install and run all three engines against one production build.
 - Extended the read-only `Quality Checks` workflow to pull requests targeting `main`, keeping the `push`-to-`main` and manual triggers and the existing check sequence; the result is not a required merge check.
 - Added the existing Chromium smoke tests to the read-only GitHub Actions `Quality Checks` workflow after lint, build and reference checks; Netlify deployment remains manual.
 - Added `npm run check:references` to validate HTML IDs, ARIA references, labels and internal links.
