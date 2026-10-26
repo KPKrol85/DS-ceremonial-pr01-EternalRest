@@ -29,6 +29,7 @@ Publiczna wersja demonstracyjna projektu: [ds-ceremonial-pr01-eternalrest.netlif
 - PostCSS z Autoprefixer do przetwarzania CSS.
 - ESLint do analizy JavaScript i Prettier do formatowania.
 - `@playwright/test` jako zależność developerska do testów smoke w Chromium, Firefox i WebKit lokalnie i w GitHub Actions.
+- `@axe-core/playwright` (axe-core) jako zależność developerska do lokalnych automatycznych skanów dostępności w Chromium.
 - Sharp i fast-glob w osobnym skrypcie konwersji obrazów.
 - Node.js i npm jako środowisko narzędziowe; zależności zapisane w `package-lock.json`.
 
@@ -97,6 +98,7 @@ Wspólne elementy stron mają jedno źródło w katalogu `partials/`: `site-head
 │   ├── check-references.js
 │   └── convert-images.js
 ├── tests/
+│   ├── accessibility.spec.js  # Skany dostępności axe-core
 │   └── smoke.spec.js          # Testy smoke Playwright
 ├── .github/
 │   └── workflows/
@@ -115,6 +117,7 @@ Wspólne elementy stron mają jedno źródło w katalogu `partials/`: `site-head
 ├── package.json
 ├── package-lock.json
 ├── playwright.config.js       # Konfiguracja testów przeglądarkowych
+├── playwright.a11y.config.js  # Konfiguracja skanów dostępności
 ├── postcss.config.cjs
 ├── vite.config.js
 ├── AGENTS.md                  # Instrukcje dla agentów pracujących nad projektem
@@ -132,7 +135,7 @@ Wymagane są Node.js 22.20+ z linii 22.x oraz npm 10 lub nowszy. W katalogu gł�
 npm ci
 ```
 
-Przed pierwszym uruchomieniem testów zainstaluj przeglądarki dla wersji Playwright z pliku blokady (ponów po aktualizacji Playwright). Do szybkiego `test:smoke` wystarczy Chromium; `test:cross-browser` wymaga Firefox i WebKit:
+Przed pierwszym uruchomieniem testów zainstaluj przeglądarki dla wersji Playwright z pliku blokady (ponów po aktualizacji Playwright). Do szybkiego `test:smoke` i do `test:a11y` wystarczy Chromium; `test:cross-browser` wymaga Firefox i WebKit:
 
 ```bash
 npx playwright install chromium
@@ -152,6 +155,7 @@ Polecenia są zdefiniowane w [package.json](package.json).
 | `npm run preview`            | Uruchamia `vite preview`; wymaga wcześniejszego buildu.                                                                                                                                                                          |
 | `npm run test:smoke`         | Buduje stronę od nowa jeden raz i uruchamia trzynaście testów Playwright wyłącznie w Chromium na lokalnym Vite Preview.                                                                                                          |
 | `npm run test:cross-browser` | Buduje stronę od nowa jeden raz i uruchamia ten sam zestaw testów w Firefox i WebKit na lokalnym Vite Preview.                                                                                                                   |
+| `npm run test:a11y`          | Buduje stronę od nowa jeden raz i uruchamia 30 skanów dostępności axe-core wyłącznie w Chromium na lokalnym Vite Preview, niezależnie od testów smoke.                                                                           |
 | `npm run lint`               | Uruchamia ESLint wyłącznie dla `js/**/*.js`.                                                                                                                                                                                     |
 | `npm run check:references`   | Sprawdza odwołania do identyfikatorów, duplikaty `id` i zgodność ścieżki modułu aplikacji z inicjalizatorem `partials/disclosure-init.html` w zbudowanych stronach `dist/`; wymaga wcześniejszego buildu i niczego nie zapisuje. |
 | `npm run format`             | Uruchamia `prettier --write .` i nadpisuje niesformatowane pliki w zakresie formatowania.                                                                                                                                        |
@@ -187,6 +191,18 @@ Lokalna weryfikacja CB-01 (2026-10-26, Windows, po instalacji wszystkich przegl�
 Weryfikacja CB-01 w GitHub Actions (2026-10-26, workflow `Quality Checks`, [przebieg #69](https://github.com/KPKrol85/DS-ceremonial-pr01-EternalRest/actions/runs/40355906120), commit `c04f0ef`, `ubuntu-latest`, job `Build and Quality Checks`) — SUCCESS: `npx playwright test` — PASS, 39/39 (Chromium 13/13, Firefox 13/13, WebKit 13/13, 40,3 s). Kroki lint, buildu produkcyjnego, `check:references` i instalacji przeglądarek również zakończyły się powodzeniem. Wynik z Linuxa nie unieważnia opisanych wyżej błędów WebKit z Windows, które pozostają udokumentowanym ograniczeniem tamtego środowiska. Testy smoke potwierdzają wyłącznie objęte nimi scenariusze w silnikach Playwright; nie dowodzą pełnej zgodności z przeglądarkami i urządzeniami, zgodności z WCAG ani działania Safari na fizycznych urządzeniach Apple.
 
 Workflow `Quality Checks` (`.github/workflows/quality.yml`) uruchamia się po pushu do `main`, dla pull requestów kierowanych do `main` (przy ich otwarciu, ponownym otwarciu i każdym nowym commicie) oraz ręcznie. Push do innych gałęzi nie uruchamia go samodzielnie, a wynik nie jest wymaganym warunkiem scalenia. W istniejącym jobie, z uprawnieniami tylko do odczytu, Node.js 22 i cache npm, wykonuje kolejno `npm ci`, `npm run lint`, `npm run build` i `npm run check:references`, następnie instaluje Chromium, Firefox i WebKit z wymaganymi zależnościami systemowymi przez `npx playwright install --with-deps chromium firefox webkit` i uruchamia wszystkie trzy projekty przez `npx playwright test`. Testy korzystają z już utworzonego buildu, bez ponownego budowania; błąd testu kończy job niepowodzeniem. Wdrożenie produkcyjne do Netlify pozostaje ręczne.
+
+`npm run test:a11y` wykonuje build produkcyjny jeden raz, a następnie uruchamia osobny zestaw automatycznych skanów dostępności z `tests/accessibility.spec.js` przez `playwright.a11y.config.js`. Ta konfiguracja przejmuje z `playwright.config.js` serwer Vite Preview pod `http://127.0.0.1:8182`, jeden worker, brak ponowień, limity czasu, viewport 1280 × 800 i ograniczony ruch, ale wybiera wyłącznie własny plik testów i tylko Chromium. Wymaga zainstalowanego Chromium (`npx playwright install chromium`). Domyślna konfiguracja, `test:smoke`, `test:cross-browser`, 39 wykonań testów smoke i workflow `Quality Checks` nie uruchamiają tych skanów; nie są one warunkiem CI.
+
+Zestaw korzysta z `@axe-core/playwright` (axe-core 4.14.0) i obejmuje 30 testów, każdy z jednym skanem: dziesięć stron (`index.html`, `about.html`, `services.html`, `pricing.html`, `guide.html`, `contact.html`, `terms.html`, `privacy.html`, `cookies.html`, `404.html`) oraz pięć stanów interaktywnych, wszystkie w motywie jasnym i ciemnym. Strony są skanowane w całości. Stany to: otwarte menu mobilne przy szerokości 390 px (zakres `[data-site-header]`; tło i logo mają wtedy `inert`, więc axe sprawdza przycisk i panel menu), cztery odpowiedzi FAQ poradnika rozwinięte przyciskami (`[data-accordion]`), szczegóły trzech pakietów cennika rozwinięte przyciskami (`[data-pricing-card]`), formularz kontaktowy po wysłaniu pustych pól z pięcioma błędami pól wymaganych (`[data-validate-form]`; każde żądanie POST jest przerywane, a test sprawdza, że żadne nie wystąpiło) oraz cała strona 404 pod zagnieżdżonym nieznanym adresem z symulowanym statusem 404 i fokusem klawiatury na odnośniku pomijającym.
+
+Reguły są wybierane jawnie tagami `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa` i `wcag22aa`. axe-core 4.14.0 nie ma reguł z tagiem `wcag22a`, a WCAG 2.2 AA reprezentuje w nim reguła `target-size`. Uruchamianych jest 64 z 70 reguł o tych tagach: zgodnie z domyślnym działaniem axe-core pominięte są 4 reguły eksperymentalne (`css-orientation-lock`, `p-as-heading`, `table-fake-caption`, `td-has-header`) i 2 przestarzałe (`aria-roledescription`, `audio-caption`). Reguły best practice i AAA nie należą do tej bazy; zestaw nie wyłącza żadnej reguły i nie filtruje wyników według wpływu. Każdy test działa w nowym kontekście przeglądarki, w którym motyw wybierają jednocześnie emulowany schemat systemowy i zapisana preferencja `eternalRestTheme` (wersja 1, tryb `light` lub `dark`). Przed skanem test czeka, bez stałych opóźnień, aż `main.js` ustawi klasę `js`, `html[data-theme]` i stan przełącznika motywu oraz aż rozwiąże się `document.fonts.ready`; stany interaktywne powstają przez użycie rzeczywistych kontrolek.
+
+Każde naruszenie kończy test niepowodzeniem. Komunikat podaje adres i zakres skanu, a dla każdej reguły jej identyfikator, wpływ, opis, odnośnik do wskazówek naprawy oraz selektor i podsumowanie błędu każdego elementu. Pełne wyniki (`violations` oraz `incomplete`, czyli wyniki wymagające ręcznej oceny) każdego skanu trafiają do `reports/accessibility/<test>/axe-results.json`; katalog jest pomijany przez Git i czyszczony przy każdym uruchomieniu. Taki komunikat oznacza wykryte naruszenie, natomiast przekroczenie czasu, błąd nawigacji lub nieudana asercja przygotowania stanu oznacza błąd przed skanem, bez pliku wyników.
+
+Bazowy przebieg A11Y-01 (2026-10-26, Windows, Chromium z Playwright 1.64.1, axe-core 4.14.0, lokalny `dist/`): `npm run test:a11y` — PASS, 30/30 wykonanych skanów, 0 naruszeń reguł WCAG A/AA (1,9 min). axe oznaczył do ręcznej oceny 100 wyników `color-contrast`, wyłącznie w skanach stron, po 50 na motyw: 40 dla dekoracyjnej strzałki `↑` (`span[aria-hidden="true"]`) w odnośnikach `.legal-section__back` stron prawnych (17 w `terms.html`, 14 w `privacy.html`, 9 w `cookies.html`), której zawartość axe uznaje za znaki nietekstowe; 5 dla `.page-closing__label` na `index.html`, `about.html`, `services.html`, `pricing.html` i `guide.html` oraz 5 dla `.hero__eyebrow`, `h1`, `.hero__lead` i dwóch odnośników `.button` sekcji hero na `index.html`, gdzie axe nie ustalił tła z powodu nakładających się elementów. Kontrast tych elementów nie został oceniony ani jako zgodny, ani jako niezgodny i wymaga ręcznego sprawdzenia. Kontrola negatywna tego samego zestawu na kopii buildu poza repozytorium, z usuniętym atrybutem `lang` i `alt` logo w `index.html`, zakończyła się niepowodzeniem obu skanów tej strony z regułami `html-has-lang` i `image-alt`.
+
+Brak naruszeń w automatycznym skanie nie oznacza zgodności z WCAG. axe-core sprawdza tylko część kryteriów, a wynik dotyczy wyłącznie Chromium, opisanych viewportów i stanów oraz ograniczonego ruchu. Skany nie zastępują ręcznych testów, testów z czytnikami ekranu i innymi technologiami asystującymi ani weryfikacji na rzeczywistych urządzeniach.
 
 `npm run check:references` sprawdza odwołania do identyfikatorów w stronach HTML z katalogu głównego `dist/`, czyli już po wstawieniu fragmentów z `partials/` przez Vite. Dlatego wymaga wcześniejszego `npm run build` i sam go nie uruchamia. Na każdej stronie wykrywa zduplikowane `id` oraz odwołania bez celu w `aria-controls`, `aria-describedby` i `aria-labelledby` (każdy identyfikator z listy rozdzielonej spacjami osobno), w `label[for]`, w odnośnikach `href="#id"` na tej samej stronie i w odnośnikach do fragmentów innych stron projektu, np. `services.html#id`, sprawdzanych na stronie docelowej. Ten sam `id` na różnych stronach nie jest duplikatem. Pomijane są adresy zewnętrzne, `mailto:`, `tel:` i placeholdery `href="#"`. Każdy błąd podaje stronę, wiersz, atrybut oraz brakujący lub zduplikowany identyfikator, a polecenie kończy się wtedy kodem różnym od zera; przy powodzeniu podaje liczbę sprawdzonych stron i odwołań. Brak `dist/` również kończy się błędem z poleceniem wykonania buildu. Skrypt korzysta wyłącznie z wbudowanych modułów Node.js, niczego nie zapisuje i nie jest częścią `npm run build`. Sprawdza tylko istnienie celów odwołań, a nie semantykę ARIA ani działanie interakcji w przeglądarce.
 
@@ -252,6 +268,7 @@ Public project demo: [ds-ceremonial-pr01-eternalrest.netlify.app](https://ds-cer
 - PostCSS with Autoprefixer for CSS processing.
 - ESLint for JavaScript analysis and Prettier for formatting.
 - `@playwright/test` as a development dependency for Chromium, Firefox and WebKit smoke tests locally and in GitHub Actions.
+- `@axe-core/playwright` (axe-core) as a development dependency for local automated accessibility scans in Chromium.
 - Sharp and fast-glob in a separate image conversion script.
 - Node.js and npm for tooling; dependencies recorded in `package-lock.json`.
 
@@ -320,6 +337,7 @@ Shared page chrome has a single source in `partials/`: `site-header.html` (skip 
 │   ├── check-references.js
 │   └── convert-images.js
 ├── tests/
+│   ├── accessibility.spec.js  # axe-core accessibility scans
 │   └── smoke.spec.js          # Playwright smoke tests
 ├── .github/
 │   └── workflows/
@@ -338,6 +356,7 @@ Shared page chrome has a single source in `partials/`: `site-header.html` (skip 
 ├── package.json
 ├── package-lock.json
 ├── playwright.config.js       # Browser test configuration
+├── playwright.a11y.config.js  # Accessibility scan configuration
 ├── postcss.config.cjs
 ├── vite.config.js
 ├── AGENTS.md                  # Instructions for agents working on the project
@@ -355,7 +374,7 @@ Node.js 22.20+ within the 22.x line and npm 10 or newer are required. Install de
 npm ci
 ```
 
-Before the first test run, install browsers for the locked Playwright version (repeat after updating Playwright). Chromium is sufficient for the fast `test:smoke` command; `test:cross-browser` requires Firefox and WebKit:
+Before the first test run, install browsers for the locked Playwright version (repeat after updating Playwright). Chromium is sufficient for the fast `test:smoke` command and for `test:a11y`; `test:cross-browser` requires Firefox and WebKit:
 
 ```bash
 npx playwright install chromium
@@ -375,6 +394,7 @@ Commands are defined in [package.json](package.json).
 | `npm run preview`            | Starts `vite preview`; requires a prior build.                                                                                                                                                     |
 | `npm run test:smoke`         | Builds once and runs thirteen Playwright tests only in Chromium against local Vite Preview.                                                                                                        |
 | `npm run test:cross-browser` | Builds once and runs the same test suite in Firefox and WebKit against local Vite Preview.                                                                                                         |
+| `npm run test:a11y`          | Builds once and runs 30 axe-core accessibility scans only in Chromium against local Vite Preview, separately from the smoke tests.                                                                 |
 | `npm run lint`               | Runs ESLint only on `js/**/*.js`.                                                                                                                                                                  |
 | `npm run check:references`   | Checks ID references, duplicate IDs and the application module path against the `partials/disclosure-init.html` initializer in the built `dist/` pages; requires a prior build and writes nothing. |
 | `npm run format`             | Runs `prettier --write .` and overwrites unformatted files within the formatting scope.                                                                                                            |
@@ -410,6 +430,18 @@ Local CB-01 verification (2026-10-26, Windows, after installing all browsers): `
 CB-01 verification in GitHub Actions (2026-10-26, `Quality Checks` workflow, [run #69](https://github.com/KPKrol85/DS-ceremonial-pr01-EternalRest/actions/runs/40355906120), commit `c04f0ef`, `ubuntu-latest`, `Build and Quality Checks` job) — SUCCESS: `npx playwright test` — PASS, 39/39 (Chromium 13/13, Firefox 13/13, WebKit 13/13, 40.3 s). The lint, production build, `check:references` and browser installation steps also succeeded. The Linux result does not invalidate the Windows WebKit failures described above, which remain a documented limitation of that environment. The smoke tests confirm only the scenarios they cover in Playwright browser engines; they do not prove full browser and device compatibility, WCAG conformance or Safari behavior on physical Apple devices.
 
 The `Quality Checks` workflow (`.github/workflows/quality.yml`) runs on pushes to `main`, on pull requests targeting `main` (when opened, reopened and on each new commit) and on manual dispatch. Pushes to other branches do not trigger it on their own, and its result is not a required merge condition. Its existing job, with read-only permissions, Node.js 22 and npm caching, runs `npm ci`, `npm run lint`, `npm run build` and `npm run check:references` in order, then installs Chromium, Firefox and WebKit with their required system dependencies using `npx playwright install --with-deps chromium firefox webkit` and runs all three projects with `npx playwright test`. Tests reuse the existing production build without rebuilding; a failed test fails the job. Production deployment to Netlify remains manual.
+
+`npm run test:a11y` creates a production build once, then runs a separate suite of automated accessibility scans from `tests/accessibility.spec.js` through `playwright.a11y.config.js`. That configuration inherits the Vite Preview server at `http://127.0.0.1:8182`, one worker, no retries, the timeouts, the 1280 × 800 viewport and reduced motion from `playwright.config.js`, but selects only its own test file and only Chromium. It requires an installed Chromium (`npx playwright install chromium`). The default configuration, `test:smoke`, `test:cross-browser`, the 39 smoke-test executions and the `Quality Checks` workflow do not run these scans; they are not a CI requirement.
+
+The suite uses `@axe-core/playwright` (axe-core 4.14.0) and contains 30 tests with one scan each: ten pages (`index.html`, `about.html`, `services.html`, `pricing.html`, `guide.html`, `contact.html`, `terms.html`, `privacy.html`, `cookies.html`, `404.html`) and five interactive states, all in the light and the dark theme. Pages are scanned in full. The states are: the open mobile menu at a width of 390 px (scope `[data-site-header]`; the background and the logo are then `inert`, so axe checks the menu button and panel), the four guide FAQ answers expanded with their buttons (`[data-accordion]`), the details of the three pricing packages expanded with their buttons (`[data-pricing-card]`), the contact form after an empty submission with five required-field errors (`[data-validate-form]`; every POST request is aborted, and the test asserts that none occurred), and the whole 404 page at a nested unknown URL with a simulated 404 status and keyboard focus on the skip link.
+
+The rules are selected explicitly by the `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa` and `wcag22aa` tags. axe-core 4.14.0 has no rules tagged `wcag22a`, and its WCAG 2.2 AA coverage is the `target-size` rule. 64 of the 70 rules with these tags run: following axe-core's default behavior, 4 experimental rules (`css-orientation-lock`, `p-as-heading`, `table-fake-caption`, `td-has-header`) and 2 deprecated rules (`aria-roledescription`, `audio-caption`) are skipped. Best-practice and AAA rules are not part of this baseline; the suite disables no rule and does not filter results by impact. Each test runs in a new browser context in which both the emulated system scheme and the stored `eternalRestTheme` preference (version 1, mode `light` or `dark`) select the theme. Before scanning, the test waits, without fixed delays, until `main.js` has set the `js` class, `html[data-theme]` and the theme toggle state, and until `document.fonts.ready` resolves; interactive states are reached through the actual controls.
+
+Any violation fails the test. The message names the scanned URL and scope and, for each rule, its ID, impact, description, a link to remediation guidance, and the selector and failure summary of every affected element. The complete results of each scan (`violations` and `incomplete`, the results that need manual review) are written to `reports/accessibility/<test>/axe-results.json`; the directory is ignored by Git and cleared on every run. Such a message indicates a detected violation, whereas a timeout, a navigation error or a failed state-setup assertion indicates a failure before the scan, with no results file.
+
+A11Y-01 baseline run (2026-10-26, Windows, Chromium from Playwright 1.64.1, axe-core 4.14.0, local `dist/`): `npm run test:a11y` — PASS, 30/30 scans executed, 0 WCAG A/AA rule violations (1.9 min). axe flagged 100 `color-contrast` results for manual review, only in page scans, 50 per theme: 40 for the decorative `↑` arrow (`span[aria-hidden="true"]`) in the `.legal-section__back` links of the legal pages (17 in `terms.html`, 14 in `privacy.html`, 9 in `cookies.html`), whose content axe treats as non-text characters; 5 for `.page-closing__label` on `index.html`, `about.html`, `services.html`, `pricing.html` and `guide.html`; and 5 for `.hero__eyebrow`, `h1`, `.hero__lead` and the two hero `.button` links on `index.html`, where axe could not determine the background because of overlapping elements. The contrast of these elements was assessed neither as passing nor as failing and requires manual review. A negative control of the same suite against a copy of the build outside the repository, with the `lang` attribute and the logo's `alt` removed from `index.html`, failed both scans of that page with the `html-has-lang` and `image-alt` rules.
+
+Zero violations in an automated scan do not establish WCAG conformance. axe-core checks only a subset of the criteria, and the result covers only Chromium, the described viewports and states, and reduced motion. The scans do not replace manual testing, testing with screen readers and other assistive technologies, or verification on real devices.
 
 `npm run check:references` checks ID references in the root-level HTML pages of `dist/`, after Vite has inserted the `partials/` content. It therefore requires a prior `npm run build` and does not run one itself. On every page it reports duplicate `id` values and references without a target in `aria-controls`, `aria-describedby` and `aria-labelledby` (each ID of a whitespace-separated list separately), in `label[for]`, in same-page `href="#id"` links and in fragment links to other project pages, such as `services.html#id`, which are checked on the target page. The same `id` on different pages is not a duplicate. External URLs, `mailto:`, `tel:` and `href="#"` placeholders are skipped. Each error names the page, line, attribute and the missing or duplicated ID, and the command then exits with a non-zero code; on success it reports how many pages and references it checked. A missing `dist/` also fails, with an instruction to build first. The script uses only built-in Node.js modules, writes nothing and is not part of `npm run build`. It checks only that reference targets exist, not ARIA semantics or interactive behavior in a browser.
 

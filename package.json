@@ -21,6 +21,7 @@
     "preview": "vite preview",
     "test:smoke": "npm run build && playwright test --project=chromium",
     "test:cross-browser": "npm run build && playwright test --project=firefox --project=webkit",
+    "test:a11y": "npm run build && playwright test --config=playwright.a11y.config.js",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint \"js/**/*.js\"",
@@ -28,6 +29,7 @@
     "images:convert": "node scripts/convert-images.js"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
     "@eslint/js": "8.57.1",
     "@playwright/test": "^1.64.1",
     "autoprefixer": "^10.4.18",
