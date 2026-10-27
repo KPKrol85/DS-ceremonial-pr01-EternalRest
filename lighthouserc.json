@@ -1,0 +1,20 @@
+{
+  "ci": {
+    "collect": {
+      "url": [
+        "http://127.0.0.1:8183/index.html",
+        "http://127.0.0.1:8183/pricing.html",
+        "http://127.0.0.1:8183/guide.html",
+        "http://127.0.0.1:8183/contact.html"
+      ],
+      "numberOfRuns": 3,
+      "settings": {
+        "onlyCategories": ["performance"]
+      }
+    },
+    "upload": {
+      "target": "filesystem",
+      "reportFilenamePattern": "%%PATHNAME%%-%%DATETIME%%.report.%%EXTENSION%%"
+    }
+  }
+}

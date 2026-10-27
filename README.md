@@ -30,6 +30,7 @@ Publiczna wersja demonstracyjna projektu: [ds-ceremonial-pr01-eternalrest.netlif
 - ESLint do analizy JavaScript i Prettier do formatowania.
 - `@playwright/test` jako zależność developerska do testów smoke w Chromium, Firefox i WebKit lokalnie i w GitHub Actions.
 - `@axe-core/playwright` (axe-core) jako zależność developerska do lokalnych automatycznych skanów dostępności w Chromium.
+- `@lhci/cli` (Lighthouse CI i Lighthouse) jako zależność developerska do lokalnych pomiarów wydajności w Chromium.
 - Sharp i fast-glob w osobnym skrypcie konwersji obrazów.
 - Node.js i npm jako środowisko narzędziowe; zależności zapisane w `package-lock.json`.
 
@@ -95,6 +96,7 @@ Wspólne elementy stron mają jedno źródło w katalogu `partials/`: `site-head
 │       └── pricing.css
 ├── js/main.js
 ├── scripts/
+│   ├── audit-performance.js
 │   ├── check-references.js
 │   └── convert-images.js
 ├── tests/
@@ -118,6 +120,7 @@ Wspólne elementy stron mają jedno źródło w katalogu `partials/`: `site-head
 ├── package-lock.json
 ├── playwright.config.js       # Konfiguracja testów przeglądarkowych
 ├── playwright.a11y.config.js  # Konfiguracja skanów dostępności
+├── lighthouserc.json          # Konfiguracja pomiarów Lighthouse CI
 ├── postcss.config.cjs
 ├── vite.config.js
 ├── AGENTS.md                  # Instrukcje dla agentów pracujących nad projektem
@@ -135,14 +138,14 @@ Wymagane są Node.js 22.20+ z linii 22.x oraz npm 10 lub nowszy. W katalogu gł�
 npm ci
 ```
 
-Przed pierwszym uruchomieniem testów zainstaluj przeglądarki dla wersji Playwright z pliku blokady (ponów po aktualizacji Playwright). Do szybkiego `test:smoke` i do `test:a11y` wystarczy Chromium; `test:cross-browser` wymaga Firefox i WebKit:
+Przed pierwszym uruchomieniem testów lub pomiarów wydajności zainstaluj przeglądarki dla wersji Playwright z pliku blokady (ponów po aktualizacji Playwright). Do szybkiego `test:smoke`, do `test:a11y` i do `audit:performance` wystarczy Chromium; `test:cross-browser` wymaga Firefox i WebKit:
 
 ```bash
 npx playwright install chromium
 npx playwright install firefox webkit
 ```
 
-Na Linuksie użyj `npx playwright install --with-deps chromium firefox webkit`, aby zainstalować również wymagane zależności systemowe. Te polecenia są etapem przygotowania środowiska; skrypty testowe nie instalują przeglądarek automatycznie.
+Na Linuksie użyj `npx playwright install --with-deps chromium firefox webkit`, aby zainstalować również wymagane zależności systemowe. Te polecenia są etapem przygotowania środowiska; skrypty testowe i `audit:performance` nie instalują przeglądarek automatycznie.
 
 ### Dostępne skrypty
 
@@ -156,6 +159,7 @@ Polecenia są zdefiniowane w [package.json](package.json).
 | `npm run test:smoke`         | Buduje stronę od nowa jeden raz i uruchamia trzynaście testów Playwright wyłącznie w Chromium na lokalnym Vite Preview.                                                                                                          |
 | `npm run test:cross-browser` | Buduje stronę od nowa jeden raz i uruchamia ten sam zestaw testów w Firefox i WebKit na lokalnym Vite Preview.                                                                                                                   |
 | `npm run test:a11y`          | Buduje stronę od nowa jeden raz i uruchamia 30 skanów dostępności axe-core wyłącznie w Chromium na lokalnym Vite Preview, niezależnie od testów smoke.                                                                           |
+| `npm run audit:performance`  | Buduje stronę od nowa jeden raz i wykonuje 24 lokalne pomiary Lighthouse (cztery strony, profil mobilny i desktopowy, po trzy pomiary) na Vite Preview; raporty i mediany zapisuje w `reports/performance/`.                     |
 | `npm run lint`               | Uruchamia ESLint wyłącznie dla `js/**/*.js`.                                                                                                                                                                                     |
 | `npm run check:references`   | Sprawdza odwołania do identyfikatorów, duplikaty `id` i zgodność ścieżki modułu aplikacji z inicjalizatorem `partials/disclosure-init.html` w zbudowanych stronach `dist/`; wymaga wcześniejszego buildu i niczego nie zapisuje. |
 | `npm run format`             | Uruchamia `prettier --write .` i nadpisuje niesformatowane pliki w zakresie formatowania.                                                                                                                                        |
@@ -211,6 +215,33 @@ To samo polecenie pilnuje kontraktu ścieżki modułu z `partials/disclosure-ini
 `npm run format:check` porównuje pliki z wynikiem Prettiera 3 w ustawieniach domyślnych (repozytorium nie zawiera konfiguracji Prettiera) i niczego nie zapisuje; kończy się błędem, gdy którykolwiek plik w zakresie wymaga formatowania. Jego zapisującym odpowiednikiem jest `npm run format`. Sprawdzenie dotyczy wyłącznie zapisu kodu i nie zastępuje lintowania ESLint ani testów działania strony w przeglądarce. Wszystkie pliki w zakresie przeszły formatowanie bazowe, więc w czystej kopii roboczej sprawdzenie kończy się powodzeniem. Prettier domyślnie oczekuje końców linii LF; `.gitattributes` (`* text=auto eol=lf`) zapewnia LF w każdej kopii roboczej, także w Windows z `core.autocrlf=true`, a plik zapisany z końcami CRLF, np. przez edytor, zostanie zgłoszony.
 
 Oba polecenia pomijają pliki wskazane w `.gitignore` i `.prettierignore`. `.prettierignore` wyłącza generowany `dist/`, `node_modules/`, `package-lock.json`, `LICENSE.md`, strony prawne `terms.html`, `privacy.html` i `cookies.html` oraz archiwum raportów `docs/archive/`, aby formatowanie nie zmieniało tych plików. Wykluczone pliki nie są też sprawdzane; wspólny nagłówek i stopki, także te używane przez strony prawne, znajdują się jednak w `partials/` i podlegają sprawdzeniu. `.prettierignore` działa wyłącznie dla Prettiera i nie chroni plików przed innymi narzędziami ani ręczną edycją.
+
+### Pomiary wydajności
+
+`npm run audit:performance` wykonuje build produkcyjny jeden raz, a następnie uruchamia `scripts/audit-performance.js`. Skrypt startuje Vite Preview pod `http://127.0.0.1:8183` z `--strictPort` (port inny niż 8182 używany przez Playwright; zajęty port kończy pomiar błędem zamiast użycia istniejącego serwera), czeka do 30 s na odpowiedź strony głównej i uruchamia Lighthouse CI (`@lhci/cli` 0.15.1 z Lighthouse 12.6.1) z konfiguracją `lighthouserc.json`. Mierzone są cztery strony: `index.html`, `pricing.html`, `guide.html` i `contact.html`, każda trzykrotnie w dwóch osobnych fazach: najpierw w domyślnym profilu mobilnym Lighthouse, potem w profilu desktopowym (`preset: desktop`). Razem to 24 pomiary, wyłącznie kategorii Performance. Po zakończeniu, błędzie lub przerwaniu (Ctrl+C) skrypt zatrzymuje Lighthouse i serwer. Polecenie nie należy do workflow `Quality Checks` ani do innych skryptów i nie wysyła wyników do zewnętrznych usług: `lhci upload --target=filesystem` zapisuje raporty wyłącznie na dysku. Skrypt uruchamia Lighthouse CI bez zmiennych środowiskowych `LHCI_*`, które mogłyby nadpisać `lighthouserc.json` i flagi skryptu, w tym cel zapisu raportów; pominięte zmienne wymienia w wyniku polecenia.
+
+Skrypt przekazuje Lighthouse ścieżkę Chromium zainstalowanego dla Playwright (`npx playwright install chromium`, ta sama instalacja co dla testów). Inną przeglądarkę Chrome lub Chromium można wskazać zmienną środowiskową `CHROME_PATH`. Brak przeglądarki, brak zbudowanej strony w `dist/` lub adres spoza lokalnego serwera w konfiguracji kończą polecenie błędem przed pomiarem, bez zmiany wcześniejszych raportów. Globalna instalacja Lighthouse nie jest potrzebna.
+
+Wyniki trafiają do pomijanego przez Git katalogu `reports/performance/`, czyszczonego po sprawdzeniu tych wymagań, przed uruchomieniem serwera. Katalogi `mobile/` i `desktop/` zawierają raport HTML i JSON każdego pomiaru, nazwany ścieżką strony i czasem rozpoczęcia w UTC (np. `index_html-2026_10_27_15_15_23.report.html`), oraz `manifest.json` Lighthouse CI. `summary.json` zawiera dla każdej pary strony i profilu liczbę poprawnych pomiarów, mediany wyniku Performance (0–100), LCP, TBT i FCP (ms) oraz CLS (bez jednostki), wartości poszczególnych pomiarów ze ścieżkami raportów i wynikiem testu procesora Lighthouse (`benchmarkIndex`), ostrzeżenia Lighthouse, wersje Lighthouse i przeglądarki, rzeczywiste ustawienia emulacji obu profili, status `complete` lub `incomplete` i listę błędów. Medianę każdej metryki skrypt liczy osobno z rzeczywistych pomiarów, więc mediany jednej strony mogą pochodzić z różnych przebiegów. Pomijany przez Git katalog `.lighthouseci/` przechowuje roboczą kopię wyników ostatniej fazy Lighthouse CI.
+
+Pomiar jest odrzucany, gdy Lighthouse zgłosi błąd wykonania (`runtimeError`), raport ma inny profil urządzenia, inny adres, brakującą metrykę lub czas sprzed bieżącej fazy albo gdy brakuje raportu HTML. Nieudane uruchomienie Lighthouse jest ponawiane przez Lighthouse CI do trzech prób. Polecenie kończy się kodem różnym od zera, gdy zawiedzie build, start serwera, przeglądarka lub zbieranie wyników albo gdy którakolwiek z ośmiu par strony i profilu nie ma dokładnie trzech poprawnych pomiarów; raporty ukończonych pomiarów i `summary.json` ze statusem `incomplete` pozostają wtedy do diagnostyki. Po przerwaniu zachowane są raporty faz zakończonych wcześniej, bez wyników przerwanej fazy. Niski wynik Performance nie jest błędem wykonania: polecenie nie ma progów ani asercji wyników.
+
+Wyniki są pomiarami laboratoryjnymi. Lighthouse ładuje strony z lokalnego Vite Preview w nowym profilu przeglądarki i symuluje ograniczenia sieci i procesora (`throttlingMethod: simulate`): profil mobilny emuluje ekran 412 × 823 px przy DPR 1,75, RTT 150 ms, przepustowość 1,6 Mb/s i czterokrotnie wolniejszy procesor, a desktopowy ekran 1350 × 940 px przy DPR 1, RTT 40 ms, 10 Mb/s i procesor bez spowolnienia. Wyniki nie opisują wydajności hostingu Netlify (CDN, kompresja, nagłówki cache, wersja HTTP, odległość sieciowa) ani doświadczeń rzeczywistych użytkowników. Core Web Vitals użytkowników pochodzą z danych terenowych (np. CrUX lub RUM), których projekt nie zbiera. Standardowy audyt ładowania strony nie mierzy INP, ponieważ ta metryka wymaga rzeczywistych interakcji; TBT jest odrębną metryką laboratoryjną i nie jest szacunkiem INP. Wyniki zależą od wydajności i obciążenia komputera, dlatego porównywać należy przebiegi wykonane w zbliżonych warunkach; mediana z trzech pomiarów ogranicza, ale nie usuwa zmienności.
+
+Bazowy przebieg PERF-01 (2026-10-27, Windows 11, Chromium 156.0.8078.4 z Playwright 1.64.1 w trybie headless, Lighthouse 12.6.1, lokalny `dist/`): `npm run audit:performance` — kompletny, 24/24 pomiary, kod 0 (ok. 14 min z buildem). Mediany:
+
+| Strona         | Profil     | Performance | LCP (ms) | CLS   | TBT (ms) | FCP (ms) |
+| -------------- | ---------- | ----------- | -------- | ----- | -------- | -------- |
+| `index.html`   | mobilny    | 91          | 2877     | 0     | 0        | 2427     |
+| `pricing.html` | mobilny    | 97          | 2202     | 0,001 | 0        | 1977     |
+| `guide.html`   | mobilny    | 97          | 2202     | 0     | 0        | 1977     |
+| `contact.html` | mobilny    | 97          | 2196     | 0,001 | 0        | 1964     |
+| `index.html`   | desktopowy | 98          | 609      | 0,001 | 0        | 550      |
+| `pricing.html` | desktopowy | 100         | 486      | 0     | 0        | 466      |
+| `guide.html`   | desktopowy | 99          | 486      | 0     | 0        | 466      |
+| `contact.html` | desktopowy | 97          | 714      | 0     | 16       | 660      |
+
+We wszystkich 12 pomiarach mobilnych Lighthouse ostrzegł, że procesor wydaje się wolniejszy, niż zakłada profil; `benchmarkIndex` wynosił 418–622 w pomiarach mobilnych i 351–789 we wszystkich 24 pomiarach, a komputer był w trakcie pomiaru obciążony innymi aplikacjami. Pojedyncze pomiary mobilne odbiegały od pozostałych (`index.html`: 65, 91 i 91; `pricing.html`: 97, 97 i 83), dlatego wyniki tego przebiegu są punktem odniesienia dla tego komputera i warunków, a nie wartościami bezwzględnymi.
 
 ### Dostępność
 
@@ -269,6 +300,7 @@ Public project demo: [ds-ceremonial-pr01-eternalrest.netlify.app](https://ds-cer
 - ESLint for JavaScript analysis and Prettier for formatting.
 - `@playwright/test` as a development dependency for Chromium, Firefox and WebKit smoke tests locally and in GitHub Actions.
 - `@axe-core/playwright` (axe-core) as a development dependency for local automated accessibility scans in Chromium.
+- `@lhci/cli` (Lighthouse CI and Lighthouse) as a development dependency for local performance audits in Chromium.
 - Sharp and fast-glob in a separate image conversion script.
 - Node.js and npm for tooling; dependencies recorded in `package-lock.json`.
 
@@ -334,6 +366,7 @@ Shared page chrome has a single source in `partials/`: `site-header.html` (skip 
 │       └── pricing.css
 ├── js/main.js
 ├── scripts/
+│   ├── audit-performance.js
 │   ├── check-references.js
 │   └── convert-images.js
 ├── tests/
@@ -357,6 +390,7 @@ Shared page chrome has a single source in `partials/`: `site-header.html` (skip 
 ├── package-lock.json
 ├── playwright.config.js       # Browser test configuration
 ├── playwright.a11y.config.js  # Accessibility scan configuration
+├── lighthouserc.json          # Lighthouse CI audit configuration
 ├── postcss.config.cjs
 ├── vite.config.js
 ├── AGENTS.md                  # Instructions for agents working on the project
@@ -374,14 +408,14 @@ Node.js 22.20+ within the 22.x line and npm 10 or newer are required. Install de
 npm ci
 ```
 
-Before the first test run, install browsers for the locked Playwright version (repeat after updating Playwright). Chromium is sufficient for the fast `test:smoke` command and for `test:a11y`; `test:cross-browser` requires Firefox and WebKit:
+Before the first test or performance audit run, install browsers for the locked Playwright version (repeat after updating Playwright). Chromium is sufficient for the fast `test:smoke` command, for `test:a11y` and for `audit:performance`; `test:cross-browser` requires Firefox and WebKit:
 
 ```bash
 npx playwright install chromium
 npx playwright install firefox webkit
 ```
 
-On Linux, use `npx playwright install --with-deps chromium firefox webkit` to install the required system dependencies as well. These are environment setup commands; test scripts do not install browsers automatically.
+On Linux, use `npx playwright install --with-deps chromium firefox webkit` to install the required system dependencies as well. These are environment setup commands; test scripts and `audit:performance` do not install browsers automatically.
 
 ### Available Scripts
 
@@ -395,6 +429,7 @@ Commands are defined in [package.json](package.json).
 | `npm run test:smoke`         | Builds once and runs thirteen Playwright tests only in Chromium against local Vite Preview.                                                                                                        |
 | `npm run test:cross-browser` | Builds once and runs the same test suite in Firefox and WebKit against local Vite Preview.                                                                                                         |
 | `npm run test:a11y`          | Builds once and runs 30 axe-core accessibility scans only in Chromium against local Vite Preview, separately from the smoke tests.                                                                 |
+| `npm run audit:performance`  | Builds once and runs 24 local Lighthouse measurements (four pages, mobile and desktop profiles, three runs each) against Vite Preview; writes reports and medians to `reports/performance/`.       |
 | `npm run lint`               | Runs ESLint only on `js/**/*.js`.                                                                                                                                                                  |
 | `npm run check:references`   | Checks ID references, duplicate IDs and the application module path against the `partials/disclosure-init.html` initializer in the built `dist/` pages; requires a prior build and writes nothing. |
 | `npm run format`             | Runs `prettier --write .` and overwrites unformatted files within the formatting scope.                                                                                                            |
@@ -450,6 +485,33 @@ The same command guards the module-path contract of `partials/disclosure-init.ht
 `npm run format:check` compares files with Prettier 3 output using default options (the repository contains no Prettier configuration) and writes nothing; it fails when any in-scope file needs formatting. `npm run format` is its writing counterpart. The check covers code layout only and does not replace ESLint linting or runtime testing of the site in a browser. All in-scope files have received a baseline format, so the check passes in a clean working copy. Prettier expects LF line endings by default; `.gitattributes` (`* text=auto eol=lf`) keeps LF in every working copy, including on Windows with `core.autocrlf=true`, and a file saved with CRLF endings, for example by an editor, is reported.
 
 Both commands skip files matched by `.gitignore` and `.prettierignore`. `.prettierignore` excludes the generated `dist/`, `node_modules/`, `package-lock.json`, `LICENSE.md`, the legal pages `terms.html`, `privacy.html` and `cookies.html`, and the report archive in `docs/archive/`, so formatting does not change these files. Excluded files are not checked either; the shared header and footers, including those used by the legal pages, live in `partials/` and are checked. `.prettierignore` applies only to Prettier and does not protect files from other tools or manual edits.
+
+### Performance Audits
+
+`npm run audit:performance` creates a production build once, then runs `scripts/audit-performance.js`. The script starts Vite Preview at `http://127.0.0.1:8183` with `--strictPort` (a different port from the 8182 used by Playwright; an occupied port fails the audit instead of reusing an existing server), waits up to 30 s for the homepage to respond, and runs Lighthouse CI (`@lhci/cli` 0.15.1 with Lighthouse 12.6.1) using the `lighthouserc.json` configuration. Four pages are measured: `index.html`, `pricing.html`, `guide.html` and `contact.html`, three times each in two separate phases: first with Lighthouse's default mobile profile, then with the desktop profile (`preset: desktop`). That is 24 measurements in total, covering the Performance category only. After completion, a failure or an interruption (Ctrl+C), the script stops Lighthouse and the server. The command is not part of the `Quality Checks` workflow or any other script, and it sends no results to external services: `lhci upload --target=filesystem` only writes the reports to disk. The script runs Lighthouse CI without `LHCI_*` environment variables, which could otherwise override `lighthouserc.json` and the script's flags, including the report target; it lists any ignored variables in its output.
+
+The script passes Lighthouse the path of the Chromium installed for Playwright (`npx playwright install chromium`, the same installation as the tests use). A different Chrome or Chromium browser can be selected with the `CHROME_PATH` environment variable. A missing browser, a missing built page in `dist/` or a configured URL outside the local server fails the command before measuring, leaving earlier reports unchanged. No global Lighthouse installation is required.
+
+Results are written to the Git-ignored `reports/performance/` directory, which is cleared after these prerequisites pass, before the server starts. The `mobile/` and `desktop/` directories contain the HTML and JSON report of every measurement, named after the page path and its UTC start time (e.g. `index_html-2026_10_27_15_15_23.report.html`), plus the Lighthouse CI `manifest.json`. For every page and profile pair, `summary.json` records the number of valid measurements, the medians of the Performance score (0–100), LCP, TBT and FCP (ms) and CLS (unitless), the values of the individual measurements with their report paths and Lighthouse's CPU benchmark (`benchmarkIndex`), Lighthouse warnings, the Lighthouse and browser versions, the actual emulation settings of both profiles, the `complete` or `incomplete` status and a list of errors. The script calculates each metric's median separately from the actual measurements, so the medians of one page may come from different runs. The Git-ignored `.lighthouseci/` directory holds Lighthouse CI's working copy of the last phase's results.
+
+A measurement is rejected when Lighthouse reports a runtime error (`runtimeError`), or when the report has a different device profile, a different URL, a missing metric or a start time before the current phase, or has no HTML report. Lighthouse CI retries a failed Lighthouse run up to three attempts. The command exits with a non-zero code when the build, the server start, the browser or the collection fails, or when any of the eight page and profile pairs does not have exactly three valid measurements; the reports of completed measurements and a `summary.json` with the `incomplete` status are then kept for diagnosis. After an interruption, the reports of phases completed earlier are kept, without the results of the interrupted phase. A low Performance score is not an execution failure: the command has no score thresholds or assertions.
+
+The results are lab measurements. Lighthouse loads the pages from local Vite Preview in a new browser profile and simulates network and CPU constraints (`throttlingMethod: simulate`): the mobile profile emulates a 412 × 823 px screen at DPR 1.75, a 150 ms RTT, 1.6 Mbps throughput and a 4× slower CPU, and the desktop profile a 1350 × 940 px screen at DPR 1, a 40 ms RTT, 10 Mbps and no CPU slowdown. The results do not describe Netlify hosting performance (CDN, compression, cache headers, HTTP version, network distance) or the experience of real users. Real-user Core Web Vitals come from field data (e.g. CrUX or RUM), which the project does not collect. A standard page-load audit does not measure INP, because that metric requires real interactions; TBT is a separate lab metric and is not an INP estimate. Results depend on the computer's performance and load, so only runs made under similar conditions should be compared; the median of three measurements reduces variability but does not remove it.
+
+PERF-01 baseline run (2026-10-27, Windows 11, headless Chromium 156.0.8078.4 from Playwright 1.64.1, Lighthouse 12.6.1, local `dist/`): `npm run audit:performance` — complete, 24/24 measurements, exit code 0 (about 14 min including the build). Medians:
+
+| Page           | Profile | Performance | LCP (ms) | CLS   | TBT (ms) | FCP (ms) |
+| -------------- | ------- | ----------- | -------- | ----- | -------- | -------- |
+| `index.html`   | mobile  | 91          | 2877     | 0     | 0        | 2427     |
+| `pricing.html` | mobile  | 97          | 2202     | 0.001 | 0        | 1977     |
+| `guide.html`   | mobile  | 97          | 2202     | 0     | 0        | 1977     |
+| `contact.html` | mobile  | 97          | 2196     | 0.001 | 0        | 1964     |
+| `index.html`   | desktop | 98          | 609      | 0.001 | 0        | 550      |
+| `pricing.html` | desktop | 100         | 486      | 0     | 0        | 466      |
+| `guide.html`   | desktop | 99          | 486      | 0     | 0        | 466      |
+| `contact.html` | desktop | 97          | 714      | 0     | 16       | 660      |
+
+In all 12 mobile measurements, Lighthouse warned that the CPU appeared slower than the profile assumes; `benchmarkIndex` ranged from 418 to 622 in the mobile measurements and from 351 to 789 across all 24 measurements, and the computer was loaded by other applications during the run. Individual mobile measurements deviated from the others (`index.html`: 65, 91 and 91; `pricing.html`: 97, 97 and 83), so this run is a reference point for this computer and these conditions rather than a set of absolute values.
 
 ### Accessibility
 
