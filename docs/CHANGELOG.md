@@ -27,6 +27,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Changed
 
+- Replaced the 40 text "Wróć do spisu treści" links on the Terms, Privacy and Cookies pages with icon-only 44 × 44 px circular links carrying a decorative SVG arrow; the circular border is invisible at rest, and on hover and focus only its lower edge takes the accent while the arrow lifts slightly, without movement under reduced motion. The links keep `href="#spis-tresci"`, native keyboard focus and the same accessible name via `aria-label`.
 - Corrected the mobile menu's accessible button name and isolated covered page content with native `inert`, restoring original states on every close path and desktop resize. Extended smoke coverage for accessibility-tree isolation, keyboard focus and state restoration.
 - Replaced the 92 KB raster-wrapped SVG favicon with a 1,613-byte vector icon using the brand emblem’s unchanged paths on the existing white square tile, which keeps it legible in light and dark browser interfaces. Other favicon formats, the web manifest and page references are unchanged.
 - Established a passing Prettier baseline: formatted the 13 in-scope files with the existing default Prettier 3 setup and unchanged `.prettierignore` exclusions, so `npm run format:check` passes on a clean LF checkout. Bundled JS/CSS and rendered pages are unchanged.

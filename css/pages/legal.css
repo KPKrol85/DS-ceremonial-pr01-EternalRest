@@ -212,22 +212,49 @@
   font-size: 0.95em;
 }
 
+/* An icon-only return link; the accessible name comes from aria-label. Its circular
+   border stays transparent, and on hover or focus only the lower edge takes the
+   accent while the arrow lifts, so the states never shift the layout. */
 .legal-section__back {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-xs);
-  min-height: 44px;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
   margin-top: var(--space-lg);
-  padding-block: var(--space-xs);
+  border: 1px solid transparent;
+  border-radius: 50%;
   color: var(--color-text-muted);
-  font-size: var(--font-size-sm);
+  transition:
+    color var(--transition-fast),
+    border-color var(--transition-fast);
 }
 
 .legal-section__back:hover,
 .legal-section__back:focus-visible {
-  color: var(--color-text);
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
+  border-bottom-color: var(--color-accent);
+  color: var(--color-accent-text);
+}
+
+.legal-section__back-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform var(--transition-fast);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .legal-section__back:hover .legal-section__back-icon,
+  .legal-section__back:focus-visible .legal-section__back-icon {
+    transform: translateY(-2px);
+  }
+}
+
+.legal-section__back:active .legal-section__back-icon {
+  transform: none;
 }
 
 /* Without JavaScript the shared header is not sticky, so anchors need no header offset. */
