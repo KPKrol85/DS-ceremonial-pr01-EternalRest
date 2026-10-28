@@ -33,5 +33,46 @@
       "form_factor": "narrow",
       "label": "Strona główna Eternal Rest na telefonie: przycisk menu, zdjęcie leśnej drogi we mgle, hasło „Ceremonie, które oddają szacunek i spokój” i przyciski kontaktu"
     }
+  ],
+  "shortcuts": [
+    {
+      "name": "Usługi",
+      "short_name": "Usługi",
+      "description": "Ceremonie tradycyjne i świeckie, transport, oprawa i wsparcie formalne",
+      "url": "../services.html",
+      "icons": [
+        {
+          "src": "../shortcuts/services-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Cennik",
+      "short_name": "Cennik",
+      "description": "Orientacyjne ceny i zakres pakietów ceremonii",
+      "url": "../pricing.html",
+      "icons": [
+        {
+          "src": "../shortcuts/pricing-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Kontakt",
+      "short_name": "Kontakt",
+      "description": "Formularz zapytań i dane kontaktowe autora projektu",
+      "url": "../contact.html",
+      "icons": [
+        {
+          "src": "../shortcuts/contact-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
   ]
 }
