@@ -17,5 +17,21 @@
   ],
   "theme_color": "#ffffff",
   "background_color": "#ffffff",
-  "display": "standalone"
+  "display": "standalone",
+  "screenshots": [
+    {
+      "src": "../screenshots/desktop-home.webp",
+      "sizes": "1280x720",
+      "type": "image/webp",
+      "form_factor": "wide",
+      "label": "Strona główna Eternal Rest na komputerze: nawigacja, hasło „Ceremonie, które oddają szacunek i spokój” i przyciski kontaktu na tle leśnej drogi we mgle"
+    },
+    {
+      "src": "../screenshots/mobile-home.webp",
+      "sizes": "390x844",
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "Strona główna Eternal Rest na telefonie: przycisk menu, zdjęcie leśnej drogi we mgle, hasło „Ceremonie, które oddają szacunek i spokój” i przyciski kontaktu"
+    }
+  ]
 }
