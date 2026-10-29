@@ -103,12 +103,28 @@
   text-wrap: pretty;
 }
 
-/* The wider column gap keeps each label's leading rule attached to its own text. */
+/* Supporting points: one per row at every width, set as quiet notes under the description. */
 .services-list__meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-xs) var(--space-md);
+  display: grid;
+  gap: var(--space-2xs);
   margin-top: var(--space-sm);
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-heading);
+  color: var(--color-text-muted);
+}
+
+/* The leading rule keeps its own column, so a wrapped point hangs under its first word. */
+.services-list__point {
+  display: grid;
+  grid-template-columns: 0.75rem minmax(0, 1fr);
+  column-gap: var(--space-xs);
+}
+
+/* Centred on the first line rather than on the whole point. */
+.services-list__point::before {
+  content: "";
+  margin-top: calc(var(--line-height-heading) * 0.5em - 0.5px);
+  border-top: 1px solid var(--color-accent-soft);
 }
 
 /* Without JavaScript the shared header is not sticky, so anchors need no header offset. */
