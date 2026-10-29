@@ -75,6 +75,8 @@ Wspólne elementy stron mają jedno źródło w katalogu `partials/`: `site-head
 │   │   ├── favicon.svg
 │   │   └── site.webmanifest
 │   ├── images/og.jpg          # Obraz podglądu przy udostępnianiu
+│   ├── screenshots/           # Desktopowy i mobilny zrzut ekranu WebP do podglądu instalacji
+│   ├── shortcuts/             # Ikony PNG trzech skrótów z manifestu
 │   ├── robots.txt
 │   └── sitemap.xml
 ├── css/
@@ -345,6 +347,8 @@ Shared page chrome has a single source in `partials/`: `site-header.html` (skip 
 │   │   ├── favicon.svg
 │   │   └── site.webmanifest
 │   ├── images/og.jpg          # Social sharing preview image
+│   ├── screenshots/           # Desktop and mobile WebP installation-preview screenshots
+│   ├── shortcuts/             # PNG icons for the three manifest shortcuts
 │   ├── robots.txt
 │   └── sitemap.xml
 ├── css/
