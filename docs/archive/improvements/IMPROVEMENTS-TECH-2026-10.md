@@ -35,7 +35,7 @@ No new dependencies or frontend framework were introduced. IMP-TECH-01 additiona
 
 - **Status:** COMPLETED — implemented and verified.
 - **Result:** Replaced borrowed BEM classes with `steps__title`, `steps__text`, `pricing__title`, `pricing__features`, `card__list` and `form__choices`. Grouped CSS selectors without duplicating declarations. Preserved markup semantics, interaction hooks and existing styling.
-- **Verification:** ESLint and nine-page production build passed. Chromium comparisons at 375 px and 1280 px confirmed unchanged computed styles and layout across tested themes. BEM ownership and affected interactions passed. Existing Prettier differences remained unchanged; other browser engines were not tested.
+- **Verification:** ESLint and nine-page production build passed. Chromium comparisons at 375 px and 1280 px confirmed unchanged computed styles and layout across tested themes; BEM ownership and affected interactions also passed. Existing Prettier differences remained unchanged; other browser engines were not tested.
 - **Impact:** Medium
 - **Effort:** Small
 
@@ -51,7 +51,7 @@ No new dependencies or frontend framework were introduced. IMP-TECH-01 additiona
 
 - **Status:** COMPLETED — implemented and verified.
 - **Result:** Added the theme-independent `--color-on-accent: #fff` token and replaced four hard-coded foreground colors in `.skip-link`, `.site-header__cta`, `.back-to-top` and `.button--primary`. Preserved existing appearance and theme behavior.
-- **Verification:** ESLint and nine-page production build passed. Chromium comparisons at 375 px and 1280 px confirmed unchanged computed styles and layout in light, dark and system modes. Focused skip-link and production-preview checks passed. The existing dark-theme accent contrast defect (2.94:1) remains unresolved; other browser engines were not tested.
+- **Verification:** ESLint and nine-page production build passed. Chromium comparisons at 375 px and 1280 px confirmed unchanged computed styles and layout in light, dark and system modes; focused skip-link and production-preview checks also passed. The existing dark-theme accent contrast defect (2.94:1) remains unresolved; other browser engines were not tested.
 - **Impact:** Low
 - **Effort:** Small
 

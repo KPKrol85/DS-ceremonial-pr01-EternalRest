@@ -26,7 +26,7 @@ The remaining improvements were implemented within the existing technology stack
 ### IMP-WORKFLOW-02 — Align project documentation with the simplified documentation model
 
 - **Status:** COMPLETED — resolved through an owner-approved alternative.
-- **Result:** Removed the redundant project context document and simplified documentation ownership. `README.md` became the primary project reference, `AGENTS.md` retained stable agent guardrails, `CLAUDE.md` became import-only, and `docs/CHANGELOG.md` retained significant changes. Both README languages received the confirmed public demo link. The original proposal for a manual release procedure and deployed-revision tracking was not adopted.
+- **Result:** Removed the redundant project context document and simplified documentation ownership. `README.md` became the primary project reference, `AGENTS.md` retained stable agent guardrails, `CLAUDE.md` became import-only, and `docs/CHANGELOG.md` retained significant changes. Both README languages received the confirmed public demo link; the original proposal for a manual release procedure and deployed-revision tracking was not adopted.
 - **Verification:** Static inspection confirmed document removal, consistent README commands and paths, PL/EN content alignment and updated document references. No deployment or runtime verification was performed. The deployed revision remained untracked by design.
 - **Impact:** High
 - **Effort:** Small
@@ -43,15 +43,15 @@ The remaining improvements were implemented within the existing technology stack
 
 - **Status:** COMPLETED — implemented and verified.
 - **Result:** Replaced the manually maintained Vite MPA page list with automatic discovery of root-level `*.html` files using Node.js `readdirSync`. Preserved `appType: "mpa"`, relative base paths and existing output structure. Updated Polish and English README descriptions to remove hard-coded page counts.
-- **Verification:** The production build was byte-identical to the previous baseline. A temporary root-level HTML page was included automatically, while a nested test page was excluded. Both probes were removed afterward. Any regular root-level `*.html` file, including a temporary draft, remains eligible for the build.
+- **Verification:** The production build was byte-identical to the previous baseline. A temporary root-level HTML page was included automatically and a nested test page was excluded; both probes were removed afterward. Any regular root-level `*.html` file, including a temporary draft, remains eligible for the build.
 - **Impact:** Medium
 - **Effort:** Small
 
 ### IMP-WORKFLOW-05 — Give the Prettier workflow a defined scope and a read-only check
 
 - **Status:** COMPLETED — implemented and verified within the approved scope.
-- **Result:** Added `.prettierignore` to exclude generated output, dependencies, the lockfile, licensing content, legal pages and archived documents. Added the read-only `format:check` script while preserving the existing writing command and Prettier defaults. Updated README in both languages. No repository-wide baseline formatting was performed.
-- **Verification:** `npm run format:check` ran without modifying files but exited with code 1 because of existing formatting differences. An LF-normalized copy identified 12 files with content differences; checksum and Git checks confirmed the command was read-only. Exclusions were verified without running the writing command. LF checkout rules were added later in a separate change, but a fully passing formatting baseline was not established.
+- **Result:** Added `.prettierignore` to exclude generated output, dependencies, the lockfile, licensing content, legal pages and archived documents. Added the read-only `format:check` script and updated both README languages, preserving the existing writing command and Prettier defaults. No repository-wide baseline formatting was performed.
+- **Verification:** `npm run format:check` ran without modifying files but exited with code 1 because of existing formatting differences. An LF-normalized copy identified 12 files with content differences; checksum and Git checks confirmed the command was read-only, and exclusions were verified without running the writing command. LF checkout rules were added later in a separate change, but a fully passing formatting baseline was not established.
 - **Impact:** Medium
 - **Effort:** Medium
 

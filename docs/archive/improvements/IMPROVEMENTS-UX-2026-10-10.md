@@ -48,8 +48,8 @@ The changes preserved existing accessibility contracts, responsive behavior, lig
 ### IMP-UX-05 — Keep FAQ answers and package details readable when JavaScript does not run
 
 - **Status:** COMPLETED — implemented and verified.
-- **Result:** Made six FAQ answers and three pricing-detail panels accessible without JavaScript. Added shared `partials/disclosure-init.html` and `.js-pending` state handling to recover from failed `main.js` loading without normal-load flicker. Preserved disclosure controls, ARIA synchronization, filtering and keyboard behavior. Future restrictive CSP configurations must authorize the inline initializer.
-- **Verification:** ESLint, `npm run build` and focused Chrome 154 checks at 375 px and 1280 px passed. Verified disabled JavaScript, failed module loading, CSP blocking, accessibility-tree exposure and unchanged JavaScript interactions. Normal and delayed loading showed no disclosure-related layout shifts. Runtime errors inside `main.js` remained outside scope.
+- **Result:** Made six FAQ answers and three pricing-detail panels accessible without JavaScript, preserving disclosure controls, ARIA synchronization, filtering and keyboard behavior. Added shared `partials/disclosure-init.html` and `.js-pending` state handling to recover from failed `main.js` loading without normal-load flicker. Future restrictive CSP configurations must authorize the inline initializer.
+- **Verification:** ESLint, `npm run build` and focused Chrome 154 checks at 375 px and 1280 px passed. Verified disabled JavaScript, failed module loading, CSP blocking, accessibility-tree exposure and unchanged JavaScript interactions. Normal and delayed loading showed no disclosure-related layout shifts; runtime errors inside `main.js` remained outside scope.
 - **Impact:** Medium
 - **Effort:** Medium
 

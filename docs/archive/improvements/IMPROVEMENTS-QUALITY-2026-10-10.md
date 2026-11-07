@@ -18,7 +18,7 @@ The changes preserved existing functionality, accessibility contracts, responsiv
 ### IMP-QUALITY-01 — Verify ID references and fragment links in the built pages with a dependency-free check
 
 - **Status:** COMPLETED — implemented and verified.
-- **Result:** Added the read-only `scripts/check-references.js` checker, exposed as `npm run check:references`. It validates duplicate IDs, ARIA references, `label[for]` associations and internal fragment links in built HTML pages. Errors identify the affected page, line and reference. No dependencies were added.
+- **Result:** Added the read-only, dependency-free `scripts/check-references.js` checker, exposed as `npm run check:references`. It validates duplicate IDs, ARIA references, `label[for]` associations and internal fragment links in built HTML pages. Errors identify the affected page, line and reference.
 - **Verification:** Build, lint, Node syntax and reference checks passed (9 pages, 204 references). Negative probes for missing targets, duplicate IDs and missing `dist/` correctly failed with diagnostics. The checker uses targeted HTML pattern matching rather than a full parser.
 - **Impact:** High
 - **Effort:** Small
@@ -43,7 +43,7 @@ The changes preserved existing functionality, accessibility contracts, responsiv
 
 - **Status:** COMPLETED — implemented and verified.
 - **Result:** Protected the contact form with native `inert`, removed only after its JavaScript submission handler is registered. Without JavaScript, the form remains inactive and displays alternative e-mail and telephone links. The existing initializer prevents notice flicker, while README and legal documents describe the updated behavior.
-- **Verification:** Lint, build, reference checks and Chrome tests at 375 px and 1280 px passed. Verified disabled JavaScript, blocked module loading, unchanged URL, no GET submission, working fallback links and preserved validation. A negative control without `inert` confirmed detection of the original GET leak. Other browser engines and external link handlers were not tested.
+- **Verification:** Lint, build, reference checks and Chrome tests at 375 px and 1280 px passed, covering disabled JavaScript, blocked module loading, unchanged URL, no GET submission, working fallback links and preserved validation. A negative control without `inert` confirmed detection of the original GET leak. Other browser engines and external link handlers were not tested.
 - **Impact:** Medium
 - **Effort:** Medium
 
@@ -51,7 +51,7 @@ The changes preserved existing functionality, accessibility contracts, responsiv
 
 - **Status:** COMPLETED — implemented and verified.
 - **Result:** Extended `npm run check:references` to verify built application module paths against the `appModule` expression read directly from `partials/disclosure-init.html`. Applicable pages are discovered automatically, and mismatches produce actionable diagnostics. The checker remains read-only and dependency-free.
-- **Verification:** Build, lint, Node syntax and reference checks passed (9 pages, 204 references). Module paths matched on `index.html`, `guide.html`, `pricing.html` and `contact.html`; five other pages were correctly skipped. Negative probes for an incompatible module path and an unreadable expression exited with code 1. Runtime module failures were not tested in the browser.
+- **Verification:** Build, lint, Node syntax and reference checks passed (9 pages, 204 references), with matching module paths on `index.html`, `guide.html`, `pricing.html` and `contact.html` and five other pages correctly skipped. Negative probes for an incompatible module path and an unreadable expression exited with code 1. Runtime module failures were not tested in the browser.
 - **Impact:** Low
 - **Effort:** Small
 
