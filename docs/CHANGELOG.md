@@ -27,35 +27,34 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Changed
 
-- Expanded the three pricing package details panels from three short lines to four package-specific features each, every one an `h3.pricing__feature-title` in Playfair over one supporting sentence, introduced by a quiet „Zakres pakietu” label under the existing opening hairline. Page-local CSS hangs a bronze leading rule beside each title in its own column and widens the shared `ul.pricing__features` gap, now with `role="list"`. Button labels, `data-details-toggle`, `aria-expanded`/`aria-controls`, the `pricing-1`–`pricing-3` panels, the native `hidden` state, the no-JavaScript fallback and the filter are unchanged.
-- Replaced the wrapping `.badge` label pairs on the six services entries with native `ul.services-list__meta` lists of three supporting points each, one per row at every breakpoint, adding one point per service. Each point keeps the bronze leading rule through page-local CSS, with wrapped text hanging under its first word; the numbered catalogue layout and the shared `.badge` rules are unchanged.
-- Replaced the 40 text "Wróć do spisu treści" links on the Terms, Privacy and Cookies pages with icon-only 44 × 44 px circular links carrying a decorative SVG arrow; the circular border is invisible at rest, and on hover and focus only its lower edge takes the accent while the arrow lifts slightly, without movement under reduced motion. The links keep `href="#spis-tresci"`, native keyboard focus and the same accessible name via `aria-label`.
-- Corrected the mobile menu's accessible button name and isolated covered page content with native `inert`, restoring original states on every close path and desktop resize. Extended smoke coverage for accessibility-tree isolation, keyboard focus and state restoration.
-- Replaced the 92 KB raster-wrapped SVG favicon with a 1,613-byte vector icon using the brand emblem’s unchanged paths on the existing white square tile, which keeps it legible in light and dark browser interfaces. Other favicon formats, the web manifest and page references are unchanged.
-- Established a passing Prettier baseline: formatted the 13 in-scope files with the existing default Prettier 3 setup and unchanged `.prettierignore` exclusions, so `npm run format:check` passes on a clean LF checkout. Bundled JS/CSS and rendered pages are unchanged.
-- Enabled native no-JavaScript submission of `kontakt-kp-code`: removed `inert`, kept browser constraint validation until `js/main.js` sets `novalidate` after attaching its handler, and updated the fallback notice, README and legal copy. Added Playwright tests for disabled JavaScript, a failed module load and the preserved custom e-mail error.
-- Removed the inactive scroll-reveal mechanism: 29 `data-reveal` attributes, the reveal `IntersectionObserver` in `js/main.js` and the unused `.reveal` utility rules. Rendering is unchanged, and back-to-top keeps its `.is-visible` state and reduced-motion scrolling.
-- Applied stored light/dark preferences before first paint via the existing inline head initializer, preserving system fallback and read-only initialization. Added a Playwright regression test with the application module blocked.
-- Identified the real KP_Code Digital Studio office address (`ul. Marynarki Wojennej 12/31, 33-100 Tarnów`) in the marketing footer, contact page, metadata and Terms, while keeping the fictional 24/7 availability distinct.
-- Replaced the 254 KB raster-wrapped brand SVG with a 1,575-byte vector emblem. Preserved its dimensions, alignment and light/dark/system theme rendering in the header and footers.
-- Clarified Eternal Rest’s demonstration status in the shared footer and attributed genuine contact channels to KP_Code Digital Studio. Updated contact CTAs and metadata without presenting fictional services as operational.
+- Expanded all three pricing package details panels to four package-specific features with headings and supporting text, preserving list accessibility, filtering, disclosure behavior and no-JavaScript access.
+- Replaced badges on all six service entries with semantic lists of three stacked supporting points each, preserving the responsive numbered catalogue layout.
+- Replaced text links back to legal-page tables of contents with circular icon links, preserving destinations, accessible names, keyboard focus and reduced-motion support.
+- Corrected the mobile menu's accessible button name and added native `inert` content isolation with state restoration on close and desktop resize, backed by accessibility and focus smoke tests.
+- Replaced the raster-wrapped SVG favicon with a compact vector icon, preserving the brand emblem and its legibility in light and dark browser interfaces.
+- Established a passing `npm run format:check` baseline on LF checkouts while preserving the existing Prettier configuration, exclusions, bundles and rendered output.
+- Enabled native contact-form submission without JavaScript, retaining browser validation until custom handling initializes and covering disabled JavaScript, module-load failures and custom email errors with Playwright tests.
+- Removed the inactive scroll-reveal mechanism while preserving rendering, back-to-top behavior and reduced-motion scrolling.
+- Applied stored light/dark preferences before first paint, preserving system fallback and read-only initialization with regression coverage for a blocked application module.
+- Identified KP_Code Digital Studio’s real office address in the marketing footer, contact page, metadata and Terms, keeping fictional 24/7 availability distinct.
+- Replaced the raster-wrapped brand SVG with a compact vector emblem, preserving layout and light/dark/system theme rendering in the header and footers.
+- Clarified Eternal Rest’s demonstration status and attributed genuine contact channels to KP_Code Digital Studio across the shared footer, contact CTAs and metadata.
 - Unified the pricing filter and package disclosure chevrons using a shared accent style, preserving native select behavior, keyboard accessibility and focus states.
 - Applied the shared `.accordion--editorial` styling to the guide FAQ, matching the homepage while preserving accordion behavior, ARIA and no-JavaScript access.
-- Connected `kontakt-kp-code` to Netlify Forms with validated POST submission, pending-state protection and accessible success/error feedback. Added mocked Playwright tests and aligned contact, legal and privacy copy with real enquiries to KP_Code Digital Studio.
+- Connected the contact form to Netlify Forms with validated POST submission, pending-state protection, accessible feedback and mocked Playwright coverage, aligning contact and legal copy with real KP_Code Digital Studio enquiries.
 - Removed the redundant preferred-contact toggle, hidden input and related styles/scripts from the contact form, preserving validation and error handling.
-- Removed duplicate phone/address details from the contact masthead and added KP_Code Digital Studio attribution to the office panel; removed unused layout rules.
-- Replaced the homepage FAQ with project-focused questions, clarified form behavior and linked the closing action to the project author. Preserved accordion accessibility and behavior.
-
+- Removed duplicate phone/address details from the contact masthead and added KP_Code Digital Studio attribution to the office panel.
+- Replaced the homepage FAQ with project-focused questions, clarified form behavior and linked the closing action to the project author while preserving accordion accessibility and behavior.
 - Added `noindex, follow` to all nine pages and removed the sitemap directive from `robots.txt`, retaining crawler access, social metadata and the existing sitemap.
 
 ### Added
 
-- Added three app shortcuts to `site.webmanifest` in the order Usługi, Cennik and Kontakt, opening `../services.html`, `../pricing.html` and `../contact.html` with Polish names, short names and descriptions. Each has a dedicated 192 × 192 px PNG icon in `public/shortcuts/` (`services-`, `pricing-` and `contact-192x192.png`): a list, a price tag and an envelope in the site's text color with a bronze accent on the light page background, encoded with Sharp. Existing manifest properties, including both screenshots, are unchanged; shortcut display depends on browser and operating-system support, and no offline or service-worker behavior was added.
-- Added two installation-preview screenshots of the homepage to `site.webmanifest`: `public/screenshots/desktop-home.webp` (1280 × 720, `form_factor: "wide"`) and `public/screenshots/mobile-home.webp` (390 × 844, `form_factor: "narrow"`), referenced as `../screenshots/…` with Polish labels. Both were captured from the production build served by Vite Preview in Chromium at device scale factor 1 in the light theme and encoded with Sharp; existing manifest properties are unchanged, and no offline or service-worker behavior was added.
-- Added a local Lighthouse CI performance baseline: `npm run audit:performance` builds once and runs `scripts/audit-performance.js`, which serves `dist/` with Vite Preview on `127.0.0.1:8183` and uses `lighthouserc.json` to collect three runs each of `index.html`, `pricing.html`, `guide.html` and `contact.html` separately with Lighthouse's mobile default and desktop preset (24 runs), ignoring `LHCI_*` environment overrides. Per-run HTML/JSON reports and a `summary.json` with per-metric medians (Performance 0–100, LCP, CLS, TBT, FCP) are written to the Git-ignored `reports/performance/`; execution failures and incomplete baselines exit non-zero, and scores have no thresholds. `@lhci/cli` 0.15.1 (Lighthouse 12.6.1) is the only new development dependency; the README records the verified 24/24 baseline, and no CI job was added.
-- Added an automated axe-core accessibility baseline: `npm run test:a11y` builds once and runs `tests/accessibility.spec.js` through `playwright.a11y.config.js` in Chromium only, scanning all ten pages and five interactive states in light and dark themes (30 scans) against the WCAG 2.0/2.1/2.2 A and AA tags, with `@axe-core/playwright` 4.14.0 as the only new development dependency and per-scan results in the Git-ignored `reports/accessibility/`. The first local baseline found no rule violations and 100 `color-contrast` results requiring manual review; the smoke configuration, its 39 executions and the CI workflow are unchanged, and no CI gate was added.
-- Added a branded, responsive `404.html` with shared page chrome, theme support and homepage/contact navigation. A page-local base URL keeps assets and links rooted when served at nested unknown paths, including a native skip link to `/404.html#main`. Verified the production build, reference/module-path checks and a focused Chromium smoke test with a simulated nested 404 response, including navigation without JavaScript; production HTTP 404 handling remains a post-deployment Netlify check.
-- Added a Netlify Forms honeypot (`data-netlify-honeypot="bot-field"`) to `kontakt-kp-code` as a `hidden` markup-only field, sent empty in the URL-encoded POST body; the mocked Playwright submission test asserts the configuration and payload.
+- Added Usługi, Cennik and Kontakt manifest shortcuts with Polish labels and dedicated icons, subject to browser and OS support and without adding offline or service-worker behavior.
+- Added desktop and mobile homepage screenshots with Polish labels to the web manifest for installation previews, without adding offline or service-worker behavior.
+- Added a local Lighthouse CI performance baseline via `npm run audit:performance` and `@lhci/cli` 0.15.1, collecting reports and metric medians from 24 mobile/desktop runs across four production pages, ignoring `LHCI_*` overrides and failing on errors or incomplete results without score thresholds or CI integration.
+- Added a local Chromium axe-core baseline using `@axe-core/playwright` 4.14.0 and `npm run test:a11y` for 30 light/dark WCAG 2.0/2.1/2.2 A/AA scans across ten pages and five interactive states, initially finding no rule violations and 100 contrast results requiring manual review, without a CI gate.
+- Added a branded, responsive 404 page with theme support, accessible navigation and nested-path asset resolution without JavaScript, leaving production HTTP 404 handling for post-deployment Netlify verification.
+- Added a hidden Netlify Forms honeypot to the contact form with mocked Playwright coverage for its configuration and empty POST value.
 - Added an optimized AVIF/WebP still-life photograph to the services masthead with responsive, uncropped presentation and the shared `.spotlight` component.
 - Added an optimized AVIF/WebP still-life photograph to the pricing masthead with responsive cropping and the shared `.spotlight` component.
 - Added an optimized AVIF/WebP team photograph to the about masthead with responsive framing and the shared `.spotlight` component.
@@ -117,8 +116,8 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Build and Tooling
 
-- Extended the existing Playwright smoke suite to Chromium, Firefox and WebKit, preserving Chromium CDP accessibility-tree checks and shared navigation, inert and focus assertions. Kept `test:smoke` Chromium-only, added `test:cross-browser` for Firefox/WebKit, and configured `Quality Checks` to install and run all three engines against one production build.
-- Extended the read-only `Quality Checks` workflow to pull requests targeting `main`, keeping the `push`-to-`main` and manual triggers and the existing check sequence; the result is not a required merge check.
+- Extended Playwright smoke coverage across Chromium, Firefox and WebKit, retaining Chromium-only `test:smoke` and CDP accessibility-tree checks, adding Firefox/WebKit `test:cross-browser`, and running all engines in `Quality Checks` against one production build.
+- Extended the read-only `Quality Checks` workflow to pull requests targeting `main`, preserving pushes to `main` and manual triggers without making it a required merge check.
 - Added the existing Chromium smoke tests to the read-only GitHub Actions `Quality Checks` workflow after lint, build and reference checks; Netlify deployment remains manual.
 - Added `npm run check:references` to validate HTML IDs, ARIA references, labels and internal links.
 - Extended `check:references` to detect disclosure initializer and application module mismatches.
@@ -131,7 +130,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 - Standardized public HTML filenames in English while preserving Polish interface content.
 - Added shared legal-page styles through the canonical CSS import chain.
 - Added `package-lock.json` for reproducible dependency installation with `npm ci`.
-- **Breaking:** Replaced the legacy build commands with a Vite-based `npm run build` pipeline and Vite preview, including relative production asset paths.
+- Replaced the legacy build commands with a Vite-based `npm run build` pipeline and Vite preview, including relative production asset paths (**breaking change**).
 - Added a separate Sharp-based WebP/AVIF image conversion command.
 - Added ESLint checks and Prettier formatting support.
 
