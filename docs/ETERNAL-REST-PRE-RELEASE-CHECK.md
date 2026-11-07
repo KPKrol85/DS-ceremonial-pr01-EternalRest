@@ -22,13 +22,13 @@
 
 ## 2. Frontend, UX & Responsiveness
 
-- [ ] The homepage, key subpages, navigation, and internal links function correctly.
-- [ ] Calls to action, galleries, menus, dialogs, FAQ sections, and other implemented interactions behave as intended.
-- [ ] Layouts display correctly on mobile, tablet, and desktop viewports.
-- [ ] Images, icons, fonts, and other visual assets load and display correctly.
-- [ ] Supported light, dark, and system themes function consistently, where applicable.
-- [ ] No significant layout defects, unwanted horizontal scrolling, or visual regressions remain.
-- [ ] No critical JavaScript errors appear in the browser console.
+- [x] The homepage, key subpages, navigation, and internal links function correctly.
+- [x] Calls to action, galleries, menus, dialogs, FAQ sections, and other implemented interactions behave as intended.
+- [x] Layouts display correctly on mobile, tablet, and desktop viewports.
+- [x] Images, icons, fonts, and other visual assets load and display correctly.
+- [x] Supported light, dark, and system themes function consistently, where applicable.
+- [x] No significant layout defects, unwanted horizontal scrolling, or visual regressions remain.
+- [x] No critical JavaScript errors appear in the browser console.
 
 ## 3. Accessibility & Performance
 
