@@ -485,7 +485,7 @@ html[data-theme] .theme-toggle--icon {
 .hero__lead {
   max-width: 32rem;
   font-size: var(--font-size-lg);
-  color: var(--color-text-muted);
+  color: var(--color-text);
   text-wrap: pretty;
 }
 
@@ -493,6 +493,10 @@ html[data-theme] .theme-toggle--icon {
    at 3:1 or more against every crop; hover still turns it to the accent. */
 .hero__actions .button--secondary {
   border-color: color-mix(in srgb, var(--color-text) 55%, var(--color-bg));
+}
+
+.hero__actions .button--secondary:focus-visible {
+  outline-color: var(--color-text);
 }
 
 /* Forced colors replace the stage colors, so the photograph steps aside for system contrast. */
@@ -922,6 +926,16 @@ html[data-theme] .theme-toggle--icon {
   background: var(--color-surface);
   /* Keeps a focused field and its label clear of the sticky header. */
   scroll-margin-top: 9rem;
+}
+
+/* Empty text-entry fields need a stronger boundary than decorative separators. */
+.form__input,
+.form__textarea {
+  border-color: color-mix(
+    in srgb,
+    var(--color-text-muted) 70%,
+    var(--color-surface)
+  );
 }
 
 .form__input[aria-invalid="true"],
@@ -1427,7 +1441,7 @@ html[data-theme] .theme-toggle--icon {
         to right,
         var(--color-bg),
         color-mix(in srgb, var(--color-bg) 88%, transparent) 30%,
-        color-mix(in srgb, var(--color-bg) 45%, transparent) 55%,
+        color-mix(in srgb, var(--color-bg) 60%, transparent) 55%,
         transparent 75%
       ),
       linear-gradient(
