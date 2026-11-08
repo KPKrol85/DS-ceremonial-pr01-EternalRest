@@ -412,6 +412,9 @@
       if (field.type === "email" && field.validity.typeMismatch) {
         return "Podaj poprawny adres e-mail.";
       }
+      if (field.type === "tel" && field.validity.patternMismatch) {
+        return "Podaj poprawny numer telefonu, np. 533 537 091.";
+      }
       return "";
     };
     const setFieldError = (field, message) => {

@@ -27,6 +27,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Changed
 
+- Validated Polish telephone formats before contact-form submission in native and JavaScript modes, preserving accessible feedback and Netlify Forms integration.
 - Expanded all three pricing package details panels to four package-specific features with headings and supporting text, preserving list accessibility, filtering, disclosure behavior and no-JavaScript access.
 - Replaced badges on all six service entries with semantic lists of three stacked supporting points each, preserving the responsive numbered catalogue layout.
 - Replaced text links back to legal-page tables of contents with circular icon links, preserving destinations, accessible names, keyboard focus and reduced-motion support.

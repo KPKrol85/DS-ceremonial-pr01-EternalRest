@@ -365,6 +365,27 @@ const contactValues = {
   topic: "Nowa strona internetowa",
   message: "Wiadomość testowa.",
 };
+const validPhoneNumbers = [
+  "533537091",
+  "533 537 091",
+  "+48533537091",
+  "+48 533537091",
+  "+48533 537 091",
+  "+48 533 537 091",
+];
+const invalidPhoneNumbers = [
+  "fdksjfsjd",
+  "12345",
+  "53353709",
+  "5335370910",
+  "48 533 537 091",
+  "+4 533 537 091",
+  "+49 533 537 091",
+  "533-537-091",
+  "533  537 091",
+  "533 537091",
+  " 533537091 ",
+];
 
 const fillContactForm = async (page) => {
   await page.getByLabel("Imię i nazwisko").fill(contactValues.name);
@@ -527,6 +548,112 @@ test("invalid contact e-mail keeps the custom error instead of native validation
   expect(requests).toHaveLength(0);
 });
 
+test("supported contact phone formats submit without changing the value", async ({
+  page,
+}) => {
+  const requests = [];
+  await page.route(
+    (url) => isSubmission(url) || isNativeSubmission(url),
+    async (route) => {
+      if (route.request().method() !== "POST") return route.fallback();
+      requests.push(route.request());
+      await route.fulfill({ status: 200, contentType: "text/html", body: "" });
+    },
+  );
+  await page.goto("/contact.html");
+
+  const phone = page.getByLabel("Telefon kontaktowy");
+  for (const [index, value] of validPhoneNumbers.entries()) {
+    await test.step(value, async () => {
+      await fillContactForm(page);
+      await phone.fill(value);
+      await expect(page.locator("#phone:valid")).toHaveCount(1);
+      await page.getByRole("button", { name: "Wyślij zgłoszenie" }).click();
+      await expect(page.locator("[data-form-success]")).toBeVisible();
+      await expect(phone).not.toHaveAttribute("aria-invalid");
+      await expect(page.locator("#error-phone")).toBeEmpty();
+      expect(requests).toHaveLength(index + 1);
+      const request = requests[index];
+      expect(new URL(request.url()).pathname).toBe("/");
+      expect(
+        Object.fromEntries(new URLSearchParams(request.postData() ?? "")),
+      ).toEqual({
+        "form-name": "kontakt-kp-code",
+        "bot-field": "",
+        ...contactValues,
+        phone: value,
+      });
+    });
+  }
+});
+
+test("invalid contact phone blocks POST and recovers with accessible feedback", async ({
+  page,
+}) => {
+  const requests = [];
+  await page.route(
+    (url) => isSubmission(url) || isNativeSubmission(url),
+    async (route) => {
+      if (route.request().method() !== "POST") return route.fallback();
+      requests.push(route.request());
+      await route.fulfill({ status: 200, contentType: "text/html", body: "" });
+    },
+  );
+  await page.goto("/contact.html");
+
+  const phone = page.getByLabel("Telefon kontaktowy");
+  const error = page.locator("#error-phone");
+  const submit = page.getByRole("button", { name: "Wyślij zgłoszenie" });
+  const message = "Podaj poprawny numer telefonu, np. 533 537 091.";
+  await expect(page.locator("[data-validate-form]")).toHaveAttribute(
+    "novalidate",
+    "",
+  );
+  await fillContactForm(page);
+
+  for (const value of invalidPhoneNumbers) {
+    await test.step(value, async () => {
+      await phone.fill(value);
+      await submit.click();
+      await expect(phone).toHaveAttribute("aria-invalid", "true");
+      await expect(phone).toHaveAttribute("aria-describedby", "error-phone");
+      await expect(phone).toHaveAccessibleDescription(message);
+      await expect(error).toBeVisible();
+      await expect(error).toHaveText(message);
+      await expect(phone).toBeFocused();
+      await expect(page.locator("[data-form-success]")).toBeHidden();
+      await expect(page.locator("[data-form-failure]")).toBeHidden();
+      await expect(page).toHaveURL("/contact.html");
+      expect(requests).toHaveLength(0);
+    });
+  }
+
+  for (const id of ["name", "email", "topic", "message"]) {
+    await expect(page.locator(`#${id}`)).not.toHaveAttribute("aria-invalid");
+  }
+  // With multiple errors the earlier field still receives focus.
+  const email = page.getByLabel("Adres e-mail");
+  await email.fill("jan.testowy");
+  await submit.click();
+  await expect(email).toBeFocused();
+  await expect(phone).toHaveAttribute("aria-invalid", "true");
+  await email.fill(contactValues.email);
+  await submit.click();
+  await expect(phone).toBeFocused();
+
+  // Error recovery keeps the required message and clears only for a valid value.
+  await phone.fill("");
+  await expect(error).toHaveText("To pole jest wymagane.");
+  await expect(phone).toHaveAttribute("aria-invalid", "true");
+  await phone.fill("12345");
+  await expect(error).toHaveText(message);
+  await expect(phone).toHaveAttribute("aria-invalid", "true");
+  await phone.fill(validPhoneNumbers[0]);
+  await expect(error).toBeEmpty();
+  await expect(phone).not.toHaveAttribute("aria-invalid");
+  expect(requests).toHaveLength(0);
+});
+
 const routeNativeSubmissions = async (page) => {
   const requests = [];
   await page.route(isNativeSubmission, async (route) => {
@@ -546,6 +673,7 @@ const expectNativeContactSubmission = async (page, requests) => {
   const fallback = page.locator("[data-form-fallback]");
   const submit = page.getByRole("button", { name: "Wyślij zgłoszenie" });
   const email = page.getByLabel("Adres e-mail");
+  const phone = page.getByLabel("Telefon kontaktowy");
   await expect(fallback).toBeVisible();
   await expect(fallback).toContainText(
     "Formularz zostanie wysłany bezpośrednio przez przeglądarkę",
@@ -579,6 +707,23 @@ const expectNativeContactSubmission = async (page, requests) => {
   expect(requests).toHaveLength(0);
 
   await email.fill(contactValues.email);
+  for (const value of validPhoneNumbers) {
+    await phone.fill(value);
+    await expect(page.locator("#phone:valid")).toHaveCount(1);
+  }
+  for (const value of invalidPhoneNumbers) {
+    await test.step(`Native validation: ${value}`, async () => {
+      await phone.fill(value);
+      await submit.click();
+      await expect(phone).toBeFocused();
+      await expect(page.locator("#phone:invalid")).toHaveCount(1);
+      await expect(phone).toHaveValue(value);
+      await expect(page.locator("#error-phone")).toBeEmpty();
+      expect(requests).toHaveLength(0);
+    });
+  }
+
+  await phone.fill(contactValues.phone);
   await submit.click();
   await expect(page.getByText("Potwierdzenie testowe")).toBeVisible();
   // The values travel in the POST body only, never in the URL.
