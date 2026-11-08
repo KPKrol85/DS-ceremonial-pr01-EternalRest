@@ -32,8 +32,8 @@
 
 ## 3. Accessibility & Performance
 
-- [ ] Keyboard navigation and visible focus indicators function correctly.
-- [ ] Interactive elements have accessible names, labels, and appropriate states.
+- [x] Keyboard navigation and visible focus indicators function correctly.
+- [x] Interactive elements have accessible names, labels, and appropriate states.
 - [ ] Headings, landmarks, image alternatives, and form feedback are accessible.
 - [ ] Text contrast and reduced-motion behavior meet the project's accessibility requirements.
 - [ ] Available accessibility checks pass without unresolved critical findings.
