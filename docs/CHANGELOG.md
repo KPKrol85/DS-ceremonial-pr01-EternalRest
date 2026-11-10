@@ -27,6 +27,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Changed
 
+- Redirected the homepage family-support CTA, relabelled “Sprawdź możliwości”, to its services entry and removed sample 24/7 availability from author contact blocks, retaining it in demonstration service descriptions.
 - Corrected contact-field boundaries, hero description contrast and hero telephone focus visibility across light, dark and system themes.
 - Validated Polish telephone formats before contact-form submission in native and JavaScript modes, preserving accessible feedback and Netlify Forms integration.
 - Expanded all three pricing package details panels to four package-specific features with headings and supporting text, preserving list accessibility, filtering, disclosure behavior and no-JavaScript access.
