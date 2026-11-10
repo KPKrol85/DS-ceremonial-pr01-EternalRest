@@ -27,6 +27,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Changed
 
+- Added demonstration context to the Services, Pricing and Guide metadata descriptions, described contact buttons in the Terms as genuine author channels and removed obsolete funeral-home contact and callback references from the legal pages.
 - Redirected the homepage family-support CTA, relabelled “Sprawdź możliwości”, to its services entry and removed sample 24/7 availability from author contact blocks, retaining it in demonstration service descriptions.
 - Corrected contact-field boundaries, hero description contrast and hero telephone focus visibility across light, dark and system themes.
 - Validated Polish telephone formats before contact-form submission in native and JavaScript modes, preserving accessible feedback and Netlify Forms integration.
