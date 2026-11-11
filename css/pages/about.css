@@ -6,6 +6,13 @@
   gap: var(--space-xl);
 }
 
+/* Demonstration notice under the lead, matching the guide and pricing notes. */
+.about-hero__note {
+  margin-top: var(--space-md);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+}
+
 /* The spotlight component (css/components.css) adds the light over the photograph; faces
    take it more readily than paper, so it stays gentler here, as on the contact page. */
 .about-hero__media {
