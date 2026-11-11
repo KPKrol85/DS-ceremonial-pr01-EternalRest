@@ -27,6 +27,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Changed
 
+- Added a demonstration notice beneath the Services masthead description, identifying the described services, scope of support and availability as illustrative in the style of the About note.
 - Added a demonstration notice beneath the About masthead description, identifying the company history, experience and team as fictional in the style of the Guide and Pricing notes.
 - Replaced the pricing quotation disclaimer with an explicit demonstration notice, matching the Guide FAQ note's font size.
 - Added demonstration context to the Services, Pricing and Guide metadata descriptions, described contact buttons in the Terms as genuine author channels and removed obsolete funeral-home contact and callback references from the legal pages.

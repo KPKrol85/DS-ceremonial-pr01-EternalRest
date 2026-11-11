@@ -6,6 +6,13 @@
   gap: var(--space-xl);
 }
 
+/* Demonstration notice under the lead, matching the about hero note. */
+.services-hero__note {
+  margin-top: var(--space-md);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+}
+
 /* The spotlight component (css/components.css) adds the light over the photograph; it stays
    gentler here, as on the about, contact and pricing pages. */
 .services-hero__media {
