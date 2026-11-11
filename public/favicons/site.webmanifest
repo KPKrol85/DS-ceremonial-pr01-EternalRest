@@ -1,6 +1,7 @@
 {
   "name": "Eternal Rest",
   "short_name": "Eternal Rest",
+  "description": "Eternal Rest to demonstracyjna strona domu pogrzebowego przygotowana przez KP_Code Digital Studio. Poznaj przykładowe usługi, cennik i poradnik.",
   "id": "/",
   "start_url": "/",
   "scope": "/",
