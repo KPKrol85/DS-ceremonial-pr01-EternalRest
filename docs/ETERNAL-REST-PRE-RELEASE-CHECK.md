@@ -63,7 +63,7 @@
 - [x] Indexing directives, `robots.txt`, and `sitemap.xml` reflect the intended published pages.
 - [x] Structured data is valid and consistent with visible content, where implemented.
 - [x] Public URLs, internal references, and social-preview assets are valid and current.
-- [ ] Utility and demonstration-only pages use appropriate indexing policies.
+- [x] Utility and demonstration-only pages use appropriate indexing policies.
 
 ## 7. PWA & Offline Support
 
