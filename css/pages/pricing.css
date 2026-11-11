@@ -105,6 +105,11 @@
   text-wrap: pretty;
 }
 
+/* Demonstration note under the packages: the same small size as the guide's FAQ note. */
+.pricing__note {
+  font-size: var(--font-size-xs);
+}
+
 /* Pricing controls share one chevron: the disclosure buttons keep the shared accent stroke
    (css/components.css), slightly smaller and further from the label, and the filter draws
    the same shape in place of the native arrow. */
