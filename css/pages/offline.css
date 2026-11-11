@@ -1,0 +1,24 @@
+/* Offline page (offline.html), served by the service worker and built on the error page
+   layout of 404.css. */
+
+.offline-page__icon {
+  width: 0.8em;
+  height: 0.8em;
+}
+
+.offline-page__body {
+  display: grid;
+  gap: var(--space-sm);
+  max-width: 62ch;
+  margin-bottom: var(--space-xl);
+}
+
+/* The live region stays in the accessibility tree; it takes space only with a message. */
+.offline-page__status:not(:empty) {
+  margin-top: var(--space-lg);
+}
+
+/* The retry button works through main.js; without it the page asks for a manual refresh. */
+.no-js:not(.js-pending) .offline-page__retry {
+  display: none;
+}

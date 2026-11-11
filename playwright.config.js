@@ -4,7 +4,7 @@ const baseURL = "http://127.0.0.1:8182";
 
 export default defineConfig({
   testDir: "./tests",
-  testMatch: "smoke.spec.js",
+  testMatch: ["smoke.spec.js", "service-worker.spec.js"],
   workers: 1,
   retries: 0,
   timeout: 30_000,
@@ -16,6 +16,9 @@ export default defineConfig({
     reducedMotion: "reduce",
     actionTimeout: 5_000,
     navigationTimeout: 15_000,
+    // page.route() does not see requests a service worker answers, so tests that mock the
+    // network run without one; tests/service-worker.spec.js allows it in Chromium.
+    serviceWorkers: "block",
   },
   projects: [
     { name: "chromium", use: { browserName: "chromium" } },

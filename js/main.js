@@ -483,4 +483,54 @@
       });
     });
   }
+
+  // Offline page (offline.html), which the service worker serves at the requested address.
+  // The retry reloads that address; an explicit offline state is announced instead.
+  const offlineRetry = document.querySelector("[data-offline-retry]");
+  const offlineStatus = document.querySelector("[data-offline-status]");
+  if (offlineRetry && offlineStatus) {
+    offlineRetry.addEventListener("click", () => {
+      if (navigator.onLine === false) {
+        offlineStatus.textContent =
+          "Nadal brak połączenia z internetem. Spróbuj ponownie po jego przywróceniu.";
+      } else {
+        window.location.reload();
+      }
+    });
+    window.addEventListener("online", () => {
+      offlineStatus.textContent =
+        "Połączenie z internetem zostało przywrócone. Wybierz „Spróbuj ponownie”, aby wczytać stronę.";
+    });
+  }
+
+  // Service worker (js/sw.js, built to dist/sw.js): offline access to the production build.
+  // Without support, or when registration fails, the site keeps working online.
+  if ("serviceWorker" in navigator) {
+    try {
+      if (import.meta.env.PROD) {
+        // Registered after the page load, so precaching does not compete with it.
+        const register = () => {
+          navigator.serviceWorker
+            .register("/sw.js", { scope: "/" })
+            .catch(() => {});
+        };
+        if (document.readyState === "complete") {
+          register();
+        } else {
+          window.addEventListener("load", register, { once: true });
+        }
+      } else {
+        // The development server has no service worker; one left on this origin by a
+        // production preview would otherwise keep answering requests from its caches.
+        navigator.serviceWorker
+          .getRegistrations()
+          .then((registrations) =>
+            registrations.forEach((registration) => registration.unregister()),
+          )
+          .catch(() => {});
+      }
+    } catch (error) {
+      // Service worker access can be blocked, e.g. in sandboxed frames.
+    }
+  }
 })();

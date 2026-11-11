@@ -83,7 +83,7 @@
             <div>
               <dt class="legal-meta__label">Ostatnia aktualizacja</dt>
               <dd class="legal-meta__value">
-                <time datetime="2026-10-18">18.10.2026</time>
+                <time datetime="2026-11-11">11.11.2026</time>
               </dd>
             </div>
             <div>
@@ -289,6 +289,14 @@
                 przeglądarki i nie mają określonego terminu wygaśnięcia.
               </p>
               <p>
+                Podobną technologią jest pamięć podręczna Cache Storage, z
+                której korzysta skrypt Service Worker – działający w tle element
+                strony, który może przechowywać kopie plików witryny i
+                udostępniać je, gdy urządzenie nie ma połączenia z Internetem.
+                Zawartość tej pamięci również nie jest automatycznie przesyłana
+                do serwera wraz z żądaniami przeglądarki.
+              </p>
+              <p>
                 W dalszej części dokumentu pliki cookies oraz podobne
                 technologie są łącznie określane jako „technologie
                 przechowywania danych”.
@@ -328,10 +336,13 @@
             </h2>
             <div class="legal-section__body">
               <p>
-                Aktualna wersja Serwisu korzysta z jednej technologii
-                przechowywania danych – pamięci <code>localStorage</code>
+                Aktualna wersja Serwisu korzysta z dwóch technologii
+                przechowywania danych: pamięci <code>localStorage</code>
                 przeglądarki, wykorzystywanej wyłącznie do zapamiętania motywu
-                strony wybranego przez Użytkownika.
+                strony wybranego przez Użytkownika, oraz pamięci podręcznej
+                Cache Storage, w której skrypt Service Worker Serwisu
+                przechowuje kopie plików Serwisu na potrzeby jego wyświetlania
+                bez połączenia z Internetem.
               </p>
 
               <h3 class="legal-section__subheading">Pliki cookies</h3>
@@ -395,11 +406,70 @@
               </ul>
 
               <h3 class="legal-section__subheading">
+                Pamięć podręczna Service Workera
+              </h3>
+              <p>
+                Po wczytaniu strony Serwisu w przeglądarce obsługującej
+                technologię Service Worker kod Serwisu rejestruje skrypt
+                <code>/sw.js</code>. Skrypt zapisuje w pamięci podręcznej Cache
+                Storage przeglądarki kopie publicznych plików Serwisu, aby strony
+                odwiedzone wcześniej oraz strona z informacją o braku połączenia
+                mogły zostać wyświetlone, gdy urządzenie nie ma dostępu do
+                Internetu. Zapis następuje automatycznie podczas korzystania z
+                Serwisu.
+              </p>
+              <p>Mechanizm działa w następujący sposób:</p>
+              <ul>
+                <li>
+                  po pierwszym wczytaniu strony zapisywane są pliki potrzebne do
+                  wyświetlenia strony z informacją o braku połączenia: jej kod
+                  HTML, arkusz stylów, skrypt, czcionki, ikony, manifest
+                  aplikacji i grafika,
+                </li>
+                <li>
+                  kopie stron Serwisu są zapisywane podczas ich odwiedzania – do
+                  20 stron – a zdjęcia i inne pliki Serwisu przy ich pierwszym
+                  użyciu – do 40 plików; po przekroczeniu limitu usuwane są
+                  najstarsze kopie,
+                </li>
+                <li>
+                  przy dostępnym połączeniu strony są pobierane z serwera, a
+                  zapisana kopia jest używana dopiero wtedy, gdy połączenie nie
+                  jest dostępne,
+                </li>
+                <li>
+                  zapisywane są wyłącznie publiczne pliki Serwisu, takie same
+                  dla wszystkich Użytkowników; pamięć podręczna nie obejmuje
+                  wartości Formularza, wysłanych zgłoszeń, odpowiedzi na ich
+                  wysłanie, stron błędów ani treści zewnętrznych serwisów,
+                </li>
+                <li>
+                  Formularz wymaga połączenia z Internetem; zgłoszenia nie są
+                  zapisywane na urządzeniu ani wysyłane później,
+                </li>
+                <li>
+                  po opublikowaniu nowej wersji Serwisu kopie poprzedniej wersji
+                  są usuwane, gdy zostaną zamknięte wszystkie karty przeglądarki
+                  z otwartym Serwisem,
+                </li>
+                <li>
+                  kod Serwisu nie przesyła zawartości pamięci podręcznej
+                  Operatorowi ani innym podmiotom i nie wykorzystuje jej do
+                  analityki, reklamy, śledzenia aktywności Użytkownika ani
+                  profilowania,
+                </li>
+                <li>
+                  mechanizm działa wyłącznie przy włączonym JavaScripcie i w
+                  przeglądarkach obsługujących technologię Service Worker.
+                </li>
+              </ul>
+
+              <h3 class="legal-section__subheading">
                 Wykaz technologii stosowanych w Serwisie
               </h3>
               <p>
-                Aktualna wersja Serwisu wykorzystuje wyłącznie następującą
-                technologię:
+                Aktualna wersja Serwisu wykorzystuje wyłącznie następujące
+                technologie:
               </p>
               <dl class="legal-facts">
                 <div class="legal-facts__item">
@@ -453,11 +523,71 @@
                   </dd>
                 </div>
               </dl>
+              <dl class="legal-facts">
+                <div class="legal-facts__item">
+                  <dt class="legal-facts__label">Nazwa lub klucz</dt>
+                  <dd class="legal-facts__value">
+                    skrypt <code>/sw.js</code> oraz pamięci podręczne
+                    <code>eternal-rest-precache-…</code>,
+                    <code>eternal-rest-pages-…</code> i
+                    <code>eternal-rest-runtime-…</code>, których końcowa część
+                    nazwy oznacza wersję Serwisu
+                  </dd>
+                </div>
+                <div class="legal-facts__item">
+                  <dt class="legal-facts__label">Technologia</dt>
+                  <dd class="legal-facts__value">
+                    Service Worker i pamięć podręczna Cache Storage przeglądarki
+                  </dd>
+                </div>
+                <div class="legal-facts__item">
+                  <dt class="legal-facts__label">Dostawca</dt>
+                  <dd class="legal-facts__value">
+                    Operator – zapisu dokonuje kod Serwisu w przeglądarce
+                    Użytkownika, bez udziału podmiotów trzecich
+                  </dd>
+                </div>
+                <div class="legal-facts__item">
+                  <dt class="legal-facts__label">Kategoria</dt>
+                  <dd class="legal-facts__value">
+                    funkcjonalna – przechowywanie kopii plików Serwisu na
+                    potrzeby jego wyświetlania bez połączenia z Internetem,
+                    dokonywane automatycznie podczas korzystania z Serwisu
+                  </dd>
+                </div>
+                <div class="legal-facts__item">
+                  <dt class="legal-facts__label">Cel</dt>
+                  <dd class="legal-facts__value">
+                    wyświetlanie odwiedzonych wcześniej stron Serwisu oraz strony
+                    z informacją o braku połączenia, gdy urządzenie nie ma
+                    dostępu do Internetu
+                  </dd>
+                </div>
+                <div class="legal-facts__item">
+                  <dt class="legal-facts__label">Zapisywane dane</dt>
+                  <dd class="legal-facts__value">
+                    kopie publicznych plików Serwisu: odwiedzone strony HTML,
+                    arkusz stylów, skrypt, czcionki, ikony, manifest aplikacji i
+                    grafiki; bez wartości Formularza i innych danych
+                    wprowadzanych przez Użytkownika
+                  </dd>
+                </div>
+                <div class="legal-facts__item">
+                  <dt class="legal-facts__label">Okres przechowywania</dt>
+                  <dd class="legal-facts__value">
+                    bez określonego terminu wygaśnięcia – do czasu zastąpienia
+                    kopii przy kolejnym pobraniu strony albo po aktywacji nowej
+                    wersji Serwisu, usunięcia najstarszych kopii po przekroczeniu
+                    limitu albo usunięcia danych witryny przez Użytkownika lub
+                    przeglądarkę
+                  </dd>
+                </div>
+              </dl>
               <p>W aktualnej wersji Serwisu nie są wykorzystywane:</p>
               <ul>
                 <li>
-                  <code>sessionStorage</code>, Cache Storage, Service Worker ani
-                  lokalne bazy danych przeglądarki, takie jak IndexedDB,
+                  <code>sessionStorage</code> ani lokalne bazy danych
+                  przeglądarki, takie jak IndexedDB,
                 </li>
                 <li>
                   technologie analityczne, statystyczne, reklamowe ani
@@ -500,12 +630,21 @@
               <p>
                 Technologie przechowywania danych są wykorzystywane w Serwisie
                 wyłącznie w zakresie odpowiadającym jego aktualnym
-                funkcjonalnościom. Jedynym celem ich stosowania jest
-                zapamiętanie motywu strony wybranego przez Użytkownika –
-                jasnego, ciemnego albo systemowego – tak aby był on stosowany na
-                kolejnych stronach Serwisu i podczas kolejnych wizyt w tej samej
-                przeglądarce.
+                funkcjonalnościom. Celem ich stosowania jest wyłącznie:
               </p>
+              <ul>
+                <li>
+                  zapamiętanie motywu strony wybranego przez Użytkownika –
+                  jasnego, ciemnego albo systemowego – tak aby był on stosowany
+                  na kolejnych stronach Serwisu i podczas kolejnych wizyt w tej
+                  samej przeglądarce,
+                </li>
+                <li>
+                  wyświetlanie odwiedzonych wcześniej stron Serwisu oraz strony
+                  z informacją o braku połączenia, gdy urządzenie nie ma dostępu
+                  do Internetu.
+                </li>
+              </ul>
               <p>
                 Technologie przechowywania danych nie są wykorzystywane w
                 Serwisie w szczególności do:
@@ -516,9 +655,9 @@
                   zabezpieczania Serwisu,
                 </li>
                 <li>
-                  przechowywania danych wprowadzanych w Formularzu,
+                  przechowywania danych wprowadzanych w Formularzu ani wysyłania
+                  zgłoszeń bez połączenia z Internetem,
                 </li>
-                <li>zapewnienia działania Serwisu w trybie offline,</li>
                 <li>prowadzenia analiz statystycznych ani pomiaru ruchu,</li>
                 <li>
                   wyświetlania reklam ani prowadzenia działań marketingowych,
@@ -672,13 +811,19 @@
                 usunięcie zapisu jest możliwe w ustawieniach przeglądarki.
               </p>
               <p>
+                Pamięcią podręczną Service Workera Użytkownik może zarządzać w
+                ustawieniach przeglądarki, usuwając dane witryny Serwisu; zwykle
+                usuwa to również rejestrację skryptu <code>/sw.js</code>. Serwis
+                nie udostępnia własnego przełącznika tej funkcji.
+              </p>
+              <p>
                 W zależności od przeglądarki Użytkownik może w szczególności:
               </p>
               <ul>
                 <li>
                   usunąć dane zapisane przez Serwis w pamięci
-                  <code>localStorage</code> – zwykle w ramach usuwania plików
-                  cookies i innych danych witryn,
+                  <code>localStorage</code> i Cache Storage – zwykle w ramach
+                  usuwania plików cookies i innych danych witryn,
                 </li>
                 <li>
                   zablokować zapisywanie danych przez wybrane albo wszystkie
@@ -699,6 +844,12 @@
                 pamięci przeglądarki może uniemożliwić zapamiętanie wybranego
                 motywu i ograniczyć działanie jego przełącznika. Nie ogranicza
                 to dostępu do treści Serwisu.
+              </p>
+              <p>
+                Usunięcie lub zablokowanie pamięci podręcznej Service Workera
+                powoduje, że strony Serwisu nie są dostępne bez połączenia z
+                Internetem do czasu ich ponownego odwiedzenia. Nie ogranicza to
+                dostępu do Serwisu przy dostępnym połączeniu.
               </p>
               <p>
                 Serwis nie udostępnia panelu ustawień cookies ani mechanizmu
@@ -757,8 +908,8 @@
                   społecznościowych ładowanych z zewnętrznych serwerów,
                 </li>
                 <li>
-                  zewnętrznych czcionek – strony korzystają z czcionek
-                  dostępnych na urządzeniu Użytkownika.
+                  zewnętrznych czcionek – czcionki są udostępniane z serwera
+                  Serwisu razem z jego stronami.
                 </li>
               </ul>
               <p>

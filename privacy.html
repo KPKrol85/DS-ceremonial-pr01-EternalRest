@@ -87,7 +87,7 @@
             <div>
               <dt class="legal-meta__label">Ostatnia aktualizacja</dt>
               <dd class="legal-meta__value">
-                <time datetime="2026-11-10">10.11.2026</time>
+                <time datetime="2026-11-11">11.11.2026</time>
               </dd>
             </div>
             <div>
@@ -473,8 +473,8 @@
                 Dane techniczne połączenia
               </h3>
               <p>
-                Każde wyświetlenie strony Serwisu wymaga połączenia przeglądarki
-                z serwerem. W jego ramach infrastruktura dostawcy hostingu
+                Każde pobranie strony lub pliku Serwisu wymaga połączenia
+                przeglądarki z serwerem. W jego ramach infrastruktura dostawcy hostingu
                 technicznie przetwarza adres IP urządzenia, adres żądanej strony
                 oraz standardowe informacje przesyłane przez przeglądarkę w
                 żądaniu HTTP, takie jak typ i wersja przeglądarki. Bez tego
@@ -506,6 +506,26 @@
                 przekazuje go Administratorowi ani innym podmiotom, a
                 Administrator nie ma do niego dostępu. Serwis nie umożliwia
                 przesyłania, eksportowania ani synchronizowania tej preferencji.
+              </p>
+              <p>
+                W przeglądarkach obsługujących technologię Service Worker kod
+                Serwisu zapisuje ponadto w pamięci podręcznej Cache Storage
+                kopie publicznych plików Serwisu – odwiedzonych stron oraz
+                plików potrzebnych do wyświetlenia strony z informacją o braku
+                połączenia – aby można je było wyświetlić bez dostępu do
+                Internetu. Kopie są takie same dla wszystkich Użytkowników i nie
+                obejmują wartości Formularza, wysłanych zgłoszeń ani odpowiedzi
+                na ich wysłanie. Zapisane kopie stron wskazują jednak, które
+                strony Serwisu otwierano w danej przeglądarce, podobnie jak
+                historia przeglądania.
+              </p>
+              <p>
+                Kopie pozostają na urządzeniu Użytkownika. Kod Serwisu nie
+                przekazuje ich Administratorowi ani innym podmiotom, a
+                Administrator nie ma do nich dostępu. Pobieranie tych plików
+                oraz sprawdzanie dostępności nowej wersji Serwisu odbywa się
+                zwykłymi żądaniami do serwera, opisanymi powyżej jako dane
+                techniczne połączenia.
               </p>
               <p>
                 Informacje o plikach cookies i podobnych technologiach zawiera
@@ -968,6 +988,14 @@
                   wygaśnięcia,
                 </li>
                 <li>
+                  kopie plików Serwisu zapisane w pamięci podręcznej Cache
+                  Storage pozostają na urządzeniu Użytkownika do czasu ich
+                  zastąpienia przy kolejnym pobraniu strony albo po aktywacji
+                  nowej wersji Serwisu, usunięcia najstarszych kopii po
+                  przekroczeniu limitu albo usunięcia danych witryny przez
+                  Użytkownika lub przeglądarkę,
+                </li>
+                <li>
                   dane wysłane przez Formularz są przechowywane w usłudze
                   Netlify Forms; okres ich przechowywania określa punkt 4. Kod
                   Serwisu nie zapisuje wartości Formularza w przeglądarce, a
@@ -1036,7 +1064,9 @@
                 Administrator nie ma dostępu do preferencji motywu zapisanej w
                 przeglądarce, dlatego nie może jej udostępnić, sprostować ani
                 usunąć. Zapis preferencji motywu Użytkownik może usunąć
-                samodzielnie w ustawieniach przeglądarki. Dane wysłane przez
+                samodzielnie w ustawieniach przeglądarki. Dotyczy to również
+                kopii plików Serwisu w pamięci podręcznej przeglądarki, które
+                Użytkownik może usunąć wraz z danymi witryny. Dane wysłane przez
                 Formularz są dostępne dla Administratora w usłudze Netlify
                 Forms, a żądania dotyczące tych danych można kierować na
                 poniższy adres.
@@ -1170,14 +1200,17 @@
               <ul>
                 <li>nie są stosowane pliki cookies,</li>
                 <li>
-                  jedynym mechanizmem zapisu danych na urządzeniu Użytkownika, z
-                  którego korzysta kod Serwisu, jest pamięć
-                  <code>localStorage</code>, wykorzystywana wyłącznie do
-                  zapamiętania preferencji motywu opisanej w punkcie 3,
+                  kod Serwisu zapisuje dane na urządzeniu Użytkownika w pamięci
+                  <code>localStorage</code>, wyłącznie w celu zapamiętania
+                  preferencji motywu, oraz w pamięci podręcznej Cache Storage,
+                  zarządzanej przez skrypt Service Worker, wyłącznie w celu
+                  przechowywania kopii publicznych plików Serwisu na potrzeby
+                  ich wyświetlania bez połączenia z Internetem; oba mechanizmy
+                  opisano w punkcie 3,
                 </li>
                 <li>
-                  nie są wykorzystywane <code>sessionStorage</code>, Cache
-                  Storage, Service Worker ani lokalne bazy danych przeglądarki,
+                  nie są wykorzystywane <code>sessionStorage</code> ani lokalne
+                  bazy danych przeglądarki,
                 </li>
                 <li>
                   nie są stosowane technologie analityczne, reklamowe ani
@@ -1187,9 +1220,9 @@
               <p>
                 Szczegółowe zasady stosowania plików cookies i podobnych
                 technologii, w tym sposób zarządzania zapisem preferencji
-                motywu, określa <a href="cookies.html">Polityka cookies</a>.
-                Cel, zakres i okres przechowywania tego zapisu opisano również w
-                punktach 3 i 8.
+                motywu i pamięcią podręczną Service Workera, określa
+                <a href="cookies.html">Polityka cookies</a>. Cel, zakres i okres
+                przechowywania tych danych opisano również w punktach 3 i 8.
               </p>
             </div>
             <a

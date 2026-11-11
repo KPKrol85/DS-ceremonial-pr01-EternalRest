@@ -19,4 +19,14 @@ export default [
       "no-unused-vars": "warn",
     },
   },
+  {
+    // Service worker source; vite.config.js replaces the precache manifest placeholder.
+    files: ["js/sw.js"],
+    languageOptions: {
+      globals: {
+        ...globals.serviceworker,
+        __PRECACHE_MANIFEST__: "readonly",
+      },
+    },
+  },
 ];

@@ -27,6 +27,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Changed
 
+- Documented the service worker's Cache Storage use and offline file retention in the Privacy and Cookies policies.
 - Added a demonstration notice beneath the Services masthead description, identifying the described services, scope of support and availability as illustrative in the style of the About note.
 - Added a demonstration notice beneath the About masthead description, identifying the company history, experience and team as fictional in the style of the Guide and Pricing notes.
 - Replaced the pricing quotation disclaimer with an explicit demonstration notice, matching the Guide FAQ note's font size.
@@ -57,6 +58,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Added
 
+- Added a build-generated service worker with a revisioned offline precache, network-first page caching, bounded runtime caches and an accessible offline fallback page, passing form submissions and HTTP errors through unchanged and activating new versions only after all site pages close.
 - Added Usługi, Cennik and Kontakt manifest shortcuts with Polish labels and dedicated icons, subject to browser and OS support and without adding offline or service-worker behavior.
 - Added desktop and mobile homepage screenshots with Polish labels to the web manifest for installation previews, without adding offline or service-worker behavior.
 - Added a local Lighthouse CI performance baseline via `npm run audit:performance` and `@lhci/cli` 0.15.1, collecting reports and metric medians from 24 mobile/desktop runs across four production pages, ignoring `LHCI_*` overrides and failing on errors or incomplete results without score thresholds or CI integration.
@@ -124,6 +126,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Build and Tooling
 
+- Added Chromium Playwright service worker tests covering precaching, offline navigation and recovery, unchanged 404 and POST handling and the update lifecycle, and blocked service workers in the network-mocking smoke tests.
 - Extended Playwright smoke coverage across Chromium, Firefox and WebKit, retaining Chromium-only `test:smoke` and CDP accessibility-tree checks, adding Firefox/WebKit `test:cross-browser`, and running all engines in `Quality Checks` against one production build.
 - Extended the read-only `Quality Checks` workflow to pull requests targeting `main`, preserving pushes to `main` and manual triggers without making it a required merge check.
 - Added the existing Chromium smoke tests to the read-only GitHub Actions `Quality Checks` workflow after lint, build and reference checks; Netlify deployment remains manual.
