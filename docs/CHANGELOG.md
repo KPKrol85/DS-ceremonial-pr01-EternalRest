@@ -53,6 +53,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 - Removed duplicate phone/address details from the contact masthead and added KP_Code Digital Studio attribution to the office panel.
 - Replaced the homepage FAQ with project-focused questions, clarified form behavior and linked the closing action to the project author while preserving accordion accessibility and behavior.
 - Added `noindex, follow` to all nine pages and removed the sitemap directive from `robots.txt`, retaining crawler access, social metadata and the existing sitemap.
+- Added standard-purpose PWA icons and explicit application identity, start URL and scope settings to the web manifest.
 
 ### Added
 
