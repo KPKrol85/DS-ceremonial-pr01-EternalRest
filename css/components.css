@@ -402,15 +402,15 @@ html[data-theme] .theme-toggle--icon {
   display: none;
 }
 
-/* Cinematic stage: the statement sits on the dark side of the photograph. The photograph is
-   dark in every theme, so the stage uses the dark scheme and light-dark() tokens resolve to
-   their dark values here; the supporting aside below follows the page theme. */
+/* Cinematic stage: the statement sits on the shaded side of the photograph. The stage follows
+   the page theme, so its shading and text take the light or dark page tokens. No local
+   color-scheme: the build lowers light-dark() to values resolved on :root, so a local scheme
+   would apply in development only. */
 .hero__stage {
   /* Narrow screens: the photograph is a top band that fades into the stage under the text. */
   --hero-media-height: clamp(22rem, 115vw, 32rem);
   position: relative;
   isolation: isolate;
-  color-scheme: dark;
   color: var(--color-text);
   /* Also the stand-in before the photograph loads. */
   background: var(--color-bg);
