@@ -1,3 +1,4 @@
+import { createHash } from "crypto";
 import { existsSync, readdirSync, readFileSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -265,6 +266,78 @@ const checkModulePaths = (pages) => {
   return true;
 };
 
+// The Content-Security-Policy in dist/_headers (copied from public/_headers) allows inline
+// scripts only by SHA-256 hash, so every inline script of every built page must hash to a
+// declared value, and every declared hash must still be used.
+const headersFile = "dist/_headers";
+const CSP_HEADER = /^\s+Content-Security-Policy:\s*(.+)$/gim;
+const SCRIPT_HASH = /'sha256-([A-Za-z0-9+/]+={0,2})'/g;
+
+const checkCspHashes = (pages) => {
+  console.log(
+    `\nHashe skryptów inline w Content-Security-Policy (${headersFile}):`,
+  );
+  const headersPath = path.join(distDir, "_headers");
+  if (!existsSync(headersPath)) {
+    console.error(`Brak pliku ${headersFile}.`);
+    return false;
+  }
+  const policies = [
+    ...readFileSync(headersPath, "utf8").matchAll(CSP_HEADER),
+  ].map(([, value]) => value);
+  if (policies.length !== 1) {
+    console.error(
+      `${headersFile}: oczekiwano jednego nagłówka Content-Security-Policy, znaleziono ${policies.length}`,
+    );
+    return false;
+  }
+  const scriptSrc = policies[0]
+    .split(";")
+    .map((directive) => directive.trim())
+    .find((directive) => /^script-src\s/.test(directive));
+  const declared = new Set(
+    [...(scriptSrc ?? "").matchAll(SCRIPT_HASH)].map(([, hash]) => hash),
+  );
+
+  const errors = [];
+  const used = new Set();
+  let checked = 0;
+  for (const page of pages) {
+    const scripts = readScripts(readFileSync(path.join(distDir, page), "utf8"));
+    for (const { attributes, content, line } of scripts.filter(isInline)) {
+      const type = attributes.get("type")?.value.trim().toLowerCase() ?? "";
+      // Data blocks such as JSON-LD are not executed and need no hash.
+      if (type && !["module", "text/javascript"].includes(type)) continue;
+      const hash = createHash("sha256").update(content).digest("base64");
+      checked += 1;
+      if (declared.has(hash)) {
+        used.add(hash);
+      } else {
+        errors.push(
+          `${page}:${line} skrypt inline o hashu 'sha256-${hash}' nie jest dozwolony w script-src`,
+        );
+      }
+    }
+  }
+  for (const hash of declared) {
+    if (!used.has(hash)) {
+      errors.push(
+        `${headersFile}: hash 'sha256-${hash}' nie odpowiada żadnemu skryptowi inline`,
+      );
+    }
+  }
+
+  if (errors.length) {
+    console.error(`Błędy hashy CSP: ${errors.length}`);
+    errors.forEach((error) => console.error(`  ${error}`));
+    return false;
+  }
+  console.log(
+    `Skrypty inline zgodne z hashami script-src: ${checked} na ${pages.length} stronach (hashe: ${declared.size}).`,
+  );
+  return true;
+};
+
 const run = () => {
   const pages = existsSync(distDir)
     ? readdirSync(distDir, { withFileTypes: true })
@@ -339,6 +412,7 @@ const run = () => {
   }
 
   if (!checkModulePaths(pages)) process.exitCode = 1;
+  if (!checkCspHashes(pages)) process.exitCode = 1;
 };
 
 run();

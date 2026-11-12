@@ -27,6 +27,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Changed
 
+- Added Netlify security headers through `public/_headers`, including a Content Security Policy that authorizes the inline initializer by SHA-256 hash, with a `check:references` guard against hash drift.
 - Fixed offline navigation to extensionless Netlify addresses such as `/services`, which now open the page stored under its `.html` address and vice versa, with Chromium regression coverage.
 - Documented the service worker's Cache Storage use and offline file retention in the Privacy and Cookies policies.
 - Added a demonstration notice beneath the Services masthead description, identifying the described services, scope of support and availability as illustrative in the style of the About note.

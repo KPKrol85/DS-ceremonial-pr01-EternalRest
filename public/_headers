@@ -1,0 +1,11 @@
+# Netlify response headers for every published path; Vite copies this file to dist/_headers.
+# Strict-Transport-Security is sent by Netlify and is not repeated here.
+# The script-src hash authorizes the inline initializer from partials/disclosure-init.html
+# exactly as built; npm run check:references fails when a built page's inline script no
+# longer matches it. img-src allows data: for the small SVG images Vite inlines.
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-Kc/ULRY1AHWsRbL+mXS3GInCA72/1RGyEl71h7go4s4='; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()
