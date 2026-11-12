@@ -27,6 +27,7 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 
 ### Changed
 
+- Fixed offline navigation to extensionless Netlify addresses such as `/services`, which now open the page stored under its `.html` address and vice versa, with Chromium regression coverage.
 - Documented the service worker's Cache Storage use and offline file retention in the Privacy and Cookies policies.
 - Added a demonstration notice beneath the Services masthead description, identifying the described services, scope of support and availability as illustrative in the style of the About note.
 - Added a demonstration notice beneath the About masthead description, identifying the company history, experience and team as fictional in the style of the Guide and Pricing notes.

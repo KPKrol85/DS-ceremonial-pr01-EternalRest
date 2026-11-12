@@ -29,9 +29,12 @@ const isHtml = (response) =>
   (response.headers.get("Content-Type") ?? "").includes("text/html");
 
 // Pages are stored by path: "/" equals "/index.html", and a query does not change the page.
+// Netlify also serves each page without its extension, so "/services" equals "/services.html".
 const pageKey = (requestUrl) => {
   const { origin, pathname } = new URL(requestUrl);
-  return origin + (pathname.endsWith("/") ? `${pathname}index.html` : pathname);
+  if (pathname.endsWith("/")) return `${origin}${pathname}index.html`;
+  const name = pathname.slice(pathname.lastIndexOf("/") + 1);
+  return origin + (name.includes(".") ? pathname : `${pathname}.html`);
 };
 
 // Removes the oldest entries; Cache Storage keeps entries in the order they were stored.

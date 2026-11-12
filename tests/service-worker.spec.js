@@ -208,6 +208,80 @@ test("visited pages open offline, other pages get the offline page and recovery 
     .toContain("/pricing.html");
 });
 
+test("a page opens offline with and without its .html extension", async ({
+  page,
+  context,
+}) => {
+  const servicesTitle = "Eternal Rest | Usługi";
+  await openControlled(page, "/");
+
+  // Like Netlify, the server answers the address without the extension with the same page.
+  const extensionless = await page.request.get("/services");
+  expect(extensionless.status()).toBe(200);
+  expect(await extensionless.text()).toContain(
+    `<title>${servicesTitle}</title>`,
+  );
+
+  // Visited through an internal link, the page is stored once, under its .html address.
+  await page
+    .getByRole("navigation", { name: "Główna" })
+    .getByRole("link", { name: "Usługi", exact: true })
+    .click();
+  await expect(page).toHaveURL(/\/services\.html$/);
+  await expect
+    .poll(async () => {
+      const stored = await readCaches(page);
+      return stored[cacheNamed(stored, "pages")];
+    })
+    .toEqual(["/index.html", "/services.html"]);
+
+  await context.setOffline(true);
+  for (const path of ["/services.html", "/services", "/services?source=pwa"]) {
+    const response = await page.goto(path);
+    expect(response.status()).toBe(200);
+    expect(response.fromServiceWorker()).toBe(true);
+    await expect(page).toHaveTitle(servicesTitle);
+  }
+  // A page not visited online still gets the offline page in either form.
+  for (const path of ["/pricing", "/pricing.html"]) {
+    await page.goto(path);
+    await expectOfflinePage(page, path);
+  }
+
+  // Visited first without the extension, the page also opens offline through internal links.
+  await context.setOffline(false);
+  await page.goto("/about");
+  await expect(page).toHaveTitle("Eternal Rest | O nas");
+  await expect
+    .poll(async () => {
+      const stored = await readCaches(page);
+      return stored[cacheNamed(stored, "pages")];
+    })
+    .toContain("/about.html");
+  await context.setOffline(true);
+  await page.goto("/services");
+  await page
+    .getByRole("navigation", { name: "Główna" })
+    .getByRole("link", { name: "O nas", exact: true })
+    .click();
+  await expect(page).toHaveURL(/\/about\.html$/);
+  await expect(page).toHaveTitle("Eternal Rest | O nas");
+
+  // An unknown address without an extension is not stored as a page.
+  await context.setOffline(false);
+  const html = await (await page.request.get("/404.html")).text();
+  await context.route("**/missing-page", (route) =>
+    route.fulfill({ status: 404, contentType: "text/html", body: html }),
+  );
+  const missing = await page.goto("/missing-page");
+  expect(missing.status()).toBe(404);
+  expect(missing.fromServiceWorker()).toBe(true);
+  const stored = await readCaches(page);
+  expect(stored[cacheNamed(stored, "pages")]).not.toContain(
+    "/missing-page.html",
+  );
+});
+
 test("HTTP errors and form submissions pass through the service worker unchanged", async ({
   page,
   context,
