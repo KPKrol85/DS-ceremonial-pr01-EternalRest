@@ -153,3 +153,4 @@ When an implementation task is defined, apply this policy and state `Changelog: 
 - Added the bilingual KP_Code proprietary license and aligned package metadata.
 - Introduced improvement-report lifecycle rules, subsequently superseded by the simplified documentation model.
 - Simplified project documentation by removing the redundant context document, retaining stable agent guardrails and making README the primary project reference.
+- Standardized changelog conventions, the development plan lifecycle, improvement completion records and audit and review lifecycle rules in the agent guardrails.
