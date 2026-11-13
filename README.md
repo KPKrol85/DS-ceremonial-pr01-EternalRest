@@ -303,6 +303,8 @@ Treści i ceny są zapisane w HTML. Preferencja motywu trafia do `localStorage` 
 
 Projekt podlega [Własnościowej Licencji Projektu KP_CODE](LICENSE.md), wersja 1.0, i nie jest oprogramowaniem open source. Licencja opisuje ograniczony użytek lokalny do prywatnej, niekomercyjnej oceny; publiczne wdrożenie, redystrybucja i wykorzystanie komercyjne wymagają odrębnej pisemnej zgody. Materiały podmiotów trzecich zachowują własne warunki licencyjne; ich wykaz zawiera plik [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
 
+Zdjęcia hero w `assets/src-images/` są obrazami wygenerowanymi przez AI na potrzeby tej demonstracyjnej witryny fikcyjnej firmy; dotyczy to także ich wariantów AVIF i WebP w `assets/images/`. Pięć z nich (`hero`, `hero-about`, `hero-contact`, `hero-guide` i `hero-pricing`) powstało w Canva AI, a `hero-services` w ChatGPT (generowanie obrazów OpenAI), co potwierdzają metadane XMP lub C2PA plików źródłowych. Obraz Open Graph (`public/images/og.jpg`) został wygenerowany przy użyciu ChatGPT (OpenAI) na potrzeby projektu demonstracyjnego. Logo Eternal Rest jest wygenerowanym przez AI w Canvie elementem demonstracyjnej identyfikacji fikcyjnej firmy, następnie odtworzonym jako SVG; nie jest zarejestrowanym ani używanym w działalności znakiem towarowym.
+
 ## EN
 
 ### Project Overview
@@ -605,3 +607,5 @@ Content and prices are stored in HTML. The theme preference is saved in `localSt
 ### License
 
 The project is covered by the [KP_CODE Proprietary Project License](LICENSE.md), version 1.0, and is not open-source software. The license describes limited local use for private, non-commercial evaluation; public deployment, redistribution and commercial use require separate written permission. Third-party materials retain their own license terms and are listed in [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
+
+The hero photographs in `assets/src-images/` are AI-generated images created for this demonstration website of a fictional business; this also applies to their AVIF and WebP variants in `assets/images/`. Five of them (`hero`, `hero-about`, `hero-contact`, `hero-guide` and `hero-pricing`) were created with Canva AI and `hero-services` with ChatGPT (OpenAI image generation), as recorded in the XMP or C2PA metadata of the source files. The Open Graph image (`public/images/og.jpg`) was generated using ChatGPT (OpenAI) for the demonstration project. The Eternal Rest logo is an AI-generated element of the fictional business's demonstration branding, created with Canva and subsequently reconstructed as SVG; it is not a registered trademark or a mark used in trade.
