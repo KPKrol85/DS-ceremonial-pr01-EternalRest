@@ -93,9 +93,9 @@
 
 ## 10. Deployment & Release
 
-- [ ] All approved release changes have been committed, and the Git working tree is clean.
+- [x] All approved release changes have been committed, and the Git working tree is clean.
 - [ ] The intended release commit and version have been confirmed.
-- [ ] GitHub Actions or the configured CI pipeline reports SUCCESS for the intended release commit.
+- [x] GitHub Actions or the configured CI pipeline reports SUCCESS for the intended release commit.
 - [ ] The approved production build has been deployed from the correct source revision.
 - [ ] The production website is accessible over HTTPS and loads essential resources correctly.
 - [ ] A production smoke test confirms the functionality of critical pages and interactions.
